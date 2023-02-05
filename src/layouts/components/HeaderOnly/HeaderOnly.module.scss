@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // background-color: rgba(22, 24, 35, 0.06);
+  }
+  .container {
+    margin-top: var(--default-layout-header-height);
+    width: 100%;
+    padding: 0 var(--default-layout-horizontal-spacer);
+    display: flex;
+  }
+  .content {
+    flex: 1;
+  }
+  

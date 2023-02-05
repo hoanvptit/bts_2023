@@ -1,0 +1,65 @@
+.wrapper {
+    --search-border-radius: 8px;
+    --search-height: 46px;
+    --search-top-spacer: 9px;
+    --search-btn-width: 52px;
+  
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--default-layout-header-height);
+    // box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+    background-color: var(--white);
+    display: flex;
+    justify-content: center;
+  }
+  .inner {
+    height: 100%;
+    // width: var(--default-layout-width);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--default-layout-horizontal-spacer);
+  }
+  .logo {
+  }
+  
+  .actions {
+    display: flex;
+    align-items: center;
+  }
+  .more-btn {
+    font-size: 2rem;
+    margin-left: 28px;
+    padding: 4px 8px;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
+  .action-btn {
+    font-size: 2.2rem;
+    color: var(--text-color);
+    background-color: transparent;
+    padding: 4px 12px;
+    cursor: pointer;
+  }
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: conver;
+    border-radius: 50%;
+    margin-left: 12px;
+    cursor: pointer;
+  }
+  
+  .uploadIcon {
+    display: flex;
+  }
+  
+  .logo-link {
+    display: flex;
+  }
+  

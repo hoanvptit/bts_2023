@@ -1,0 +1,89 @@
+.popup-background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+@keyframes appear{
+    from { transform: scale(0.8);}
+    to{ transform: scale(1);}
+}
+
+.popup-wrapper{
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    height: 170px;
+    width: 300px;
+    /* margin-top: calc((100vh - 170px)/2);
+    margin-left: calc((100vw - 300px)/2); */
+    font-size: 16px;
+    overflow: hidden;
+    animation-name: appear;
+    animation-duration: 0.5s;
+}
+
+.popup-title{
+    /* flex: 1; */
+    text-align: center;
+    height: 50px;
+    font-weight: 700;
+    padding: 15px 5px;
+    color: black;
+}
+
+.popup-content{
+    /* flex: 1; */
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    height: 70px;
+    padding: 5px 15px;
+    display: flex;
+    color: black;
+}
+.popup-footer{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.pupup-btn-confirm{
+    height: 35px;
+    width: 100px;
+    background-color: #EB5500;
+    color: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #EB5500;
+}
+
+.pupup-btn-cancel{
+    height: 35px;
+    width: 100px;
+    background-color: #FFFFFF;
+    color: #EB5500;
+    border-radius: 10px;
+    border: 1px solid #EB5500;
+}
+
+
+.cr-body-appear {
+    opacity: 0;
+    transform: scaleX(0.5) translateY(-100px);
+    transition: all 400ms;
+}
+.cr-body-appear.cr-body-appear-active {
+    opacity: 1;
+    transform: scaleX(1) translateY(0);
+    transition: all 400ms;
+}
