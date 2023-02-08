@@ -1,0 +1,23 @@
+.modal-header {
+    border-bottom: none;
+}
+.modal-title {
+    font-size: 18;
+    margin: 0 auto;
+    font-weight: 700;
+}
+.modal-body {
+    font-size: 15;
+    margin: 0 5%;
+}
+.first-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+    .name,
+    .mac {
+        width: 45%;
+    }
+}
+.second-line {
+}

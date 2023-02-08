@@ -44,8 +44,6 @@ function App() {
                             Layout = Fragment;
                         }
                         const Page = route.component;
-                        console.log("layout", Layout)
-                        console.log("route layout: ", route.layout, route.path)
                         // check if user is logged in
                         return (
                             <Route

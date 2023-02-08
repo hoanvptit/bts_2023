@@ -4,51 +4,65 @@
     padding: 9px 16px;
     cursor: pointer;
     &:hover {
-      background-color: rgba(200, 202, 209, 0.05);
-      box-shadow: 1px 1px 1px 1px rgb(241, 230, 230);
-      .option {
-        display: block;
-        color: #333;
-      }
+        background-color: rgba(200, 202, 209, 0.05);
+        box-shadow: 1px 1px 1px 1px rgb(241, 230, 230);
+        .option {
+            display: block;
+            color: #333;
+        }
     }
     border-bottom: 1px solid #ccc;
-  }
-  .avatar {
+}
+.avatar {
     width: 40px;
     height: 40px;
     object-fit: cover;
     border-radius: 50%;
-  }
-  .info {
+}
+.info {
     flex: 1;
     margin-left: 12px;
-  }
-  .name {
+}
+.name {
     font-size: 1.6rem;
     font-weight: 500;
-  }
-  .location {
+}
+.location {
     font-weight: 1.4rem;
-    color: rgba(22, 24, 35, 0.5);
-  }
-  .check_info {
+    color: rgba(22, 24, 35, 0.8);
+}
+.check_info {
     margin-left: 8px;
     font-size: 14px;
     color: rgb(32, 213, 236);
-  }
-  // in BTS Line
-  .border {
+}
+// in BTS Line
+.border {
     border: 1px solid #ccc;
     border-radius: 6px;
     margin-top: 16px;
-    
-    .name{
-      font-weight: 600;
+
+    .name {
+        font-weight: 600;
     }
-  }
-  .option {
+}
+.option {
     display: none;
-    .edit{
-      margin-right: 5px;
+    .edit {
+        margin-right: 5px;
     }
-  }
+}
+// oi Account of Menu
+.isAccount {
+    .name {
+        font-weight: bold;
+        color: #000000;
+        &:hover {
+            color: #656363;
+        }
+    }
+    &:hover {
+        background-color: rgba(221, 39, 133, 0.05);
+        box-shadow: 1px 1px 1px 1px rgb(241, 230, 230);
+    }
+}

@@ -36,6 +36,9 @@ a {
   color: var(--text-color);
   text-decoration: none;
 }
+select:focus-visible {
+  outline: none;
+}
 // custom tippy tooltip
 
 body {
