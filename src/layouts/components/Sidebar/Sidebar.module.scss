@@ -1,0 +1,25 @@
+.wrapper {
+    padding: 20px 32px 26px 8px;
+    width: 250px;
+    // background-color: antiquewhite;
+    .header {
+      padding-left: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #ccc;
+      h2{
+        font-weight: 700;
+        color:#7367F0;
+      }
+      .btsname{
+        font-weight: 400;
+        font-size: 1.4rem;
+      }
+    }
+    .topic{
+      padding-left: 8px;
+      width: 100%;
+      font-size: 1.6rem;
+      color: #A7A4B0;
+    }
+}

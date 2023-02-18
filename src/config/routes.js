@@ -1,8 +1,15 @@
 const routeConfig ={
     home: '/',
     login:'/login',
-    notify:'/notify',
     profile:'/@:nickname',
-    createAccount:'/createAccount'
+    createAccount:'/createAccount',
+    homeBts:'/bts',
+    controlDevices: '/control_devices',
+    manageDevices:'/manage_devices',
+    manageAccounts:'/manage_accounts',
+    manageNotifications:'/manage_notifications',
+    support:'/support',
+    documents:'/documents',
+
 }
 export default routeConfig

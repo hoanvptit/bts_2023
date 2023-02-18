@@ -1,0 +1,94 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+}
+.search-filter-title {
+    margin-top: 16px;
+    margin-left: 16px;
+    font-weight: 700;
+}
+.search-filter {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 1px 0px rgb(0 0 0 / 12%);
+}
+.select-area {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    .select-unit,
+    .select-group {
+        border-radius: 6px;
+        border: 1.5px solid #ccc;
+        height: 32px;
+        width: 20%;
+        margin: 16px;
+        padding-left: 1rem;
+        // text-align: center;
+    }
+}
+
+.btn-add-bts {
+}
+
+.main-content {
+    margin: 8px 0;
+    padding: 8px;
+    display: flex;
+
+    .device-info {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        .properties {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 16px;
+        }
+    }
+    .timeline {
+        padding: 8px 16px;
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        .timeline-item {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            .date-time{
+                display: flex;
+                justify-content: space-between;
+                .date{
+                    margin-right: 8px;
+                }
+            }
+        }
+    }
+    .title-status {
+        font-weight: 600;
+        color: rgb(121, 123, 123);
+    }
+    .status {
+        font-weight: 600;
+        color: #000000;
+    }
+}
+.page {
+    position: absolute;
+    bottom: 0;
+    margin: 8px;
+    width: calc(100% - 48px);
+    display: flex;
+    justify-content: space-between;
+    p {
+        font-weight: 300;
+        color: #a29f9f;
+    }
+    .paging {
+    }
+}

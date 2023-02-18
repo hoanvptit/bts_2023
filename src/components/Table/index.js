@@ -1,0 +1,72 @@
+import classNames from 'classnames/bind';
+import Image from '~/components/images';
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import style from './Table.module.scss';
+const cx = classNames.bind(style);
+
+export default function Table(props) {
+    const data = props.data;
+    const tableTitle = ['Tên thiết bị', 'Loại thiết bị', 'Trạng thái', 'Sửa/Xoá'];
+
+    const handleClickEdit = (data) => {
+        props.onClickEdit(data);
+    };
+    const handleClickDel = (data) => {
+        props.onClickDel(data);
+    };
+    const DevicesLine = (index, device) => {
+        let tmp = index % 2;
+        return (
+            <tr className={cx('tb-col')}>
+                <td className={cx('text-left')} style={{ width: '3%' }}>
+                    <div className={cx('device_card')}>
+                        <Image className={cx('avatar')} src={device.avatar} alt="avatar" />
+                        <div className={cx('info')}>
+                            <span>{device.name}</span>
+                        </div>
+                    </div>
+                </td>
+                <td className={cx('text-left')} style={{ width: '3%' }}>
+                    {device.type}
+                </td>
+                <td className={cx('text-left')} style={{ width: '3%' }}>
+                    {device.status}
+                </td>
+                <td className={cx('text-left')} style={{ width: '1%' }}>
+                    <div className={cx('option')}>
+                        <FontAwesomeIcon
+                            icon={faPenToSquare}
+                            className={cx('edit')}
+                            onClick={() => handleClickEdit(device)}
+                        />
+                        <FontAwesomeIcon
+                            icon={faTrashCan}
+                            className={cx('delete')}
+                            onClick={() => handleClickDel(device)}
+                        />
+                    </div>
+                </td>
+            </tr>
+        );
+    };
+    return (
+        <div className={cx('table_device')}>
+            <table>
+                <thead>
+                    <tr>
+                        {tableTitle.map((title) => (
+                            <th>{title}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.map((device, index) => {
+                        return DevicesLine(index + 1, device);
+                    })}
+                </tbody>
+            </table>
+        </div>
+    );
+}

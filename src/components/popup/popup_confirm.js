@@ -1,12 +1,6 @@
 import React, { Component } from "react"
-// import { Modal, Button } from "react-bootstrap";
 import './popup_confirm.css';
-// import storage from "../../utility/storage";
-// import axios from "axios";
-
 export function PopupConfirm(props) {
-    
-
     return (
         <div className="popup-background">
                 <div className="popup-wrapper">

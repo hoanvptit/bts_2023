@@ -1,22 +1,24 @@
 import { Modal, Button, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import classNames from 'classnames/bind';
-import styles from './PopupAddObject.module.scss';
+import styles from './PopupAddBts.module.scss';
 import { faMapLocation } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 function PopupAddObject(props) {
-    console.log('bts =  ', props.bts_object);
     const [bts, setBts] = useState(props.bts_object);
-    const handleSumbit = () => {
-        props.onChangeObject(bts);
+
+    const handleSubmit = () => {
         props.action();
         props.onChangeShow();
-        setBts({
-            name: '',
-            mac: '',
-            address: '',
-        })
+        if (props.type === 'add') {
+            setBts({
+                // id:0,
+                name: '',
+                mac: '',
+                location: '',
+            });
+        }
     };
 
     const handleClose = () => {
@@ -38,12 +40,11 @@ function PopupAddObject(props) {
         }));
         props.onChangeObject(bts);
     };
-    const changeAddress = (e) => {
-        let address = e.target.value;
-
+    const changeLocation = (e) => {
+        let location = e.target.value;
         setBts((prev) => ({
             ...prev,
-            address: address,
+            location: location,
         }));
         props.onChangeObject(bts);
     };
@@ -111,8 +112,8 @@ function PopupAddObject(props) {
                                     placeholder="Nhập địa chỉ"
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
-                                    value={bts.address}
-                                    onChange={(e) => changeAddress(e)}
+                                    value={bts.location}
+                                    onChange={(e) => changeLocation(e)}
                                     disabled={props.type === 'del'}
                                 />
                             </InputGroup>
@@ -139,7 +140,7 @@ function PopupAddObject(props) {
                     </Button>
                     <Button
                         className={cx('btn-add')}
-                        onClick={handleSumbit}
+                        onClick={handleSubmit}
                         style={{
                             height: 35,
                             width: 100,

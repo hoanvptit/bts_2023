@@ -89,16 +89,12 @@ const userMenu = [
 const handleMenuChange = (item) => {
     console.log(item);
 };
-function Header() {
+function Header({ className }) {
     const currentUser = true;
+    const classes = cx({ [className]: className }, 'wrapper');
     return (
-        <header className={cx('wrapper')}>
+        <header className={classes}>
             <div className={cx('inner')}>
-                {/* <div className={cx('logo')}>
-          <Link to={config.routes.home} className={cx('logo-link')}>
-            <img src={images.logo} alt="tiktok" />
-          </Link>
-        </div> */}
                 {/* Search */}
                 <Search />
                 <div className={cx('action')}>

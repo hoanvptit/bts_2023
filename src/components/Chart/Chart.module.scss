@@ -1,0 +1,32 @@
+.wrapper {
+    margin-top: 1.6rem;
+}
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    .title {
+        font-size: 2.4rem;
+        font-weight: 600;
+    }
+    .util {
+        display: flex;
+        justify-content: space-between;
+        .calendar-area {
+            margin-right: 1.6rem;
+            display: flex;
+            align-items: center;
+            // flex-direction: column;
+            .calendar{
+                border: 1px solid #829aeb;
+                border-radius: 3px;
+                margin-left: 5px;
+                padding: 4px 8px;
+            }
+        }
+        .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+}

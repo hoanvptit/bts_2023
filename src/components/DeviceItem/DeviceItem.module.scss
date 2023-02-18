@@ -1,0 +1,48 @@
+.wrapper {
+    max-width: 235px;
+    height: 264px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 9px 16px;
+    cursor: pointer;
+    &:hover {
+        background-color: rgba(200, 202, 209, 0.05);
+        box-shadow: 1px 1px 1px 1px rgb(241, 230, 230);
+        .option {
+            display: block;
+            color: #333;
+        }
+    }
+    border-bottom: 1px solid #ccc;
+}
+.avatar {
+    width: 100px;
+    height: 100px;
+    margin: 42px 64px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.info {
+    flex: 1;
+    margin-left: 12px;
+}
+.name {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+.status_on {
+    color: #43CE81;
+}
+.status_off {
+}
+// in BTS Line
+.border {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 16px;
+
+    .name {
+        font-weight: 600;
+    }
+}

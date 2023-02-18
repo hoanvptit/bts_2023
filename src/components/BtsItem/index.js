@@ -4,6 +4,7 @@ import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import Image from '../images';
+import config from '~/config';
 import classNames from 'classnames/bind';
 import styles from './BtsItem.module.scss';
 
@@ -16,14 +17,14 @@ function BtsItem({ data, border, option, className, isAccount, onEditBts, onDelB
     });
     return (
         <Link 
-        // to={`/@${data.nickname}`} 
+        to={config.routes.homeBts} 
         className={classes}
         >
             <Image className={cx('avatar')} src={data.avatar} alt="avatar" />
             <div className={cx('info')}>
                 <h4 className={cx('name')}>
                     <span>{data.name}</span>
-                    {data.tick && <FontAwesomeIcon icon={faCheckCircle} className={cx('check_info')} />}
+                    {/* {data.tick && <FontAwesomeIcon icon={faCheckCircle} className={cx('check_info')} />} */}
                 </h4>
                 <span className={cx('location')}>{data.location ? data.location : data.nickname}</span>
             </div>

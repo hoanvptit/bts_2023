@@ -3,9 +3,8 @@
   flex: 1;
   margin-right: 32px;
 }
-.search{
-  min-width: 800px;
-}
+
+
 // .search,
 .search-result {
   width: 361px;
@@ -17,6 +16,7 @@
   color: rgba(22, 24, 35, 0.5);
 }
 .search {
+  min-width: 800px;
   display: flex;
   position: relative;
   height: var(--search-height);
@@ -56,6 +56,12 @@
   }
 }
 
+// sub search
+.subSearch {
+  .search {
+    min-width: 400px;
+  }
+}
 .loading,
 .clear {
   border: none;

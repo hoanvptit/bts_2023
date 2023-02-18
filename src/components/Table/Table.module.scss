@@ -1,0 +1,45 @@
+//table css
+.table_device {
+    display: block;
+}
+.table_device table {
+    display: block;
+    max-height: 350px;
+    font-size: 16px;
+    // overflow-y: auto;
+}
+.table_device th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    border-bottom: 1px solid #DBDADE;
+    color: rgb(0, 0, 0);
+}
+.table_device tr {
+    height: 50px;
+    border-bottom: 1px solid #DBDADE;
+}
+.tb-col {
+    background-color: #ffffff;
+    .device_card {
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            margin-right: 16px;
+        }
+        .info {
+        }
+    }
+    .option{
+        // display: flex;
+        // align-items: center;
+        .edit, .delete {
+            margin-right: 16px;
+            cursor: pointer;
+        }
+    }
+}

@@ -12,7 +12,7 @@ import classNames from 'classnames/bind';
 import styles from './Search.module.scss';
 
 const cx = classNames.bind(styles);
-function Search() {
+function Search({className, placehoder}) {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [showResult, setShowResult] = useState(true);
@@ -22,6 +22,9 @@ function Search() {
 
     const debounceValue = useDebounce(searchValue, 500);
 
+    const classes = cx('wrapper', {
+        [className]: className,
+      });
     //** fake result for searching */
     const result = [
         {
@@ -72,7 +75,7 @@ function Search() {
     };
     return (
         //Using a wrapper <div> or <span> tag around the reference element solves this by creating a new parentNode context.
-        <div className={cx('wrapper')}>
+        <div className={classes}>
             <HeadlessTippy
                 interactive={true}
                 visible={showResult && searchResult.length > 0}
@@ -90,7 +93,7 @@ function Search() {
             >
                 <div className={cx('search')}>
                     <input
-                        placeholder="Search Bts"
+                        placeholder="Tìm kiếm"
                         spellCheck={false}
                         ref={inputRef}
                         value={searchValue}
