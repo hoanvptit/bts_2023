@@ -6,6 +6,7 @@
   --white: #fff;
   --text-color: #161823;
   --font-family: 'ProximaNova', sans-serif;
+  --background-primary:#F5F5F5;
   //Default layout
   --default-layout-header-height: 60px;
   --default-layout-width: 1150px;
@@ -17,13 +18,16 @@
   padding: 0;
 }
 html {
+  height: 100%;
   font-size: 62.5%;
 }
 body {
+  height: 100%;
   font-family: var(--font-family);
   font-size: 1.6rem;
   text-rendering: optimizeSpeed;
   overflow-y: overlay;
+  background-color: var(--background-primary);
 }
 button,
 input,

@@ -16,11 +16,23 @@
             display: flex;
             align-items: center;
             // flex-direction: column;
-            .calendar{
+            .calendar {
                 border: 1px solid #829aeb;
                 border-radius: 3px;
                 margin-left: 5px;
                 padding: 4px 8px;
+            }
+        }
+        .date-picker {
+            margin-left: 5px;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            color: #000;
+            //custom flatpick
+            .flatpickr-months {
+                .flatpickr-month {
+                    background: var(--primary);
+                }
             }
         }
         .btn {

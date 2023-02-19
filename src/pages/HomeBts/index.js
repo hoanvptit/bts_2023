@@ -4,6 +4,7 @@ import Button from '~/components/Button';
 import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCard';
 import Chart from '~/components/Chart';
 import Pagination from '~/components/pagination';
+import PopupExportData from '~/components/popup/popupExportData';
 import { Devices, Action } from '~/assets/data';
 import styles from './HomeBts.module.scss';
 
@@ -12,7 +13,10 @@ function HomeBts() {
     const devicesData = Devices;
     const [selectedDevice, setSelectedDevice] = useState(devicesData[0]);
     const [selectedDeviceType, setSelectedDeviceType] = useState('');
-
+    const [popUpAttr, setPopUpAttr] = useState({
+        show: false,
+        title: 'Xuất dữ liệu',
+    });
     const handleChangeSelectedDevice = (e) => {
         let value = e.target.value;
         let tmp = devicesData.filter((item) => {
@@ -27,6 +31,18 @@ function HomeBts() {
     };
     return (
         <>
+            {popUpAttr.show && (
+                <PopupExportData
+                    show={popUpAttr.show}
+                    title={popUpAttr.title}
+                    onChangeShow={() =>
+                        setPopUpAttr((prev) => ({
+                            ...prev,
+                            show: false,
+                        }))
+                    }
+                />
+            )}
             <div className={cx('wrapper')}>
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
@@ -55,9 +71,20 @@ function HomeBts() {
                             })}
                         </select>
                     </div>
-                    <div className={cx('btn-add-bts')}>
-                        <Button primary small onClick={() => {}}>
-                            Xuất dữ liệu tất cả các thiết bị
+                    <div className={cx('btn-export')}>
+                        <Button
+                            primary
+                            small
+                            onClick={() =>
+                                setPopUpAttr((prev) => {
+                                    return {
+                                        ...prev,
+                                        show: true,
+                                    };
+                                })
+                            }
+                        >
+                            Tải xuống dữ liệu của BTS
                         </Button>
                     </div>
                 </div>
@@ -91,11 +118,18 @@ function HomeBts() {
                         {selectedDevice.type !== 'sensor' ? (
                             <div className={cx('timeline')}>
                                 {Action.map((item, index) => {
+                                    let tmp = `${'bullet-'}${item.status}`;
                                     return (
                                         <div key={index} className={cx('timeline-item')}>
-                                            <div className={cx('text')}>
-                                                <h3 className={cx('status')}>{item.name}</h3>
-                                                <h3 className={cx('title-status')}>{item.des}</h3>
+                                            <div className={cx('status-item')}>
+                                                <div className={cx('status-dot')}>
+                                                    <span className={cx('bullet', tmp)}></span>
+                                                    {/* <span className={cx('strokes')}></span> */}
+                                                </div>
+                                                <div className={cx('text')}>
+                                                    <h3 className={cx('status')}>{item.name}</h3>
+                                                    <h3 className={cx('title-status')}>{item.des}</h3>
+                                                </div>
                                             </div>
                                             <div className={cx('date-time')}>
                                                 <p className={cx('date')}>{item.date}</p>

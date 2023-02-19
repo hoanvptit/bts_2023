@@ -5,8 +5,8 @@
     // align-items: center;
 }
 .search-filter-title {
-    margin-top: 16px;
-    margin-left: 16px;
+    margin-top: 1.6rem;
+    margin-left: 4rem;
     font-weight: 700;
 }
 .search-filter {
@@ -20,23 +20,25 @@
     flex: 2;
     display: flex;
     align-items: center;
+    margin-left: 2.4rem;
     .select-unit,
     .select-group {
         border-radius: 6px;
         border: 1.5px solid #ccc;
         height: 32px;
         width: 20%;
-        margin: 16px;
+        margin: 1.6rem;
         padding-left: 1rem;
         // text-align: center;
     }
 }
 
 .btn-add-bts {
+    margin-right: 3.2rem;
 }
 
 .main-content {
-    margin: 8px;
+    margin: 8px 0;
 }
 .page {
     position: absolute;

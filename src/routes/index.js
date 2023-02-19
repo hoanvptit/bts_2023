@@ -2,7 +2,7 @@ import config from '~/config';
 import HeaderOnly from '~/layouts/components/HeaderOnly';
 
 import Home from '~/pages/Home';
-import Login from '~/pages/Login';
+import Login from '~/pages/Login/login';
 import HomeBts from '~/pages/HomeBts';
 import DeviceControl from '~/pages/DeviceControl';
 import ManageAccount from '~/pages/ManagementPage/ManageAccount';

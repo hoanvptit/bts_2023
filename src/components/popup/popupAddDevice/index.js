@@ -9,7 +9,7 @@ import styles from './PopupAddDevice.module.scss';
 const cx = classNames.bind(styles);
 function PopupAddDevice(props) {
     const data = DeviceType;
-    // console.log('device add: ', props.deviceInfo);
+    console.log('device add: ', props.deviceInfo);
     const [device, setDevice] = useState(props.deviceInfo);
 
     const handleSubmit = () => {
