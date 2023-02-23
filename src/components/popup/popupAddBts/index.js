@@ -26,33 +26,27 @@ function PopupAddObject(props) {
     };
     const changeName = (e) => {
         let btsName = e.target.value;
-        let tmp = {...bts, name:btsName}
-        // setBts((prev) => ({
-        //     ...prev,
-        //     name: btsName,
-        // }));
-        setBts(tmp)
-        props.onChangeObject(tmp);
+        setBts((prev) => ({
+            ...prev,
+            name: btsName,
+        }));
+        props.onChangeObject(bts);
     };
     const changeMac = (e) => {
         let mac = e.target.value;
-        let tmp = {...bts, mac:mac}
-        // setBts((prev) => ({
-        //     ...prev,
-        //     mac: mac,
-        // }));
-        setBts(tmp)
-        props.onChangeObject(tmp);
+        setBts((prev) => ({
+            ...prev,
+            mac: mac,
+        }));
+        props.onChangeObject(bts);
     };
     const changeLocation = (e) => {
         let location = e.target.value;
-        let tmp = {...bts, location: location }
-        // setBts((prev) => ({
-        //     ...prev,
-        //     location: location,
-        // }));
-        setBts(tmp)
-        props.onChangeObject(tmp);
+        setBts((prev) => ({
+            ...prev,
+            location: location,
+        }));
+        props.onChangeObject(bts);
     };
     return (
         <>

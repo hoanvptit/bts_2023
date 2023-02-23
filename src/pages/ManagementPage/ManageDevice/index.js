@@ -14,9 +14,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function ManageDevice() {
-    const devices = Devices;
+    const devices = Devices
     const initAddDevice = {
-        avatar:images.bulb,
         type: 'bulb',
         typeName: 'Bóng đèn',
         name: '',
@@ -52,19 +51,18 @@ export default function ManageDevice() {
     };
     //** For handle add bts */
     const handleAddDevice = () => {
-
         // add to result list
         let newList = [...listDevice];
         newList.push(deviceInfo);
         setListDevice(newList);
     };
     const handleEditDevice = () => {
-        // console.log('edit  success');
-        // console.log('edit Object:', deviceInfo);
+        console.log('edit  success');
+        console.log('edit Object:', deviceInfo);
 
-        const newList = [...listDevice];
-        newList[deviceInfo.id - 1] = deviceInfo;
-        setListDevice(newList);
+        const newList = [...listDevice]
+        newList[deviceInfo.id-1] = deviceInfo
+        setListDevice(newList)
     };
     const handleDelDevice = () => {
         console.log('del  success');
@@ -75,21 +73,11 @@ export default function ManageDevice() {
     };
     //change object bts need to add/edit
     const changeObjectDevice = (device) => {
-        if (popUpAttr.type === 'add') {
-            setDeviceInfo((prev) => ({
-                ...prev,
-                ...device,
-                id: devices.length + 1,
-            }));
-        } else {
-            if (popUpAttr.type === 'edit') {
-                setDeviceInfo((prev) => ({
-                    ...prev,
-                    ...device,
-                    // id: devices.length + 1,
-                }));
-            }
-        }
+        setDeviceInfo((prev) => ({
+            ...prev,
+            ...device,
+            id: devices.length+1
+        }));
     };
 
     const onAction = () => {
@@ -135,9 +123,7 @@ export default function ManageDevice() {
                             <option value="25">25</option>
                         </select>
                         <div className={cx('sub-search')}>
-                            {/* <div className={cx('sub-search-wrapper')}> */}
-                                <Search className="subSearch" />
-                            {/* </div> */}
+                            {/* <Search className="subSearch" /> */}
                             <div className={cx('btn-add-bts')}>
                                 <Button
                                     primary
@@ -161,7 +147,7 @@ export default function ManageDevice() {
                             <Table
                                 data={listDevice}
                                 onClickEdit={(data) => {
-                                    // console.log('edit  success: ', data);
+                                    console.log('edit  success: ', data);
                                     setDeviceInfo(data);
                                     setPopUpAttr({ show: true, type: 'edit', title: 'Sửa thiết bị' });
                                 }}

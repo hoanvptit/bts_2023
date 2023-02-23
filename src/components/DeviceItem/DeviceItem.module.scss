@@ -7,15 +7,14 @@
     padding: 9px 16px;
     cursor: pointer;
     &:hover {
-        // background-color: rgba(200, 202, 209, 0.05);
-        box-shadow: 1.5px 1.5px 1.5px 1.5px rgb(199, 196, 196);
+        border: 1px solid #efefef;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
         .option {
             display: block;
             color: #333;
         }
     }
-    // border-bottom: 1px solid #ccc;
-    background-color: var(--white);
+    background-color: white;
 }
 .avatar {
     width: 100px;
@@ -25,8 +24,24 @@
     border-radius: 50%;
 }
 .info {
-    flex: 1;
-    margin-left: 12px;
+    // flex: 1;
+    // margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 4px;
+    
+    width: 103px;
+    height: 56px;
+    
+    
+    /* Inside auto layout */
+    
+    flex: none;
+    order: 1;
+    flex-grow: 0;
 }
 .name {
     font-size: 1.6rem;
@@ -39,8 +54,8 @@
 }
 // in BTS Line
 .border {
-    // border: 1px solid #ccc;
-    border-radius: 6px;
+    box-shadow: (10px 10px 20px rgba(0, 0, 0, 0.05));
+    border-radius: 8px;
     margin-top: 16px;
 
     .name {

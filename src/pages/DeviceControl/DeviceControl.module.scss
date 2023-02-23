@@ -14,7 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+    box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
 }
 .select-area {
     flex: 2;
@@ -22,10 +22,10 @@
     align-items: center;
     .select-unit,
     .select-group {
-        border-radius: 3px;
+        border-radius: 6px;
         border: 1.5px solid #ccc;
-        height: 32px;
-        width: 20%;
+        height: 40px;
+        width: 25%;
         margin: 16px 0;
         padding-left: 1rem;
         // text-align: center;

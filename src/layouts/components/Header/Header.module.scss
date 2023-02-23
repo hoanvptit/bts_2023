@@ -14,7 +14,6 @@
     // background-color: var(--white);
     display: flex;
     justify-content: center;
-
   }
   .inner {
     height: 100%;
@@ -24,6 +23,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 var(--default-layout-horizontal-spacer);
+    margin: 5px;
   }
   .logo {
   }

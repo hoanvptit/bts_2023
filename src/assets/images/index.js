@@ -8,7 +8,6 @@ const images = {
     sensorFire:require('~/assets/images/sensor_fire.png'),
     sensorTemp:require('~/assets/images/sensor_temp.png'),
     sensorWater:require('~/assets/images/sensor_water.png'),
-    battery:require('~/assets/images/battery.png')
 
 
 

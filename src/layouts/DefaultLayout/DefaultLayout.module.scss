@@ -1,25 +1,23 @@
 .wrapper {
     width: 100%;
-    height: 100%;
     display: flex;
     justify-content: space-between;
 }
 .sidebar {
     // flex: 1;
-    background-color: var(--white);
 }
 .container {
     flex: 1;
+    min-height: 100%;
+    background-color: #F8F7FA;
+    height:100vh; 
+    display: table;
     .header {
-        background-color: var(--white);
-        margin: 0 var(--default-layout-horizontal-spacer);
-        margin-top: 1.6rem;
         .no_position {
             position: relative;
         }
     }
     .content {
-        // background-color: var(--white);
-        margin: 16px var(--default-layout-horizontal-spacer);
+        margin:0 var(--default-layout-horizontal-spacer);
     }
 }

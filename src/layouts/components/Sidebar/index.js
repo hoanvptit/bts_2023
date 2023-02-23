@@ -16,6 +16,7 @@ function Sidebar() {
                 </Link>
                 <span className={cx('btsname')}>{btsName}</span>
             </div>
+            <div className={cx('menu-group')}>
             <Menu>
                 <MenuItem
                     title="Trang chủ"
@@ -24,6 +25,7 @@ function Sidebar() {
                     // activeIcon={<HomeActiveIcon />}
                 />
             </Menu>
+            <div>
             <span className={cx('topic')}>ĐIỀU KHIỂN</span>
             <Menu>
                 <MenuItem
@@ -33,6 +35,8 @@ function Sidebar() {
                     // activeIcon={<HomeActiveIcon />}
                 />
             </Menu>
+            </div>
+            <div>
             <span className={cx('topic')}>QUẢN LÝ</span>
             <Menu>
                 <MenuItem
@@ -55,6 +59,8 @@ function Sidebar() {
                     // activeIcon={<HomeActiveIcon />}
                 />
             </Menu>
+            </div>
+            <div>
             <span className={cx('topic')}>MISC</span>
             <Menu>
                 <MenuItem
@@ -73,6 +79,8 @@ function Sidebar() {
                     // activeIcon={<HomeActiveIcon />}
                 />
             </Menu>
+            </div>
+            </div>
         </aside>
     );
 }

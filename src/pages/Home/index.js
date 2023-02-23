@@ -299,7 +299,6 @@ export default function Home() {
     };
     //change object bts need to add/edit
     const changeObjectAddBts = (bts) => {
-        // console.log("bts: ", bts)
         setBtsObject((prev) => ({
             ...prev,
             ...bts,
@@ -359,7 +358,7 @@ export default function Home() {
             )}
 
             <div className={cx('wrapper')}>
-                <h3 className={cx('search-filter-title')}>Bộ lọc tìm kiếm</h3>
+                <h3 className={cx('search-filter-title')}>Search Filter</h3>
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
                         <select className={cx('select-unit')} value={btsUnit} onChange={handleChangeUnit}>

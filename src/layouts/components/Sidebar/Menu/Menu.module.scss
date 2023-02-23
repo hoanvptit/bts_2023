@@ -6,6 +6,7 @@
   padding: 8px 8px 8px 16px ;
   border-radius: 4px;
   transition: background-color ease-in-out 200ms;
+  margin: 0 0 10px 0;
   &.active {
     color: #f5f3f3;
     background-color: var(--primary);
@@ -33,7 +34,7 @@
   color: #272626;
   font-weight: 500;
   font-size: 1.8rem;
-  padding-left: 8px;
+  padding-left: 12px;
 }
 .icon,
 .icon_regular {

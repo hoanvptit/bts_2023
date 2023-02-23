@@ -19,7 +19,7 @@ export default function Table(props) {
     const DevicesLine = (index, device) => {
         let tmp = index % 2;
         return (
-            <tr key={index} className={cx('tb-col')}>
+            <tr className={cx('tb-col')}>
                 <td className={cx('text-left')} style={{ width: '3%' }}>
                     <div className={cx('device_card')}>
                         <Image className={cx('avatar')} src={device.avatar} alt="avatar" />
@@ -56,8 +56,8 @@ export default function Table(props) {
             <table>
                 <thead>
                     <tr>
-                        {tableTitle.map((title, index) => (
-                            <th key={index}>{title}</th>
+                        {tableTitle.map((title) => (
+                            <th>{title}</th>
                         ))}
                     </tr>
                 </thead>
