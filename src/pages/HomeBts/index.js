@@ -1,5 +1,7 @@
 import classNames from 'classnames/bind';
 import { useState, useMemo } from 'react';
+import Sidebar from '~/layouts/components/Sidebar';
+import Header from '~/layouts/components/Header';
 import Button from '~/components/Button';
 import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCard';
 import Chart from '~/components/Chart';
@@ -8,13 +10,20 @@ import PopupExportData from '~/components/popup/popupExportData';
 import { Devices, Action,DataCellVolt, DataPackInfo, DataTemperature } from '~/assets/data';
 import styles from './HomeBts.module.scss';
 import PinInfo from '~/components/PinInfo';
+import { useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 function HomeBts() {
+    const btsId = useParams().btsId;
+    console.log("home bts id = ", btsId)
+    //**get bts from server with btsId */
     const devicesData = Devices;
     const [selectedDevice, setSelectedDevice] = useState(devicesData[0]);
     const [selectedDeviceType, setSelectedDeviceType] = useState('');
-
+    const [popUpAttr, setPopUpAttr] = useState({
+        show: false,
+        title: 'Xuất dữ liệu',
+    });
     const handleChangeSelectedDevice = (e) => {
         let value = e.target.value;
         let tmp = devicesData.filter((item) => {
@@ -27,9 +36,21 @@ function HomeBts() {
         let value = e.target.value;
         setSelectedDeviceType(value);
     };
-    return (
+    const body =  (
         <>
-            <div className={cx('wrapper')}>
+            {popUpAttr.show && (
+                <PopupExportData
+                    show={popUpAttr.show}
+                    title={popUpAttr.title}
+                    onChangeShow={() =>
+                        setPopUpAttr((prev) => ({
+                            ...prev,
+                            show: false,
+                        }))
+                    }
+                />
+            )}
+            <div className={cx('body-wrapper')}>
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
                         <select
@@ -57,9 +78,20 @@ function HomeBts() {
                             })}
                         </select>
                     </div>
-                    <div className={cx('btn-add-bts')}>
-                        <Button primary small onClick={() => {}}>
-                            Xuất dữ liệu tất cả các thiết bị
+                    <div className={cx('btn-export')}>
+                        <Button
+                            primary
+                            small
+                            onClick={() =>
+                                setPopUpAttr((prev) => {
+                                    return {
+                                        ...prev,
+                                        show: true,
+                                    };
+                                })
+                            }
+                        >
+                            Tải xuống dữ liệu của BTS
                         </Button>
                     </div>
                 </div>
@@ -68,15 +100,15 @@ function HomeBts() {
                         <div className={cx('device-info')}>
                             <DeviceInfoCard data={selectedDevice} optionType={false} />
                             <div className={cx('properties')}>
-                                <div className={cx('group')}>
+                                <div>
                                     <h3 className={cx('title-status')}>Loại thiết bị</h3>
                                     <h3 className={cx('status')}>{selectedDevice.typeName}</h3>
                                 </div>
-                                <div className={cx('group')}>
+                                <div>
                                     <h3 className={cx('title-status')}>Trạng thái</h3>
                                     <h3 className={cx('status')}>{selectedDevice.status}</h3>
                                 </div>
-                                <div className={cx('group')}>
+                                <div>
                                     <h3 className={cx('title-status')}>Dữ liệu cảm biến</h3>
                                     <h3 className={cx('status')}>{selectedDevice.status}</h3>
                                 </div>
@@ -146,6 +178,20 @@ function HomeBts() {
                 </div>
             </div>
         </>
+    );
+
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx('sidebar')}>
+                <Sidebar btsId={btsId}/>
+            </div>
+            <div className={cx('container')}>
+                <div className={cx('header')}>
+                    <Header className={cx('no_position')} btsId={btsId} />
+                </div>
+                <div className={cx('content')}>{body}</div>
+            </div>
+        </div>
     );
 }
 

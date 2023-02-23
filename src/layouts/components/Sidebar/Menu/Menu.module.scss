@@ -1,5 +1,6 @@
 .menu-item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   font-size: 1.8rem;
   font-weight: 700;
@@ -30,18 +31,28 @@
     background-color: #d3d2d2;
   }
 }
-.menu-title {
-  color: #272626;
-  font-weight: 500;
-  font-size: 1.8rem;
-  padding-left: 12px;
-}
-.icon,
-.icon_regular {
-  width: 1.8rem;
-  height: 1.8rem;
+.common-component{
   display: flex;
+  .menu-title {
+    color: #272626;
+    font-weight: 500;
+    font-size: 1.8rem;
+    padding-left: 12px;
+  }
+  .icon,
+  .icon_regular {
+    width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+  }
+  .icon_active {
+    display: none;
+  }
 }
-.icon_active {
-  display: none;
+.informData{
+  padding: 0 1.6rem;
+  color: #EA5455;
+  background: #FCE5E6;
+border-radius: 10px;
 }
+

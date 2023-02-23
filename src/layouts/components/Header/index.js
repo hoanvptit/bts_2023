@@ -14,48 +14,20 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 import classNames from 'classnames/bind';
-import styles from './Header.module.scss';
 import { Link } from 'react-router-dom';
 
 import config from '~/config';
 
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
-import { NotifyIcon } from '~/components/icons';
 import Image from '~/components/images';
 import Search from '../Search';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { handleLogout } from '~/services/loginService';
+import styles from './Header.module.scss';
 
 const cx = classNames.bind(styles);
 
-const MENU_ITEMS = [
-    {
-        icon: <FontAwesomeIcon icon={faEarthAsia} />,
-        title: 'English',
-        children: {
-            title: 'Language',
-            data: [
-                {
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-            ],
-        },
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-        title: 'Feedback and help',
-        to: '/feedback',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faKeyboard} />,
-        title: 'Keyboard shortcuts',
-    },
-];
 const userMenu = [
     {
         icon: <FontAwesomeIcon icon={faCoins} />,
@@ -81,16 +53,21 @@ const userMenu = [
     {
         icon: <FontAwesomeIcon icon={faSignOut} />,
         title: 'Đăng xuất',
-        to: '/logout',
+        to: '/login',
         separate: true,
+        onClick: function(){
+            handleLogout()
+        }
     },
 ];
 //handle logic
 const handleMenuChange = (item) => {
-    console.log(item);
+    // console.log(item);
+    item.onClick && item.onClick()
 };
 function Header({ className }) {
     const currentUser = true;
+    const informData = 5;
     const classes = cx({ [className]: className }, 'wrapper');
     return (
         <header className={classes}>
@@ -100,9 +77,12 @@ function Header({ className }) {
                 <div className={cx('action')}>
                     {currentUser ? (
                         <>
-                            <Tippy delay={[0, 200]} content="Upload video" placement="bottom">
+                            <Tippy delay={[0, 200]} content="Thông báo" placement="bottom">
                                 <button className={cx('action-btn')}>
                                     <FontAwesomeIcon icon={faBell} />
+                                    {informData && informData > 0 && (
+                                        <span className={cx('informData')}>{informData}</span>
+                                    )}
                                 </button>
                             </Tippy>
                         </>
@@ -113,7 +93,7 @@ function Header({ className }) {
                         </>
                     )}
 
-                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                    <Menu items={userMenu} onChange={handleMenuChange}>
                         {currentUser ? (
                             <Image
                                 src="https://files.fullstack.edu.vn/f8-tiktok/users/4761/63be78365ed1d.jpg"

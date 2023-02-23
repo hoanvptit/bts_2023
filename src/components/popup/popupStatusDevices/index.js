@@ -1,12 +1,14 @@
 import { Modal, Button } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import { useState, useEffect, useRef } from 'react';
+import { updateDevice } from '~/services/deviceService';
 import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCard';
 import styles from './PopupDevices.module.scss';
 
 const cx = classNames.bind(styles);
 function PopupDevices(props) {
-    const deviceStatus = props.deviceInfo.status;
+    const device = props.deviceInfo;
+    const deviceStatus = device.status;
     const btnRef = useRef();
     const [status, setStatus] = useState(deviceStatus === 'on' ? true : false);
 
@@ -20,6 +22,12 @@ function PopupDevices(props) {
         props.onChangeStatus(newStatus);
         props.action(newStatus);
         props.onChangeShow();
+
+        // change status of device => send request update device
+        // updateDevice(device.id, {
+        //     ...device,
+        //     status: newStatus
+        // })
     };
 
     const handleClose = () => {

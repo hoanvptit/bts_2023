@@ -16,7 +16,7 @@ function PopupAddObject(props) {
                 // id:0,
                 name: '',
                 mac: '',
-                location: '',
+                place: '',
             });
         }
     };
@@ -44,12 +44,12 @@ function PopupAddObject(props) {
         setBts(tmp)
         props.onChangeObject(tmp);
     };
-    const changeLocation = (e) => {
-        let location = e.target.value;
-        let tmp = {...bts, location: location }
+    const changePlace = (e) => {
+        let place = e.target.value;
+        let tmp = {...bts, place: place }
         // setBts((prev) => ({
         //     ...prev,
-        //     location: location,
+        //     place: place,
         // }));
         setBts(tmp)
         props.onChangeObject(tmp);
@@ -118,8 +118,8 @@ function PopupAddObject(props) {
                                     placeholder="Nhập địa chỉ"
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
-                                    value={bts.location}
-                                    onChange={(e) => changeLocation(e)}
+                                    value={bts.place}
+                                    onChange={(e) => changePlace(e)}
                                     disabled={props.type === 'del'}
                                 />
                             </InputGroup>

@@ -1,22 +1,25 @@
-import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { useState, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import Sidebar from '~/layouts/components/Sidebar';
+import Header from '~/layouts/components/Header';
 import Button from '~/components/Button';
 import Table from '~/components/Table';
-import Search from '~/layouts/components/Search';
 import PopupAddDevice from '~/components/popup/popupAddDevice';
 import images from '~/assets/images';
+import { addDevice, getDevice, getDeviceList, delDevice, updateDevice } from '~/services/deviceService';
 import { Devices } from '~/assets/data';
-import styles from './ManageDevice.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import styles from './ManageDevice.module.scss';
 
 const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function ManageDevice() {
-    const devices = Devices
+    const btsId = useParams().btsId;
+    const devices = Devices;
     const initAddDevice = {
-        avatar:images.bulb,
+        avatar: images.bulb,
         type: 'bulb',
         typeName: 'Bóng đèn',
         name: '',
@@ -32,6 +35,11 @@ export default function ManageDevice() {
     // info of device need to add/edit/delete
     const [deviceInfo, setDeviceInfo] = useState(initAddDevice);
     const [deviceType, setDeviceType] = useState('');
+
+    // useEffect(()=>{
+    //     //get devices of bts
+    //     getDeviceList()
+    // })
     //** End table infos */
     const handleChangeUnit = (e) => {
         let value = e.target.value;
@@ -52,19 +60,34 @@ export default function ManageDevice() {
     };
     //** For handle add bts */
     const handleAddDevice = () => {
-
         // add to result list
         let newList = [...listDevice];
         newList.push(deviceInfo);
         setListDevice(newList);
+
+        //add device and send to server
+        // addDevice({
+        //     name: deviceInfo.name,
+        //     type: deviceInfo.type,
+        //     position: deviceInfo.location,
+        //     btsID: btsId,
+        //     description: deviceInfo.des,
+        // });
     };
     const handleEditDevice = () => {
         // console.log('edit  success');
         // console.log('edit Object:', deviceInfo);
 
-        const newList = [...listDevice]
-        newList[deviceInfo.id-1] = deviceInfo
-        setListDevice(newList)
+        const newList = [...listDevice];
+        newList[deviceInfo.id - 1] = deviceInfo;
+        setListDevice(newList);
+
+        //update name of device
+        // updateDevice(deviceInfo.id, {
+        //     name: deviceInfo.name,
+        //     value: 0,
+        //     description: deviceInfo.des,
+        // });
     };
     const handleDelDevice = () => {
         console.log('del  success');
@@ -72,14 +95,27 @@ export default function ManageDevice() {
         // newList.splice(deviceInfo.id, 1);
         // console.log(newList);
         // setListDevice(newList);
+
+        //send request delete device 
+        // delDevice(deviceInfo.id)
     };
     //change object bts need to add/edit
     const changeObjectDevice = (device) => {
-        setDeviceInfo((prev) => ({
-            ...prev,
-            ...device,
-            id: devices.length+1
-        }));
+        if (popUpAttr.type === 'add') {
+            setDeviceInfo((prev) => ({
+                ...prev,
+                ...device,
+                id: devices.length + 1,
+            }));
+        } else {
+            if (popUpAttr.type === 'edit') {
+                setDeviceInfo((prev) => ({
+                    ...prev,
+                    ...device,
+                    // id: devices.length + 1,
+                }));
+            }
+        }
     };
 
     const onAction = () => {
@@ -87,7 +123,7 @@ export default function ManageDevice() {
         if (popUpAttr.type === 'edit') return handleEditDevice();
         if (popUpAttr.type === 'del') return handleDelDevice();
     };
-    return (
+    const body = (
         <>
             {popUpAttr.show && (
                 <PopupAddDevice
@@ -106,7 +142,7 @@ export default function ManageDevice() {
                 />
             )}
 
-            <div className={cx('wrapper')}>
+            <div className={cx('body-wrapper')}>
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
                         <h3 className={cx('search-filter-title')}>Bộ lọc tìm kiếm</h3>
@@ -125,7 +161,9 @@ export default function ManageDevice() {
                             <option value="25">25</option>
                         </select>
                         <div className={cx('sub-search')}>
+                            {/* <div className={cx('sub-search-wrapper')}> */}
                             {/* <Search className="subSearch" /> */}
+                            {/* </div> */}
                             <div className={cx('btn-add-bts')}>
                                 <Button
                                     primary
@@ -160,5 +198,18 @@ export default function ManageDevice() {
                 </div>
             </div>
         </>
+    );
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx('sidebar')}>
+                <Sidebar btsId={btsId} />
+            </div>
+            <div className={cx('container')}>
+                <div className={cx('header')}>
+                    <Header className={cx('no_position')} btsId={btsId} />
+                </div>
+                <div className={cx('content')}>{body}</div>
+            </div>
+        </div>
     );
 }

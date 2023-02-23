@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { publicRoutes, privateRoutes } from './routes';
 
 import DefaultLayout from './layouts/DefaultLayout';
-import HeaderOnly  from '~/layouts/components/HeaderOnly';
+import HeaderOnly from '~/layouts/components/HeaderOnly';
 
 import { isUserLoggedIn } from '~/util/auth';
 import { Fragment } from 'react';
@@ -12,7 +12,7 @@ function App() {
     console.log('isUserLoggedIn: ', isLoggedIn);
     return (
         <Router>
-            <div className="App">
+            <div className="App" style={{ height: '100%' }}>
                 {/* Public routes */}
                 <Routes>
                     {publicRoutes.map((route, index) => {
@@ -51,9 +51,9 @@ function App() {
                                 path={route.path}
                                 element={
                                     <ProtectedRoute>
-                                        <Layout>
-                                            <Page />
-                                        </Layout>
+                                        {/* <Layout> */}
+                                        <Page />
+                                        {/* </Layout> */}
                                     </ProtectedRoute>
                                 }
                             />

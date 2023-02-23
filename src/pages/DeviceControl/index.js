@@ -1,13 +1,18 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
+import Sidebar from '~/layouts/components/Sidebar';
+import Header from '~/layouts/components/Header';
 import DeviceItem from '~/components/DeviceItem';
 import images from '~/assets/images';
 import styles from './DeviceControl.module.scss';
 
 import PopupDevices from '~/components/popup/popupStatusDevices';
+import { useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 export default function DeviceControl() {
+    const btsId = useParams().btsId
+    console.log("device control btsid = ",btsId)
     const devices = [
         {
             id: 1,
@@ -143,7 +148,7 @@ export default function DeviceControl() {
         );
     };
     //** End Bts Line */
-    return (
+    const body =  (
         <>
             {popUpAttr.show && (
                 <PopupDevices
@@ -160,7 +165,7 @@ export default function DeviceControl() {
                 />
             )}
 
-            <div className={cx('wrapper')}>
+            <div className={cx('body-wrapper')}>
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
                         <select className={cx('select-unit')} value={deviceType} onChange={handleChangeUnit}>
@@ -178,5 +183,18 @@ export default function DeviceControl() {
                 </div>
             </div>
         </>
+    );
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx('sidebar')}>
+                <Sidebar btsId={btsId}/>
+            </div>
+            <div className={cx('container')}>
+                <div className={cx('header')}>
+                    <Header className={cx('no_position')} btsId={btsId} />
+                </div>
+                <div className={cx('content')}>{body}</div>
+            </div>
+        </div>
     );
 }

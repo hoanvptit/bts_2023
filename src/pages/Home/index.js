@@ -1,11 +1,16 @@
 import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useReducer } from 'react';
 import classNames from 'classnames/bind';
-import { useState, useMemo } from 'react';
+import Header from '~/layouts/components/Header';
 import Button from '~/components/Button';
 import BtsItem from '~/components/BtsItem';
 import Pagination from '~/components/pagination';
 import PopupAddObject from '~/components/popup/popupAddBts';
-
+import { listBts as BtsData } from '~/assets/data';
+import { addBts, delBts, getBtsList, getBts, updateBts } from '~/services/btsService';
+//USE REDUCER
+import { initBts, btsReducer } from '~/reducer/reducer';
+import { addBtsAction } from '~/reducer/action';
 import styles from './Home.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,234 +19,11 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function Home() {
-    const result = [
-        {
-            id: 1,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 2,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 3,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 4,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-        {
-            id: 5,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 6,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 7,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 8,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-        {
-            id: 9,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 10,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 11,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 12,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-        {
-            id: 13,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 14,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 15,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Dong',
-            mac: 123,
-            location: 'Ha Dong - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Tay',
-            mac: 123,
-            location: 'Ha Tay - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Nam',
-            mac: 123,
-            location: 'Ha Nam - Ha Noi',
-        },
-        {
-            id: 16,
-            avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-            name: ' BTS Ha Bac',
-            mac: 123,
-            location: 'Ha Bac - Ha Noi',
-        },
-    ];
+    const result = BtsData
+
+    const [state, dispatch] = useReducer(btsReducer, initBts(result))
     const [listBts, setListBts] = useState(result);
-    const initBtsObject = { name: '', mac: '', location: '', avatar: '' };
+    const initBtsObject = {id:'', name: '', mac: '', place: '', avatar: '' };
     const [popUpAttr, setPopUpAttr] = useState({
         show: false,
         type: 'add',
@@ -271,26 +53,36 @@ export default function Home() {
     };
     //** For handle add bts */
     const handleAddBts = () => {
-        console.log('add success');
-        console.log('addObject:', btsObject);
         // add to result list
         let newList = [...listBts];
         newList.push(btsObject);
-        console.log('new list: ', newList);
         setListBts(newList);
+        //** */
+        // addBts({
+        //     name: btsObject.name,
+        //     mac: btsObject.mac,
+        //     place: btsObject.place,
+        //     description: 'btsObject.des',
+        // });
     };
     const handleEditBts = () => {
-        console.log('edit  success');
         console.log('edit Object:', btsObject);
+        // updateBts({
+        //     name: btsObject.name,
+        //     mac: btsObject.mac,
+        //     place: btsObject.place,
+        //     description: 'btsObject.des',
+        // });
     };
     const handleDelBts = () => {
-        console.log('del  success');
         console.log('del Object:', btsObject);
         //del from list
         let newList = [...listBts];
         newList.splice(btsObject.id, 1);
         console.log(newList);
-        setListBts(newList)
+        setListBts(newList);
+
+        // delBts(btsObject.id)
     };
     const onAction = () => {
         if (popUpAttr.type === 'add') return handleAddBts();
@@ -312,6 +104,7 @@ export default function Home() {
         return (
             <div className={cx('row bts_line')}>
                 {currentTableData.map((item, index) => {
+                    
                     return (
                         <div key={index} className={cx('col l-3 m-6 c-12')}>
                             <BtsItem
@@ -339,7 +132,7 @@ export default function Home() {
         );
     };
     //** End Bts Line */
-    return (
+    const body =  (
         <>
             {popUpAttr.show && (
                 <PopupAddObject
@@ -358,8 +151,8 @@ export default function Home() {
                 />
             )}
 
-            <div className={cx('wrapper')}>
-                <h3 className={cx('search-filter-title')}>Search Filter</h3>
+            <div className={cx('body-wrapper')}>
+                <h3 className={cx('search-filter-title')}>Bộ lọc tìm kiếm</h3>
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
                         <select className={cx('select-unit')} value={btsUnit} onChange={handleChangeUnit}>
@@ -414,4 +207,13 @@ export default function Home() {
             </div>
         </>
     );
+
+    return (
+        <div className={cx('wrapper')}>
+          <Header />
+          <div className={cx("container")}>
+            <div className={cx("content")}>{body}</div>
+          </div>
+        </div>
+      );
 }

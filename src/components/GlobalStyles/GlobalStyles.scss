@@ -17,9 +17,11 @@
   padding: 0;
 }
 html {
+  height: 100%;
   font-size: 62.5%;
 }
 body {
+  height: 100%;
   font-family: var(--font-family);
   font-size: 1.6rem;
   text-rendering: optimizeSpeed;

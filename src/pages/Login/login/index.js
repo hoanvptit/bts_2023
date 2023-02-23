@@ -1,7 +1,8 @@
 // ** Custom component
-import { Link, useNavigate, redirect } from 'react-router-dom';
-import { useState } from 'react';
+import classNames from 'classnames/bind';
 import axios from 'axios';
+import { Link, useNavigate, redirect } from 'react-router-dom';
+import { useReducer, useState } from 'react';
 // import auth from '../utility/auth';
 // import storage from '../utility/storage';
 // import { Redirect } from 'react-router';
@@ -17,7 +18,11 @@ import { Form, Input, Label, FormFeedback } from 'reactstrap';
 //** Login Service */
 import { isUserLoggedIn } from '~/util/auth';
 import { login, handleLogin } from '~/services/loginService';
-import classNames from 'classnames/bind';
+
+//** Action constant */
+import { logIn } from '~/reducer/action';
+import { initUser, reducer } from '~/reducer/reducer';
+import logger from '~/reducer/logger';
 import styles from './login.module.scss';
 
 import { useForm, Controller } from 'react-hook-form';
@@ -25,8 +30,8 @@ const cx = classNames.bind(styles);
 
 export default function Login2(props) {
     const navigate = useNavigate();
+    // const [user, dispatch] = useReducer(logger(reducer), initUser());
 
-   
     const defaultValues = {
         password: 'admin',
         loginEmail: 'admin@demo.com',
@@ -45,7 +50,7 @@ export default function Login2(props) {
     const [isSend, setIsSend] = useState(false);
     const [popup_title, setPopupTitle] = useState('Nhập email của bạn');
     const [processing, setProcessing] = useState(false);
-    
+
     const onSubmit = (data) => {
         if (Object.values(data).every((field) => field.length > 0)) {
             /*
@@ -56,7 +61,9 @@ export default function Login2(props) {
 
             })
 */
-            console.log(data)
+            //dispatch action login
+            // dispatch(logIn(data));
+
             handleLogin(data);
             navigate('/');
         } else {

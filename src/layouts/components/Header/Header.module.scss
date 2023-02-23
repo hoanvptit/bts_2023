@@ -3,7 +3,7 @@
     --search-height: 46px;
     --search-top-spacer: 9px;
     --search-btn-width: 52px;
-  
+
     position: fixed;
     z-index: 10;
     top: 0;
@@ -14,8 +14,8 @@
     // background-color: var(--white);
     display: flex;
     justify-content: center;
-  }
-  .inner {
+}
+.inner {
     height: 100%;
     // width: var(--default-layout-width);
     width: 100%;
@@ -24,43 +24,62 @@
     justify-content: space-between;
     padding: 0 var(--default-layout-horizontal-spacer);
     margin: 5px;
-  }
-  .logo {
-  }
-  
-  .actions {
+}
+.logo {
+}
+
+.actions {
     display: flex;
     align-items: center;
-  }
-  .more-btn {
+}
+.more-btn {
     font-size: 2rem;
     margin-left: 28px;
     padding: 4px 8px;
     background-color: transparent;
     cursor: pointer;
-  }
-  
-  .action-btn {
+}
+
+.action-btn {
+    position: relative;
     font-size: 2.2rem;
     color: var(--text-color);
     background-color: transparent;
     padding: 4px 12px;
     cursor: pointer;
-  }
-  .user-avatar {
+
+    .informData {
+        position: absolute;
+        right: -3px;
+        top: -5px;
+        min-width: 2.4rem;
+        min-height: 2.4rem;
+        padding-top: 2px;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.786rem;
+        line-height: 0.786;
+        color: var(--white);
+        background-color: red;
+        border-radius: 50rem;
+    }
+}
+.user-avatar {
     width: 32px;
     height: 32px;
     object-fit: conver;
     border-radius: 50%;
     margin-left: 12px;
     cursor: pointer;
-  }
-  
-  .uploadIcon {
+}
+
+.uploadIcon {
     display: flex;
-  }
-  
-  .logo-link {
+}
+
+.logo-link {
     display: flex;
-  }
-  
+}

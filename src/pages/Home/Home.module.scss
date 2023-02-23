@@ -1,4 +1,24 @@
 .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // background-color: rgba(22, 24, 35, 0.06);
+    min-height: 100%;
+    background-color: #F8F7FA;
+    height:100vh; 
+  }
+  .container {
+    margin-top: var(--default-layout-header-height);
+    width: 100%;
+    padding: 0 var(--default-layout-horizontal-spacer);
+    display: flex;
+  }
+  .content {
+    flex: 1;
+  }
+  
+
+.body-wrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -33,6 +53,7 @@
 }
 
 .btn-add-bts {
+    padding: 0 1.2rem;
 }
 
 .main-content {
