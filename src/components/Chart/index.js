@@ -1,27 +1,22 @@
 import classNames from 'classnames/bind';
 import Button from '../Button';
-<<<<<<< HEAD
-=======
 import { useState } from 'react';
 import { DataBattery, DataSensor } from '~/assets/data';
->>>>>>> 6a8a41e (add some ui and fix some bug)
 // ** Third Party Components
 import { Line } from 'react-chartjs-2';
+import Flatpickr from 'react-flatpickr';
 import 'chart.js/auto';
 import style from './Chart.module.scss';
 
 const cx = classNames.bind(style);
 const ChartjsAreaChart = (props) => {
     const device = props.device;
-<<<<<<< HEAD
-=======
     const [date, setDate] = useState(new Date());
     const [selectedIndex, setSelectedIndex] = useState('');
     const handleChangeSelectedIndex = (e) => {
         let value = e.target.value;
         setSelectedIndex(value);
     };
->>>>>>> 6a8a41e (add some ui and fix some bug)
     // ** Chart Options
     const options = {
         responsive: true,
@@ -115,10 +110,6 @@ const ChartjsAreaChart = (props) => {
                 )}
                 <div className={cx('util')}>
                     <div className={cx('calendar-area')}>
-<<<<<<< HEAD
-                        <label for="birthday">Chọn ngày</label>
-                        <input className={cx('calendar')} type="date" id="birthday" name="birthday" />
-=======
                         <label forHtml="">Chọn ngày</label>
                         {/* <input className={cx('calendar')} type="date" id="birthday" name="birthday" /> */}
                         <Flatpickr
@@ -128,7 +119,6 @@ const ChartjsAreaChart = (props) => {
                                 console.log(e[0].toDateString());
                             }}
                         />
->>>>>>> 6a8a41e (add some ui and fix some bug)
                     </div>
                     <div className={cx('btn')}>
                         <Button primary small onClick={() => {}}>

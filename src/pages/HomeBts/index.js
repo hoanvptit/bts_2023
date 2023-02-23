@@ -4,12 +4,8 @@ import Button from '~/components/Button';
 import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCard';
 import Chart from '~/components/Chart';
 import Pagination from '~/components/pagination';
-<<<<<<< HEAD
-import { Devices, Action } from '~/assets/data';
-=======
 import PopupExportData from '~/components/popup/popupExportData';
 import { Devices, Action,DataCellVolt, DataPackInfo, DataTemperature } from '~/assets/data';
->>>>>>> 6a8a41e (add some ui and fix some bug)
 import styles from './HomeBts.module.scss';
 import PinInfo from '~/components/PinInfo';
 
@@ -84,13 +80,6 @@ function HomeBts() {
                                     <h3 className={cx('title-status')}>Dữ liệu cảm biến</h3>
                                     <h3 className={cx('status')}>{selectedDevice.status}</h3>
                                 </div>
-<<<<<<< HEAD
-                                <div className={cx('group')}>
-                                    <h3 className={cx('title-status')}>Lỗi thiết bị</h3>
-                                    <h3 className={cx('status')}>Không</h3>
-                                </div>
-                                <div className={cx('group')}>
-=======
                                 {selectedDevice.type !== 'battery' && (
                                     <div>
                                         <h3 className={cx('title-status')}>Lỗi thiết bị</h3>
@@ -98,7 +87,6 @@ function HomeBts() {
                                     </div>
                                 )}
                                 <div>
->>>>>>> 6a8a41e (add some ui and fix some bug)
                                     <h3 className={cx('title-status')}>Cập nhật lần cuối</h3>
                                     <h3 className={cx('status')}>15/02/2023 21:22</h3>
                                 </div>
@@ -130,13 +118,20 @@ function HomeBts() {
                         {selectedDevice.type !== 'sensor' && selectedDevice.type !== 'battery' ? (
                             <div className={cx('timeline')}>
                                 {Action.map((item, index) => {
+                                    let tmp = `${'bullet-'}${item.status}`;
                                     return (
                                         <div key={index} className={cx('timeline-item')}>
-                                            <div className={cx('group')}>
-                                                <h3 className={cx('status')}>{item.name}</h3>
-                                                <h3 className={cx('title-status')}>{item.des}</h3>
+                                            <div className={cx('status-item')}>
+                                                <div className={cx('status-dot')}>
+                                                    <span className={cx('bullet', tmp)}></span>
+                                                    {/* <span className={cx('strokes')}></span> */}
+                                                </div>
+                                                <div className={cx('text')}>
+                                                    <h3 className={cx('status')}>{item.name}</h3>
+                                                    <h3 className={cx('title-status')}>{item.des}</h3>
+                                                </div>
                                             </div>
-                                            <div className={cx('group')}>
+                                            <div className={cx('date-time')}>
                                                 <p className={cx('date')}>{item.date}</p>
                                                 <p className={cx('time')}>{item.time}</p>
                                             </div>
