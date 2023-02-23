@@ -299,6 +299,7 @@ export default function Home() {
     };
     //change object bts need to add/edit
     const changeObjectAddBts = (bts) => {
+        // console.log("bts: ", bts)
         setBtsObject((prev) => ({
             ...prev,
             ...bts,

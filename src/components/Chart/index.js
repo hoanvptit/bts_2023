@@ -1,5 +1,10 @@
 import classNames from 'classnames/bind';
 import Button from '../Button';
+<<<<<<< HEAD
+=======
+import { useState } from 'react';
+import { DataBattery, DataSensor } from '~/assets/data';
+>>>>>>> 6a8a41e (add some ui and fix some bug)
 // ** Third Party Components
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
@@ -8,6 +13,15 @@ import style from './Chart.module.scss';
 const cx = classNames.bind(style);
 const ChartjsAreaChart = (props) => {
     const device = props.device;
+<<<<<<< HEAD
+=======
+    const [date, setDate] = useState(new Date());
+    const [selectedIndex, setSelectedIndex] = useState('');
+    const handleChangeSelectedIndex = (e) => {
+        let value = e.target.value;
+        setSelectedIndex(value);
+    };
+>>>>>>> 6a8a41e (add some ui and fix some bug)
     // ** Chart Options
     const options = {
         responsive: true,
@@ -52,7 +66,7 @@ const ChartjsAreaChart = (props) => {
     };
 
     // ** Chart data
-    const data = {
+    const data1 = {
         labels: ['00', '03', '06', '09', '12', '15', '18', '21', '24'],
         datasets: [
             {
@@ -79,14 +93,42 @@ const ChartjsAreaChart = (props) => {
         ],
     };
 
+    const data = device.type == 'battery' ? DataBattery : DataSensor;
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('chart-header')}>
-                <span className={cx('title')}>{device.name}</span>
+                {device.type !== 'battery' && <span className={cx('title')}>{device.name}</span>}
+                {device.type === 'battery' && (
+                    <div className={cx('select-area')}>
+                        <select
+                            className={cx('select-unit')}
+                            value={selectedIndex}
+                            onChange={handleChangeSelectedIndex}
+                        >
+                            <option value="10">Chọn chỉ số</option>
+                            <option value="Tất cả">Dung lượng</option>
+                            <option value="Nhóm điều khiển">Vcell 1</option>
+                            <option value="Nhóm Quan sát">Vcell 2</option>
+                        </select>
+                    </div>
+                )}
                 <div className={cx('util')}>
                     <div className={cx('calendar-area')}>
+<<<<<<< HEAD
                         <label for="birthday">Chọn ngày</label>
                         <input className={cx('calendar')} type="date" id="birthday" name="birthday" />
+=======
+                        <label forHtml="">Chọn ngày</label>
+                        {/* <input className={cx('calendar')} type="date" id="birthday" name="birthday" /> */}
+                        <Flatpickr
+                            className={cx('date-picker')}
+                            value={date}
+                            onChange={(e) => {
+                                console.log(e[0].toDateString());
+                            }}
+                        />
+>>>>>>> 6a8a41e (add some ui and fix some bug)
                     </div>
                     <div className={cx('btn')}>
                         <Button primary small onClick={() => {}}>
@@ -95,7 +137,7 @@ const ChartjsAreaChart = (props) => {
                     </div>
                 </div>
             </div>
-            <div style={{ height: '550px' }}>
+            <div className={cx('chart-content')}>
                 <Line id="chart" data={data} options={options} height={450} />
             </div>
         </div>
