@@ -5,8 +5,9 @@ import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCard';
 import Chart from '~/components/Chart';
 import Pagination from '~/components/pagination';
 import PopupExportData from '~/components/popup/popupExportData';
-import { Devices, Action } from '~/assets/data';
+import { Devices, Action,DataCellVolt, DataPackInfo, DataTemperature } from '~/assets/data';
 import styles from './HomeBts.module.scss';
+import PinInfo from '~/components/PinInfo';
 
 const cx = classNames.bind(styles);
 function HomeBts() {
@@ -105,17 +106,42 @@ function HomeBts() {
                                     <h3 className={cx('title-status')}>Dữ liệu cảm biến</h3>
                                     <h3 className={cx('status')}>{selectedDevice.status}</h3>
                                 </div>
-                                <div>
-                                    <h3 className={cx('title-status')}>Lỗi thiết bị</h3>
-                                    <h3 className={cx('status')}>Không</h3>
-                                </div>
+                                {selectedDevice.type !== 'battery' && (
+                                    <div>
+                                        <h3 className={cx('title-status')}>Lỗi thiết bị</h3>
+                                        <h3 className={cx('status')}>Không</h3>
+                                    </div>
+                                )}
                                 <div>
                                     <h3 className={cx('title-status')}>Cập nhật lần cuối</h3>
                                     <h3 className={cx('status')}>15/02/2023 21:22</h3>
                                 </div>
                             </div>
+                            {selectedDevice.type ==='battery' && 
+                            <div className={cx('battery-info')}>
+                                <div className={cx('cell-vol')}>
+                                    <h3>Cell Voltage (mV)</h3>
+                                    <div className={cx('cell-vol-info')}>
+                                        <PinInfo data={DataCellVolt} />
+                                        <PinInfo data={DataCellVolt} />
+                                    </div>
+                                </div>
+                                <div className={cx('pack')}>
+                                    <h3>Pack Infomation</h3>
+                                    <div className={cx('pack-info')}>
+                                        <PinInfo data={DataPackInfo}/>
+                                    </div>
+                                </div>
+                                <div className={cx('battery-temp')}>
+                                    <h3>Temperature</h3>
+                                    <div className={cx('temp-info')}>
+                                        <PinInfo data={DataTemperature}/>
+                                    </div>
+                                </div>
+                            </div>
+                            }
                         </div>
-                        {selectedDevice.type !== 'sensor' ? (
+                        {selectedDevice.type !== 'sensor' && selectedDevice.type !== 'battery' ? (
                             <div className={cx('timeline')}>
                                 {Action.map((item, index) => {
                                     let tmp = `${'bullet-'}${item.status}`;

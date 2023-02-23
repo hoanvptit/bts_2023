@@ -74,10 +74,10 @@ export const Devices = [
     },
     {
         id: 10,
-        typeName: 'Điều hoà',
-        type: 'airConditioner',
-        avatar: images.airConditioner,
-        name: ' Điều hoà 4',
+        typeName: 'Pin',
+        type: 'battery',
+        avatar: images.battery,
+        name: 'Pin Test 1',
         status: 'on',
     },
 ];
@@ -234,88 +234,225 @@ export const Action = [
     // },
 ];
 
-export const Data_sensor = [
-    {
-        time:0,
-        temp:10
-    },
-    {
-        time:3,
-        temp:20
-    },
-    {
-        time:6,
-        temp:30
-    },
-    {
-        time:9,
-        temp:25
-    },
-    {
-        time:12,
-        temp:21
-    },
-    {
-        time:15,
-        temp:33
-    },
-    {
-        time:18,
-        temp:44
-    },
-    {
-        time:21,
-        temp:24
-    },
-    {
-        time:24,
-        temp:20
-    }
-]
+// export const Data_sensor = [
+//     {
+//         time:0,
+//         temp:10
+//     },
+//     {
+//         time:3,
+//         temp:20
+//     },
+//     {
+//         time:6,
+//         temp:30
+//     },
+//     {
+//         time:9,
+//         temp:25
+//     },
+//     {
+//         time:12,
+//         temp:21
+//     },
+//     {
+//         time:15,
+//         temp:33
+//     },
+//     {
+//         time:18,
+//         temp:44
+//     },
+//     {
+//         time:21,
+//         temp:24
+//     },
+//     {
+//         time:24,
+//         temp:20
+//     }
+// ]
 
-export const areaChartOptions = {
-    chart: {
-      toolbar: {
-        show: false
-      },
-      sparkline: {
-        enabled: true
-      }
+  // Data for pin
+  export const DataCellVolt = [
+    {
+        id: 1,
+        label: 'MaxVolt',
+        value: 1234,
     },
-    grid: {
-      show: false
+    {
+        id: 2,
+        label: 'Vcell 1',
+        value: 1234,
     },
-    colors: ['#7367F0'],
-    dataLabels: {
-      enabled: false
+    {
+        id: 3,
+        label: 'Vcell 2',
+        value: 1234,
     },
-    stroke: {
-      curve: 'smooth',
-      width: 2.5
+    {
+        id: 4,
+        label: 'Vcell 3',
+        value: 1234,
     },
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 0.9,
-        opacityFrom: 0.7,
-        opacityTo: 0.5,
-        stops: [0, 80, 100]
-      }
+    {
+        id: 5,
+        label: 'Vcell 4',
+        value: 1234,
     },
-    xaxis: {
-      labels: {
-        show: false
-      },
-      axisBorder: {
-        show: false
-      }
+    {
+        id: 6,
+        label: 'Vcell 5',
+        value: 1234,
     },
-    yaxis: {
-      labels: {
-        show: false
-      }
+    {
+        id: 7,
+        label: 'Vcell 6',
+        value: 1234,
     },
-    tooltip: {
-      x: { show: false }
+    {
+        id: 8,
+        label: 'Vcell 8',
+        value: 1234,
+    },
+];
+export const DataPackInfo = [
+    {
+        id: 1,
+        label: 'Pack Voltage',
+        unit:'V',
+        value: 1234,
+    },
+    {
+        id: 2,
+        label: 'Pack Current',
+        unit:'A',
+        value: 1234,
+    },
+    {
+        id: 3,
+        label: 'SOC',
+        unit:'%',
+        value: 1234,
+    },
+    {
+        id: 4,
+        label: 'SOH',
+        unit:'%',
+        value: 1234,
+    },
+    {
+        id: 5,
+        label: 'Remain Capacity',
+        unit:'mAH',
+        value: 1234,
+    },
+    {
+        id: 6,
+        label: 'Full Capacity',
+        unit:'mAH',
+        value: 1234,
+    },
+    {
+        id: 7,
+        label: 'Battert cycle',
+        unit:null,
+        value: 1234,
     }
-  }
+    
+];
+
+export const DataTemperature = [
+    {
+        id: 1,
+        label: 'Tcell 1',
+        unit:'℃',
+        value: 1234,
+    },
+    {
+        id: 2,
+        label: 'Tcell 1',
+        unit:'℃',
+        value: 1234,
+    },
+    {
+        id: 3,
+        label: 'Tcell 1',
+        unit:'℃',
+        value: 1234,
+    },
+    {
+        id: 4,
+        label: 'Tcell 1',
+        unit:'℃',
+        value: 1234,
+    },
+    {
+        id: 5,
+        label: 'ENV_T',
+        unit:'℃',
+        value: 1234,
+    },
+    {
+        id: 6,
+        label: 'MOS_T',
+        unit:'℃',
+        value: 1234,
+    },
+    
+    
+];
+export const DataBattery = {
+    labels: ['00', '03', '06', '09', '12', '15', '18', '21', '24'],
+    datasets: [
+        {
+            fill: true,
+            tension: 0.3,
+            label: 'Dung Lượng(%)',
+            pointRadius: 0.5,
+            pointHoverRadius: 5,
+            pointStyle: 'circle',
+            backgroundColor: () => {
+                const ctx = document.getElementById('chart').getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, 0, 550);
+                gradient.addColorStop(0, 'rgba( 115, 103, 240, 1)');
+                gradient.addColorStop(1, 'rgba( 115, 103, 240, 0)');
+                return gradient;
+            },
+            pointHoverBorderWidth: 5,
+            borderColor: '#7367f0',
+            pointHoverBorderColor: '#2596be',
+            pointBorderColor: 'transparent',
+            pointHoverBackgroundColor: '#fff',
+            data: [10, 15, 25, 35, 25, 45, 30, 20, 30],
+        },
+    ],
+};
+
+//Data for sensor
+export const DataSensor = {
+    labels: ['00', '03', '06', '09', '12', '15', '18', '21', '24'],
+    datasets: [
+        {
+            fill: true,
+            tension: 0.3,
+            label: 'Nhiệt độ (℃)',
+            pointRadius: 0.5,
+            pointHoverRadius: 5,
+            pointStyle: 'circle',
+            backgroundColor: () => {
+                const ctx = document.getElementById('chart').getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, 0, 550);
+                gradient.addColorStop(0, 'rgba( 255, 213, 0, 1)');
+                gradient.addColorStop(1, 'rgba( 255, 213, 0, 0)');
+                return gradient;
+            },
+            pointHoverBorderWidth: 5,
+            borderColor: '#FFD500',
+            pointHoverBorderColor: '#2596be',
+            pointBorderColor: 'transparent',
+            pointHoverBackgroundColor: '#fff',
+            data: [10, 15, 25, 35, 25, 45, 30, 20, 30],
+        },
+    ],
+};

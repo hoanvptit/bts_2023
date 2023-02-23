@@ -1,0 +1,26 @@
+.pin-info {
+    min-height: 280px;
+    display: flex;
+    .label-list {
+        .label{
+            // width: 100%;
+            margin-bottom: 8px;
+        }
+    }
+    .value-list {
+        display: flex;
+        flex-direction: column;
+        .pin-value {
+            border: 1px solid #ccc;
+            text-align: right;
+            margin:0 16px 8px;
+            padding: 4px 8px;
+            width: 108px;
+            height: 24px;
+        }
+    }
+
+    .unit-list {
+    }
+}
+

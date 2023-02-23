@@ -9,7 +9,7 @@ import styles from './PopupAddDevice.module.scss';
 const cx = classNames.bind(styles);
 function PopupAddDevice(props) {
     const data = DeviceType;
-    console.log('device add: ', props.deviceInfo);
+    // console.log('device add: ', props.deviceInfo);
     const [device, setDevice] = useState(props.deviceInfo);
 
     const handleSubmit = () => {
@@ -29,24 +29,26 @@ function PopupAddDevice(props) {
     };
     const changeName = (e) => {
         let deviceName = e.target.value;
+        let tmp = { ...device, name: deviceName };
         setDevice((prev) => ({
             ...prev,
             name: deviceName,
         }));
-        props.onChangeObject(device);
+        props.onChangeObject(tmp);
     };
     const handleSelectDevice = (e) => {
         let value = e.target.value;
         let deviceType = DeviceType.filter((item) => {
             return item.typeName === value;
         });
+        let tmp = { ...device, avatar: deviceType[0].avatar, type: deviceType[0].type, typeName: value};
         setDevice((prev) => ({
             ...prev,
             avatar: deviceType[0].avatar,
             type: deviceType[0].type,
             typeName: value,
         }));
-        props.onChangeObject(device);
+        props.onChangeObject(tmp);
     };
     return (
         <>
@@ -91,7 +93,7 @@ function PopupAddDevice(props) {
                                 {data.map((item, index) => {
                                     return (
                                         <div key={index} className={cx('add-device')}>
-                                            <DeviceInfoCard data={item} className={cx('device-card')} />
+                                            <DeviceInfoCard className={cx('device-card')} data={item}  optionType />
                                             <input
                                                 className={cx('input-radio')}
                                                 type="radio"
@@ -99,7 +101,7 @@ function PopupAddDevice(props) {
                                                 id={item.type}
                                                 name="addDevice"
                                                 value={item.typeName}
-                                                onClick={handleSelectDevice}
+                                                onChange={handleSelectDevice}
                                             />
                                         </div>
                                     );

@@ -16,6 +16,7 @@ let PageSize = 10;
 export default function ManageDevice() {
     const devices = Devices;
     const initAddDevice = {
+        avatar:images.bulb,
         type: 'bulb',
         typeName: 'Bóng đèn',
         name: '',
@@ -51,14 +52,15 @@ export default function ManageDevice() {
     };
     //** For handle add bts */
     const handleAddDevice = () => {
+
         // add to result list
         let newList = [...listDevice];
         newList.push(deviceInfo);
         setListDevice(newList);
     };
     const handleEditDevice = () => {
-        console.log('edit  success');
-        console.log('edit Object:', deviceInfo);
+        // console.log('edit  success');
+        // console.log('edit Object:', deviceInfo);
 
         const newList = [...listDevice];
         newList[deviceInfo.id - 1] = deviceInfo;
@@ -159,7 +161,7 @@ export default function ManageDevice() {
                             <Table
                                 data={listDevice}
                                 onClickEdit={(data) => {
-                                    console.log('edit  success: ', data);
+                                    // console.log('edit  success: ', data);
                                     setDeviceInfo(data);
                                     setPopUpAttr({ show: true, type: 'edit', title: 'Sửa thiết bị' });
                                 }}

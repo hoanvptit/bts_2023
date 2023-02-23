@@ -2,7 +2,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    // align-items: center;
 }
 .search-filter-title {
     margin-top: 16px;
@@ -14,8 +13,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // margin: 8px;
-    // box-shadow: 0px 1px 0px rgb(0 0 0 / 12%);
 }
 
 .select-area {
@@ -30,20 +27,17 @@
         width: 20%;
         margin: 1.6rem 0;
         padding-left: 1rem;
-        // text-align: center;
     }
-    .select-group{
+    .select-group {
         margin-left: 3.2rem;
     }
 }
 
 .btn-export {
-    // margin-right: 8px;
 }
 
 .main-content {
     margin: 8px 0;
-    // padding: 8px;
     display: flex;
 
     .device-info {
@@ -55,13 +49,57 @@
             justify-content: space-between;
             padding: 8px 16px;
         }
+        // battery info
+        .battery-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.6rem;
+            .cell-vol {
+                flex-grow: 2;
+                display: flex;
+                flex-direction: column;
+                margin: 0 1.6rem 0 1.6rem;
+
+                .cell-vol-info {
+                    display: flex;
+                    justify-content: space-evenly;
+                    margin-top: 1.6rem;
+                }
+            }
+            .pack {
+                flex-grow: 1;
+                align-items: center;
+                margin: 0 1.6rem;
+            }
+
+            .battery-temp {
+                flex-grow: 1;
+                align-items: center;
+                margin: 0 1.6rem 0 1.6rem;
+            }
+            .cell-vol,
+            .pack,
+            .battery-temp {
+                border: 1px solid #000000;
+                border-radius: 5px;
+                padding: 1.6rem 1.6rem 0;
+            }
+
+            .pack-info,
+            .temp-info {
+                display: flex;
+                justify-content: center;
+                margin-top: 1.6rem;
+            }
+            h3 {
+                font-weight: 700;
+            }
+        }
     }
     .timeline {
         padding: 8px 16px;
         margin-top: 16px;
-        // display: flex;
-        // flex-direction: column;
-        // border: 1px solid #ccc;
         background-color: var(--white);
         border-radius: 5px;
         overflow-y: scroll;
@@ -84,21 +122,21 @@
                     }
                     .bullet-on {
                         background-color: #28c76f;
-                        box-shadow:0px 0px 10px 5px rgb(40, 199, 111, 0.4);
+                        box-shadow: 0px 0px 10px 5px rgb(40, 199, 111, 0.4);
                     }
                     .bullet-off {
-                        background-color: #FFD500;
-                        box-shadow:0px 0px 10px 5px rgb(255, 213, 0, 0.4);
+                        background-color: #ffd500;
+                        box-shadow: 0px 0px 10px 5px rgb(255, 213, 0, 0.4);
                     }
                     .bullet-disconnected {
-                        background-color: #EA5455;
-                        box-shadow:0px 0px 10px 5px rgb(234, 84, 85, 0.4);
+                        background-color: #ea5455;
+                        box-shadow: 0px 0px 10px 5px rgb(234, 84, 85, 0.4);
                     }
                     .bullet-connected {
                         background-color: var(--primary);
-                        box-shadow:0px 0px 10px 5px rgb(115, 103, 240, 0.4);
+                        box-shadow: 0px 0px 10px 5px rgb(115, 103, 240, 0.4);
                     }
-                    .strokes{
+                    .strokes {
                         border-left: 3px solid #c01111;
                         height: 23px;
                     }
