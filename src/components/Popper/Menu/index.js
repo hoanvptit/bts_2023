@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
@@ -6,17 +7,16 @@ import BtsItem from '~/components/BtsItem';
 import Header from './Header';
 import MenuItem from './MenuItem';
 import styles from './Menu.module.scss';
-import { useState } from 'react';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
-function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn }) {
+function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn, user={} }) {
     const [history, setHistory] = useState([{ data: items }]);
     const current = history[history.length - 1];
-    const user = {
-        avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
-        name: 'Nguyen Van Hoa',
-        nickname: 'hoanvptit',
-    };
+    // const user = {
+    //     avatar: 'https://files.fullstack.edu.vn/f8-tiktok/users/192/631560ee94071.png',
+    //     name: 'Nguyen Van Hoa',
+    //     nickname: 'hoanvptit',
+    // };
     const AccountOnMenu = () => {
         return <BtsItem key={user.id} data={user} isAccount />;
     };

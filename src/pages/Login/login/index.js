@@ -33,8 +33,8 @@ export default function Login2(props) {
     // const [user, dispatch] = useReducer(logger(reducer), initUser());
 
     const defaultValues = {
-        password: 'admin',
-        loginEmail: 'admin@demo.com',
+        password: 'Tuan2906!',
+        loginEmail: 'tuan29061998@gmail.com',
     };
 
     const {
@@ -52,20 +52,18 @@ export default function Login2(props) {
     const [processing, setProcessing] = useState(false);
 
     const onSubmit = (data) => {
+        console.log("data: ", data)
         if (Object.values(data).every((field) => field.length > 0)) {
-            /*
+            
             login({email:data.loginEmail, password: data.password})
             .then(res=>{
-                handleLogin(data)
+                console.log("res login: ", res)
+                handleLogin(res.data)
                 navigate('/');
 
             })
-*/
-            //dispatch action login
             // dispatch(logIn(data));
 
-            handleLogin(data);
-            navigate('/');
         } else {
             for (const key in data) {
                 if (data[key].length === 0) {

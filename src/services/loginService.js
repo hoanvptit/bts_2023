@@ -1,6 +1,7 @@
 import * as request from '~/util/request';
 //** Post request - send data to server to login */
 export const login = async (data) => {
+  console.log("dataaa: ", data)
   try {
     const res = await request.post(`auth/login`, {
      ...data
@@ -23,12 +24,15 @@ export const logout = async (data) => {
 };
 
 export const handleLogin = (data) =>{
-  // console.log("data = ", data)
- localStorage.setItem('userData', JSON.stringify(data))
-  // localStorage.setItem(config.storageTokenKeyName, JSON.stringify(action.payload.accessToken))
-  // localStorage.setItem(config.storageRefreshTokenKeyName, JSON.stringify(action.payload.refreshToken))
+  const user = data.user
+  const tokens = data.tokens
+ localStorage.setItem('userData', JSON.stringify(user))
+  localStorage.setItem('accessToken', JSON.stringify(tokens.access))
+  localStorage.setItem('refreshToken', JSON.stringify(tokens.refresh))
 }
 
 export const handleLogout = ()=>{
   localStorage.removeItem('userData')
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
 }

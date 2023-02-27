@@ -1,4 +1,5 @@
 import * as request from '~/util/request';
+
 //** get request - retrieve bts from server */
 export const getBtsList = async () => {
     try {
@@ -47,8 +48,8 @@ export const delBts = async (btsId) => {
 
 export const updateBts = async (btsId, data) => {
     try {
-        const res = await request.update(`btss/${btsId}`,{
-            ...data
+        const res = await request.update(`btss/${btsId}`, {
+            ...data,
         });
         return res;
     } catch (error) {

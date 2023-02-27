@@ -1,3 +1,5 @@
+import classNames from 'classnames/bind';
+import { getUserData } from '~/util/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleQuestion,
@@ -9,15 +11,9 @@ import {
     faGear,
     faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
-import images from '~/assets/images';
+
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-
-import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
-
-import config from '~/config';
-
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
 import Image from '~/components/images';
@@ -25,6 +21,7 @@ import Search from '../Search';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { handleLogout } from '~/services/loginService';
 import styles from './Header.module.scss';
+import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
 
@@ -66,7 +63,7 @@ const handleMenuChange = (item) => {
     item.onClick && item.onClick()
 };
 function Header({ className }) {
-    const currentUser = true;
+    const currentUser = getUserData();
     const informData = 5;
     const classes = cx({ [className]: className }, 'wrapper');
     return (
@@ -93,12 +90,12 @@ function Header({ className }) {
                         </>
                     )}
 
-                    <Menu items={userMenu} onChange={handleMenuChange}>
+                    <Menu items={userMenu} onChange={handleMenuChange} user={currentUser}>
                         {currentUser ? (
                             <Image
-                                src="https://files.fullstack.edu.vn/f8-tiktok/users/4761/63be78365ed1d.jpg"
+                                src={currentUser.avatar ||images.default_avatar}
                                 className={cx('user-avatar')}
-                                alt="Nguyen Van Hoa"
+                                alt={currentUser.name}
                             />
                         ) : (
                             <button className={cx('more-btn')}>

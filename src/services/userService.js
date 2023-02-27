@@ -1,8 +1,14 @@
 import * as request from '~/util/request';
+import { getAccessToken } from '~/util/auth'; 
 //** get request - retrieve users from server */
 export const getUserList = async () => {
+    const acc_token = getAccessToken();
     try {
-        const res = await request.get(`devices`);
+        const res = await request.get(`user`, {
+            headers: {
+                authorization: `Bearer ${acc_token.token}`,
+            },
+        });
         return res;
     } catch (error) {
         console.log(error);
@@ -34,7 +40,7 @@ export const getUser = async (userId) => {
 
 //** delete request - delete specific user item from server */
 
-export const delUser= async (userId) => {
+export const delUser = async (userId) => {
     try {
         const res = await request.del(`users/${userId}`);
         return res;
@@ -47,8 +53,8 @@ export const delUser= async (userId) => {
 
 export const updateUser = async (userId, data) => {
     try {
-        const res = await request.update(`users/${userId}`,{
-            ...data
+        const res = await request.update(`users/${userId}`, {
+            ...data,
         });
         return res;
     } catch (error) {
