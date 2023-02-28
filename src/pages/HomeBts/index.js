@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useReducer } from 'react';
 import Sidebar from '~/layouts/components/Sidebar';
 import Header from '~/layouts/components/Header';
 import Button from '~/components/Button';
@@ -11,12 +11,24 @@ import { Devices, Action,DataCellVolt, DataPackInfo, DataTemperature } from '~/a
 import styles from './HomeBts.module.scss';
 import PinInfo from '~/components/PinInfo';
 import { useParams } from 'react-router-dom';
+import { getDeviceList } from '~/services/deviceService';
+import { initDevice, deviceReducer } from '~/reducer/reducer';
+import { setListDeviceAction } from '~/reducer/action';
 
 const cx = classNames.bind(styles);
 function HomeBts() {
     const btsId = useParams().btsId;
-    console.log("home bts id = ", btsId)
+    const [state, dispatch] = useReducer(deviceReducer, initDevice([]))
+    // console.log("home bts id = ", btsId)
     //**get bts from server with btsId */
+
+    useEffect(()=>{
+        getDeviceList(btsId).then((res)=>{
+            console.log(res)
+            let result = res.data.body.results
+            dispatch(setListDeviceAction(result))
+        })
+    },[])
     const devicesData = Devices;
     const [selectedDevice, setSelectedDevice] = useState(devicesData[0]);
     const [selectedDeviceType, setSelectedDeviceType] = useState('');
@@ -69,7 +81,7 @@ function HomeBts() {
                             onChange={handleChangeSelectedDevice}
                         >
                             <option value="">Chọn thiết bị</option>
-                            {devicesData.map((item, index) => {
+                            {state.listDevice.map((item, index) => {
                                 return (
                                     <option key={index} value={item.name}>
                                         {item.name}

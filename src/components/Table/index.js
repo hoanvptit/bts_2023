@@ -32,7 +32,7 @@ export default function Table(props) {
                     {device.type}
                 </td>
                 <td className={cx('text-left')} style={{ width: '3%' }}>
-                    {device.status}
+                    {device.status ? 'on':'off'}
                 </td>
                 <td className={cx('text-left')} style={{ width: '1%' }}>
                     <div className={cx('option')}>

@@ -47,6 +47,7 @@ export const delBts = async (btsId) => {
 //** update request - update specific bts item from server */
 
 export const updateBts = async (btsId, data) => {
+    
     try {
         const res = await request.update(`btss/${btsId}`, {
             ...data,

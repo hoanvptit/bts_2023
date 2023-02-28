@@ -52,7 +52,7 @@ export default function Login2(props) {
     const [processing, setProcessing] = useState(false);
 
     const onSubmit = (data) => {
-        console.log("data: ", data)
+        // console.log("data: ", data)
         if (Object.values(data).every((field) => field.length > 0)) {
             
             login({email:data.loginEmail, password: data.password})

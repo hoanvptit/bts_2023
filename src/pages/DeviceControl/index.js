@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import Sidebar from '~/layouts/components/Sidebar';
 import Header from '~/layouts/components/Header';
 import DeviceItem from '~/components/DeviceItem';
@@ -8,6 +8,9 @@ import styles from './DeviceControl.module.scss';
 
 import PopupDevices from '~/components/popup/popupStatusDevices';
 import { useParams } from 'react-router-dom';
+import { deviceReducer, initDevice } from '~/reducer/reducer';
+import { getDeviceList } from '~/services/deviceService';
+import { setListDeviceAction } from '~/reducer/action';
 
 const cx = classNames.bind(styles);
 export default function DeviceControl() {
@@ -85,7 +88,10 @@ export default function DeviceControl() {
             status: 'on',
         },
     ];
+
     const [listDevice, setListDevice] = useState(devices);
+    const [state, dispatch] = useReducer(deviceReducer, initDevice([]))
+
     const [popUpAttr, setPopUpAttr] = useState({
         show: false,
     });
@@ -93,7 +99,14 @@ export default function DeviceControl() {
     const [deviceInfo, setDeviceInfo] = useState(null);
     const [deviceType, setDeviceType] = useState('');
 
-    
+    //get list device of bts 
+    useEffect(()=>{
+        getDeviceList(btsId).then((res)=>{
+            console.log(res)
+            let result = res.data.body.results
+            dispatch(setListDeviceAction(result))
+        })
+    },[])
 
     const handleChangeUnit = (e) => {
         let value = e.target.value;
@@ -128,7 +141,7 @@ export default function DeviceControl() {
     const DevicesLine = () => {
         return (
             <div className={cx('row bts_line')}>
-                {listDevice.map((item, index) => {
+                {state.listDevice.map((item, index) => {
                     return (
                         <div key={index} className={cx('col l-2 m-6 c-12')}>
                             <DeviceItem

@@ -1,9 +1,8 @@
-import * as request from '~/util/request';
+import * as login_request from '~/util/login_request';
 //** Post request - send data to server to login */
 export const login = async (data) => {
-  console.log("dataaa: ", data)
   try {
-    const res = await request.post(`auth/login`, {
+    const res = await login_request.post(`auth/login`, {
      ...data
     });
     return res;
@@ -14,7 +13,7 @@ export const login = async (data) => {
 
 export const logout = async (data) => {
   try {
-    const res = await request.post(`auth/logout`, {
+    const res = await login_request.post(`auth/logout`, {
      ...data
     });
     return res;

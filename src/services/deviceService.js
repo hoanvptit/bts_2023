@@ -1,8 +1,15 @@
 import * as request from '~/util/request';
 //** get request - retrieve devices from server */
-export const getDeviceList = async () => {
+export const getDeviceList = async (btsID, type, name, status) => {
     try {
-        const res = await request.get(`devices`);
+        const res = await request.get(`devices`, {
+            params: {
+                btsID,
+                type,
+                name,
+                status,
+            },
+        });
         return res;
     } catch (error) {
         console.log(error);
@@ -34,7 +41,7 @@ export const getDevice = async (deviceId) => {
 
 //** delete request - delete specific device item from server */
 
-export const delDevice= async (deviceId) => {
+export const delDevice = async (deviceId) => {
     try {
         const res = await request.del(`devices/${deviceId}`);
         return res;
@@ -45,10 +52,10 @@ export const delDevice= async (deviceId) => {
 
 //** update request - update specific device item from server */
 
-export const updateDevice= async (deviceId, data) => {
+export const updateDevice = async (deviceId, data) => {
     try {
-        const res = await request.update(`devices/${deviceId}`,{
-            ...data
+        const res = await request.update(`devices/${deviceId}`, {
+            ...data,
         });
         return res;
     } catch (error) {

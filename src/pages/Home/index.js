@@ -10,7 +10,7 @@ import { listBts as BtsData } from '~/assets/data';
 import { addBts, delBts, getBtsList, getBts, updateBts } from '~/services/btsService';
 //USE REDUCER
 import { initBts, btsReducer } from '~/reducer/reducer';
-import { addBtsAction, delBtsAction, setBtsAction, editBtsAction } from '~/reducer/action';
+import { addBtsAction, delBtsAction, setBtsAction, setListBtsAction, editBtsAction } from '~/reducer/action';
 import logger from '~/reducer/logger';
 import styles from './Home.module.scss';
 
@@ -22,8 +22,8 @@ const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function Home() {
     // const result = BtsData;
-    const [result, setResult] = useState([])
-    const [state, dispatch] = useReducer(logger(btsReducer), initBts(result));
+    // const [result, setResult] = useState([])
+    const [state, dispatch] = useReducer(btsReducer, initBts([]));
     const [popUpAttr, setPopUpAttr] = useState({
         show: false,
         type: 'add',
@@ -32,18 +32,6 @@ export default function Home() {
     });
     const [btsUnit, setBtsUnit] = useState('');
     const [btsGroup, setBtsGroup] = useState('');
-
-    
-
-    // useEffect(()=>{
-    //     getBtsList()
-    //     .then(res=>{
-    //         console.log("res login: ", res.data.body)
-    //         setResult(res.data.body.results)
-
-    //     })
-    // },[])
-
     //** For Pagination */
     const [currentPage, setCurrentPage] = useState(1);
     const currentTableData = useMemo(() => {
@@ -52,6 +40,13 @@ export default function Home() {
         return state.listBts.slice(firstPageIndex, lastPageIndex);
     }, [currentPage]);
     //** End Pagination */
+    useEffect(() => {
+        getBtsList().then((res) => {
+            let result = res.data.body.results;
+            console.log('res get bts: ', res.data.body);
+            dispatch(setListBtsAction(result));
+        });
+    }, []);
 
     const handleChangeUnit = (e) => {
         let value = e.target.value;
@@ -63,38 +58,30 @@ export default function Home() {
     };
     //** For handle add bts */
     const handleAddBts = () => {
-        // add to result list
-        // let newList = [...listBts];
-        // newList.push(btsObject);
-        // setListBts(newList);
-
+        // console.log(state.bts)
         //** */
-        // addBts({
-        //     name: btsObject.name,
-        //     mac: btsObject.mac,
-        //     place: btsObject.place,
-        //     description: 'btsObject.des',
-        // });
+        addBts({
+            name: state.bts.name,
+            mac: state.bts.mac,
+            place: state.bts.place,
+            description: 'this is bts',
+        });
 
         dispatch(addBtsAction(state.bts));
     };
     const handleEditBts = () => {
-        console.log('edit Object:', state.bts);
-        // updateBts({
-        //     name: btsObject.name,
-        //     mac: btsObject.mac,
-        //     place: btsObject.place,
-        //     description: 'btsObject.des',
-        // });
+        updateBts(state.bts.id,{
+            name: state.bts.name,
+            mac: state.bts.mac,
+            place: state.bts.place,
+            description: 'this is bts',
+        });
+        dispatch(editBtsAction(state.bts))
     };
     const handleDelBts = () => {
-        // console.log('del Object:', btsObject);
-        // let newList = [...listBts];
-        // newList.splice(btsObject.id, 1);
-        // console.log(newList);
-        // setListBts(newList);
+        
 
-        // delBts(btsObject.id)
+        delBts(state.bts.id)
 
         dispatch(delBtsAction(state.bts));
     };
@@ -118,7 +105,7 @@ export default function Home() {
     const BtsLine = () => {
         return (
             <div className={cx('row bts_line')}>
-                {currentTableData.map((item, index) => {
+                {state.listBts.map((item, index) => {
                     return (
                         <div key={index} className={cx('col l-3 m-6 c-12')}>
                             <BtsItem
@@ -214,7 +201,7 @@ export default function Home() {
                         <Pagination
                             // className="pagination-bar"
                             currentPage={currentPage}
-                            totalCount={result.length}
+                            totalCount={state.listBts.length}
                             pageSize={PageSize}
                             onPageChange={(page) => setCurrentPage(page)}
                         />

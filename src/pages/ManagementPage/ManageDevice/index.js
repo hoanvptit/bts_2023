@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import Sidebar from '~/layouts/components/Sidebar';
 import Header from '~/layouts/components/Header';
 import Button from '~/components/Button';
@@ -11,12 +11,16 @@ import { addDevice, getDevice, getDeviceList, delDevice, updateDevice } from '~/
 import { Devices } from '~/assets/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { deviceReducer, initDevice } from '~/reducer/reducer';
+import { setListDeviceAction } from '~/reducer/action';
 import styles from './ManageDevice.module.scss';
 
 const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function ManageDevice() {
     const btsId = useParams().btsId;
+    const [state, dispatch] = useReducer(deviceReducer, initDevice([]));
+
     const devices = Devices;
     const initAddDevice = {
         avatar: images.bulb,
@@ -36,10 +40,14 @@ export default function ManageDevice() {
     const [deviceInfo, setDeviceInfo] = useState(initAddDevice);
     const [deviceType, setDeviceType] = useState('');
 
-    // useEffect(()=>{
-    //     //get devices of bts
-    //     getDeviceList()
-    // })
+    //get list device of bts
+    useEffect(() => {
+        getDeviceList(btsId).then((res) => {
+            console.log(res);
+            let result = res.data.body.results;
+            dispatch(setListDeviceAction(result));
+        });
+    }, []);
     //** End table infos */
     const handleChangeUnit = (e) => {
         let value = e.target.value;
@@ -96,7 +104,7 @@ export default function ManageDevice() {
         // console.log(newList);
         // setListDevice(newList);
 
-        //send request delete device 
+        //send request delete device
         // delDevice(deviceInfo.id)
     };
     //change object bts need to add/edit
@@ -183,9 +191,9 @@ export default function ManageDevice() {
                 <div className={cx('main-content')}>
                     <div className={cx('grid wide container')}>
                         {/** Device table */}
-                        {listDevice.length > 0 && (
+                        {state.listDevice.length > 0 && (
                             <Table
-                                data={listDevice}
+                                data={state.listDevice}
                                 onClickEdit={(data) => {
                                     // console.log('edit  success: ', data);
                                     setDeviceInfo(data);
