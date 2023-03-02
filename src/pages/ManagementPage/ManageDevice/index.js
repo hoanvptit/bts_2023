@@ -12,55 +12,49 @@ import { Devices } from '~/assets/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { deviceReducer, initDevice } from '~/reducer/reducer';
-import { setListDeviceAction } from '~/reducer/action';
+import logger from '~/reducer/logger';
+import { addDeviceAction, delDeviceAction, editDeviceAction, setDeviceAction, setListAllDeviceAction,setTypeDisplayDeviceAction,setListDisplayDeviceAction } from '~/reducer/action';
 import styles from './ManageDevice.module.scss';
 
 const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function ManageDevice() {
     const btsId = useParams().btsId;
-    const [state, dispatch] = useReducer(deviceReducer, initDevice([]));
+    const [state, dispatch] = useReducer(logger(deviceReducer), initDevice('all',[],[]));
 
-    const devices = Devices;
-    const initAddDevice = {
-        avatar: images.bulb,
-        type: 'bulb',
-        typeName: 'Bóng đèn',
-        name: '',
-        status: 'off',
-    };
     const [quantity, setQuantity] = useState(10);
-    const [listDevice, setListDevice] = useState(devices);
     const [popUpAttr, setPopUpAttr] = useState({
         type: 'add',
         show: false,
         title: 'Thêm thiết bị',
     });
-    // info of device need to add/edit/delete
-    const [deviceInfo, setDeviceInfo] = useState(initAddDevice);
-    const [deviceType, setDeviceType] = useState('');
 
     //get list device of bts
     useEffect(() => {
         getDeviceList(btsId).then((res) => {
             console.log(res);
             let result = res.data.body.results;
-            dispatch(setListDeviceAction(result));
+            dispatch(setListDisplayDeviceAction(result) )
+            dispatch(setListAllDeviceAction(result));
         });
     }, []);
-    //** End table infos */
-    const handleChangeUnit = (e) => {
-        let value = e.target.value;
-        setDeviceType(value);
+    //** change type of device -> change data show on the table */
+    const handleTypeDeviceDisplay = (e) => {
+        let type = e.target.value;
         let displayList;
-        if (value !== 'all') {
-            displayList = devices.filter((device) => {
-                return device.type === value;
+        if (type !== 'all') {
+            displayList = state.listAll.filter((device) => {
+                return device.type == type;
             });
-            setListDevice(displayList);
+
+            // console.log('ls ds: ', displayList)
+            dispatch(setListDisplayDeviceAction(displayList))
+
         } else {
-            setListDevice(devices);
+            dispatch(setListDisplayDeviceAction(state.listAll))
         }
+
+        dispatch(setTypeDisplayDeviceAction(type));
     };
     const handleChangeQuantity = (e) => {
         let value = e.target.value;
@@ -68,62 +62,36 @@ export default function ManageDevice() {
     };
     //** For handle add bts */
     const handleAddDevice = () => {
-        // add to result list
-        let newList = [...listDevice];
-        newList.push(deviceInfo);
-        setListDevice(newList);
-
         //add device and send to server
-        // addDevice({
-        //     name: deviceInfo.name,
-        //     type: deviceInfo.type,
-        //     position: deviceInfo.location,
-        //     btsID: btsId,
-        //     description: deviceInfo.des,
-        // });
+        addDevice({
+            name: state.device.name,
+            type: state.device.type,
+            position: 100,
+            btsID: btsId,
+            description: 'state.device.des',
+        });
+        dispatch(addDeviceAction(state.device));
     };
     const handleEditDevice = () => {
-        // console.log('edit  success');
-        // console.log('edit Object:', deviceInfo);
+        // const newList = [...listDisplayDevice];
+        // newList[state.device.index] = state.device;
+        // setAllDevice(newList);
 
-        const newList = [...listDevice];
-        newList[deviceInfo.id - 1] = deviceInfo;
-        setListDevice(newList);
-
-        //update name of device
-        // updateDevice(deviceInfo.id, {
-        //     name: deviceInfo.name,
-        //     value: 0,
-        //     description: deviceInfo.des,
-        // });
+        updateDevice(state.device.id, {
+            name: state.device.name,
+            description: state.device.des,
+        });
+        dispatch(editDeviceAction(state.device));
     };
     const handleDelDevice = () => {
-        console.log('del  success');
-        // let newList = [...listDevice];
-        // newList.splice(deviceInfo.id, 1);
-        // console.log(newList);
-        // setListDevice(newList);
-
         //send request delete device
-        // delDevice(deviceInfo.id)
+        delDevice(state.device.id)
+        dispatch(delDeviceAction(state.device))
     };
     //change object bts need to add/edit
     const changeObjectDevice = (device) => {
-        if (popUpAttr.type === 'add') {
-            setDeviceInfo((prev) => ({
-                ...prev,
-                ...device,
-                id: devices.length + 1,
-            }));
-        } else {
-            if (popUpAttr.type === 'edit') {
-                setDeviceInfo((prev) => ({
-                    ...prev,
-                    ...device,
-                    // id: devices.length + 1,
-                }));
-            }
-        }
+        dispatch(setDeviceAction(device));
+        
     };
 
     const onAction = () => {
@@ -138,7 +106,7 @@ export default function ManageDevice() {
                     show={popUpAttr.show}
                     title={popUpAttr.title}
                     type={popUpAttr.type}
-                    deviceInfo={deviceInfo}
+                    deviceInfo={state.device}
                     action={onAction}
                     onChangeShow={() =>
                         setPopUpAttr((prev) => ({
@@ -154,11 +122,18 @@ export default function ManageDevice() {
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
                         <h3 className={cx('search-filter-title')}>Bộ lọc tìm kiếm</h3>
-                        <select className={cx('select-type')} value={deviceType} onChange={handleChangeUnit}>
+                        <select className={cx('select-type')} value={state.typeDisplay} onChange={handleTypeDeviceDisplay}>
                             <option value="all">Chọn loại thiết bị</option>
-                            <option value="bulb">Bóng đèn</option>
-                            <option value="airConditioner">Điều hoà</option>
-                            <option value="fan">Quạt</option>
+                            <option value="0">Pin</option>
+                            <option value="1">Quạt</option>
+                            <option value="2">Cảm biến cháy</option>
+                            <option value="3">Cảm biến ngập nước</option>
+                            <option value="4">Bóng đèn</option>
+                            <option value="5">Cảm biến đột nhập</option>
+                            <option value="6">Điều hoà</option>
+                            <option value="7">Cảm biến nhiệt độ IN</option>
+                            <option value="8">Cảm biến nhiệt độ OUT</option>
+
                         </select>
                     </div>
                     <div className={cx('search-area')}>
@@ -178,7 +153,7 @@ export default function ManageDevice() {
                                     small
                                     leftIcon={<FontAwesomeIcon icon={faPlus} />}
                                     onClick={() => {
-                                        setDeviceInfo(initAddDevice);
+                                        // setDeviceInfo(initAddDevice);
                                         setPopUpAttr({ show: true, type: 'add', title: 'Thêm thiết bị' });
                                     }}
                                 >
@@ -191,15 +166,21 @@ export default function ManageDevice() {
                 <div className={cx('main-content')}>
                     <div className={cx('grid wide container')}>
                         {/** Device table */}
-                        {state.listDevice.length > 0 && (
+                        {state.listDisplay.length > 0 && (
                             <Table
-                                data={state.listDevice}
+                                data={state.listDisplay}
                                 onClickEdit={(data) => {
                                     // console.log('edit  success: ', data);
-                                    setDeviceInfo(data);
+                                    // setDeviceInfo(data);
+                                    dispatch(setDeviceAction(data))
                                     setPopUpAttr({ show: true, type: 'edit', title: 'Sửa thiết bị' });
                                 }}
-                                onClickDel={handleDelDevice}
+                                onClickDel={(data) => {
+                                    // console.log('edit  success: ', data);
+                                    // setDeviceInfo(data);
+                                    dispatch(setDeviceAction(data))
+                                    setPopUpAttr({ show: true, type: 'del', title: 'Xoá thiết bị' });
+                                }}
                             />
                         )}
                     </div>

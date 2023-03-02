@@ -13,12 +13,12 @@ import PinInfo from '~/components/PinInfo';
 import { useParams } from 'react-router-dom';
 import { getDeviceList } from '~/services/deviceService';
 import { initDevice, deviceReducer } from '~/reducer/reducer';
-import { setListDeviceAction } from '~/reducer/action';
+import { setListAllDeviceAction } from '~/reducer/action';
 
 const cx = classNames.bind(styles);
 function HomeBts() {
     const btsId = useParams().btsId;
-    const [state, dispatch] = useReducer(deviceReducer, initDevice([]))
+    const [state, dispatch] = useReducer(deviceReducer, initDevice('all',[],[]))
     // console.log("home bts id = ", btsId)
     //**get bts from server with btsId */
 
@@ -26,7 +26,7 @@ function HomeBts() {
         getDeviceList(btsId).then((res)=>{
             console.log(res)
             let result = res.data.body.results
-            dispatch(setListDeviceAction(result))
+            dispatch(setListAllDeviceAction(result))
         })
     },[])
     const devicesData = Devices;
@@ -81,7 +81,7 @@ function HomeBts() {
                             onChange={handleChangeSelectedDevice}
                         >
                             <option value="">Chọn thiết bị</option>
-                            {state.listDevice.map((item, index) => {
+                            {state.listAll.map((item, index) => {
                                 return (
                                     <option key={index} value={item.name}>
                                         {item.name}

@@ -84,43 +84,50 @@ export const Devices = [
 ];
 export const DeviceType = [
     {
-        type: 'bulb',
+        type: 0,
+        avatar: images.battery,
+        typeName: 'Pin',
+        status: 'on',
+        description:''
+    },
+    {
+        type: 4,
         avatar: images.bulb,
         typeName: 'Bóng đèn',
         description: 'Điều khiển bật/tắt',
     },
     {
-        type: 'sensor',
+        type: 2,
         avatar: images.sensorFire,
         typeName: 'Cảm biến cháy',
         description: 'Điều khiển bật/tắt',
     },
     {
-        type: 'sensor',
+        type: 5,
         avatar: images.sensorEntry,
         typeName: 'Cảm biến đột nhập',
         description: 'Điều khiển bật/tắt',
     },
     {
-        type: 'sensor',
+        type: 3,
         avatar: images.sensorWater,
         typeName: 'Cảm biến nhập nước',
         description: 'Điều khiển bật/tắt',
     },
     {
-        type: 'sensor',
+        type: 7,
         avatar: images.sensorTemp,
         typeName: 'Cảm biến nhiệt độ',
         description: 'Điều khiển bật/tắt',
     },
     {
-        type: 'fan',
+        type: 1,
         avatar: images.fans,
         typeName: ' Quạt',
         description: 'Điều khiển bật/tắt',
     },
     {
-        type: 'airConditioner',
+        type: 6,
         avatar: images.airConditioner,
         typeName: ' Điều hoà',
         description: 'Điều khiển bật/tắt',

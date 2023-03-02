@@ -10,7 +10,9 @@ import {
     ADD_DEVICE,
     DEL_DEVICE,
     EDIT_DEVICE,
-    SET_LIST_DEVICE,
+    SET_TYPE_DISPLAY_DEVICE,
+    SET_LIST_DISPLAY_DEVICE,
+    SET_LIST_ALL_DEVICE,
 } from './constant';
 
 export const initUser = () => {
@@ -40,7 +42,7 @@ export const reducer = (state, action) => {
 //** ---------------------------- Reducer for BTS -----------------------------------*/
 export const initBts = (listBts) => {
     return {
-        bts: { id: '',index:null, name: '', mac: '', place: '', avatar: '' },
+        bts: { id: '', index: null, name: '', mac: '', place: '', avatar: '' },
         listBts,
     };
 };
@@ -53,18 +55,18 @@ export const btsReducer = (state, action) => {
                 bts: action.payload,
             };
         case SET_LIST_BTS:
-            let newList = action.payload.map((item, index)=>{
+            let newList = action.payload.map((item, index) => {
                 return {
                     ...item,
-                    index:index
-                }
-            })
+                    index: index,
+                };
+            });
             return {
                 ...state,
                 listBts: newList,
             };
         case ADD_BTS:
-            let newBts = {...action.payload, index: state.listBts.length}
+            let newBts = { ...action.payload, index: state.listBts.length };
             return {
                 ...state,
                 bts: { id: '', name: '', mac: '', place: '', avatar: '' },
@@ -94,10 +96,12 @@ export const btsReducer = (state, action) => {
 
 //**------------------------------Reducer for Devices------------------------------- */
 
-export const initDevice = (listDevice) => {
+export const initDevice = (typeDisplay, listDisplay, listAll) => {
     return {
         device: {},
-        listDevice,
+        typeDisplay,
+        listDisplay,
+        listAll,
     };
 };
 
@@ -108,33 +112,97 @@ export const deviceReducer = (state, action) => {
                 ...state,
                 device: action.payload,
             };
-        case SET_LIST_DEVICE:
-            console.log(action.payload)
-            return {
-                ...state,
-                listDevice: action.payload,
-            };
         case ADD_DEVICE:
-            return {
-                ...state,
-                device: {},
-                listDevice: [...state.listDevice, action.payload],
-            };
+            //them vao list all
+            let dvToAll = { ...action.payload, index: state.listAll.length };
+
+            // neu cung type hien thi thif them vao list hien thij
+            let isSameTypeDisplay = action.payload.type == state.typeDisplay;
+            let dvToDisplay = { ...action.payload, index: state.listDisplay.length };
+            if (isSameTypeDisplay || state.typeDisplay === 'all') {
+                return {
+                    ...state,
+                    device: {},
+                    listAll: [...state.listAll, dvToAll],
+                    listDisplay: [...state.listDisplay, dvToDisplay],
+                };
+            } else {
+                return {
+                    ...state,
+                    device: {},
+                    listAll: [...state.listAll, dvToAll],
+                };
+            }
+
         case EDIT_DEVICE:
-            let newListDevice1 = [...state.listDevice];
-            newListDevice1[action.payload.id] = action.payload;
+            // console.log('payload: ', action.payload)
+            //thay doi trong list hien thi
+            let lsDisplay = [...state.listDisplay];
+            lsDisplay[action.payload.index] = action.payload;
+
+            //thay doi trong list all
+            let lsAll = [...state.listAll];
+            // tim object trong list all de thay doi
+            let tmp = lsAll.filter((item) => {
+                return item.id === action.payload.id;
+            });
+            // console.log("tmp: ", tmp)
+            let dvEdit = { ...action.payload, index: tmp[0].index };
+            // console.log("dvedit: ", dvEdit)
+            lsAll[dvEdit.index] = dvEdit;
+
             return {
                 ...state,
                 device: {},
-                listDevice: newListDevice1,
+                listDisplay: lsDisplay,
+                listAll: lsAll,
             };
         case DEL_DEVICE:
-            let newListDevice2 = [...state.listDevice];
-            newListDevice2.splice(action.payload.id, 1);
+            // console.log('payload: ', action.payload);
+            //xoa trong list hien thi
+            let lsDisplay1 = [...state.listDisplay];
+            lsDisplay1.splice(action.payload.index, 1);
+
+            //xoa trong list all
+            let lsAll1 = [...state.listAll];
+            // tim object trong list all de thay doi
+            let tmp1 = lsAll1.filter((item) => {
+                return item.id === action.payload.id;
+            });
+            // let dvDel = {...action.payload, index: tmp1.index}
+            lsAll1.splice(tmp1[0].index, 1);
             return {
                 ...state,
                 device: {},
-                listDevice: newListDevice2,
+                listDisplay: lsDisplay1,
+                listAll: lsAll1,
+            };
+        case SET_TYPE_DISPLAY_DEVICE:
+            return {
+                ...state,
+                typeDisplay: action.payload,
+            };
+        case SET_LIST_ALL_DEVICE:
+            let newListAll = action.payload.map((item, index) => {
+                return {
+                    ...item,
+                    index: index,
+                };
+            });
+            return {
+                ...state,
+                listAll: newListAll,
+            };
+        case SET_LIST_DISPLAY_DEVICE:
+            let newListDisplay = action.payload.map((item, index) => {
+                return {
+                    ...item,
+                    index: index,
+                };
+            });
+            return {
+                ...state,
+                listDisplay: newListDisplay,
             };
         default:
             throw new Error('Invalid Action');

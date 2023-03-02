@@ -1,10 +1,11 @@
 import * as request from '~/util/request';
 //** get request - retrieve devices from server */
-export const getDeviceList = async (btsID, type, name, status) => {
+export const getDeviceList = async (btsID,limit=30, type, name, status) => {
     try {
         const res = await request.get(`devices`, {
             params: {
                 btsID,
+                limit,
                 type,
                 name,
                 status,

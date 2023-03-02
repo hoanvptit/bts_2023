@@ -10,7 +10,7 @@ import PopupDevices from '~/components/popup/popupStatusDevices';
 import { useParams } from 'react-router-dom';
 import { deviceReducer, initDevice } from '~/reducer/reducer';
 import { getDeviceList } from '~/services/deviceService';
-import { setListDeviceAction } from '~/reducer/action';
+import { setListAllDeviceAction } from '~/reducer/action';
 
 const cx = classNames.bind(styles);
 export default function DeviceControl() {
@@ -90,7 +90,7 @@ export default function DeviceControl() {
     ];
 
     const [listDevice, setListDevice] = useState(devices);
-    const [state, dispatch] = useReducer(deviceReducer, initDevice([]))
+    const [state, dispatch] = useReducer(deviceReducer, initDevice('all',[],[]))
 
     const [popUpAttr, setPopUpAttr] = useState({
         show: false,
@@ -104,7 +104,7 @@ export default function DeviceControl() {
         getDeviceList(btsId).then((res)=>{
             console.log(res)
             let result = res.data.body.results
-            dispatch(setListDeviceAction(result))
+            dispatch(setListAllDeviceAction(result))
         })
     },[])
 
@@ -141,7 +141,7 @@ export default function DeviceControl() {
     const DevicesLine = () => {
         return (
             <div className={cx('row bts_line')}>
-                {state.listDevice.map((item, index) => {
+                {state.listAll.map((item, index) => {
                     return (
                         <div key={index} className={cx('col l-2 m-6 c-12')}>
                             <DeviceItem
