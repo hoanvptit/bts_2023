@@ -9,7 +9,11 @@ const images = {
     sensorTemp:require('~/assets/images/sensor_temp.png'),
     sensorWater:require('~/assets/images/sensor_water.png'),
     battery:require('~/assets/images/battery.png'),
-
+    noti_normal: require('~/assets/images/noti_normal.png'),
+    noti_no_signal: require('~/assets/images/noti_no_signal.png'),
+    noti_warning: require('~/assets/images/noti_warning.png'),
+    noti_dangerous: require('~/assets/images/noti_danger.png'),
+    no_data:require('~/assets/images/no_data.png')
 
 
 };

@@ -10,9 +10,15 @@ import {
     ADD_DEVICE,
     DEL_DEVICE,
     EDIT_DEVICE,
+    UPDATE_STATUS_DEVICE,
     SET_TYPE_DISPLAY_DEVICE,
     SET_LIST_DISPLAY_DEVICE,
     SET_LIST_ALL_DEVICE,
+    SET_LIST_ALL_NOTI,
+    SET_LIST_DISPLAY_NOTI,
+    SET_CHECKED_LIST,
+    FETCH_SUCCESS,
+    FETCH_ERROR,
 } from './constant';
 
 export const initUser = () => {
@@ -182,6 +188,8 @@ export const deviceReducer = (state, action) => {
                 ...state,
                 typeDisplay: action.payload,
             };
+        // case UPDATE_STATUS_DEVICE:
+
         case SET_LIST_ALL_DEVICE:
             let newListAll = action.payload.map((item, index) => {
                 return {
@@ -203,6 +211,74 @@ export const deviceReducer = (state, action) => {
             return {
                 ...state,
                 listDisplay: newListDisplay,
+            };
+        default:
+            throw new Error('Invalid Action');
+    }
+};
+
+//**---------------------Reducer for Notification-------------------------------- */
+
+export const initNotify = (checkedList, listAll, listDisplay) => {
+    return {
+        checkedList,
+        listAll,
+        listDisplay,
+    };
+};
+
+export const notifyReducer = (state, action) => {
+    switch (action.type) {
+        case SET_CHECKED_LIST:
+            let newCheckedlist = action.payload;
+            let newDisplayList = [];
+            if (newCheckedlist.length === 4) newDisplayList = state.listAll;
+            else {
+                state.listAll.forEach((noti) => {
+                    newCheckedlist.forEach((item) => {
+                        if (noti.level === item) newDisplayList.push(noti);
+                    });
+                });
+            }
+            return {
+                ...state,
+                checkedList: newCheckedlist,
+                listDisplay: newDisplayList,
+            };
+        case SET_LIST_ALL_NOTI:
+            return {
+                ...state,
+                listAll: action.payload,
+            };
+        case SET_LIST_DISPLAY_NOTI:
+            return {
+                ...state,
+                listDisplay: action.payload,
+            };
+        default: {
+            throw new Error('Invalid Action');
+        }
+    }
+};
+
+//**------------------Reducer for Fetching data---------------------- */
+
+export const initialStateFetch = {
+    loading: true,
+    error: '',
+};
+
+export const fetchReducer = (state, action) => {
+    switch (action.type) {
+        case FETCH_SUCCESS:
+            return {
+                loading: false,
+                error: '',
+            };
+        case FETCH_ERROR:
+            return {
+                loading: false,
+                error: action.payload,
             };
         default:
             throw new Error('Invalid Action');

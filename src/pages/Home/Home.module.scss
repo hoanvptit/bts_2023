@@ -24,6 +24,15 @@
     flex-direction: column;
     // align-items: center;
 }
+.no_data{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    .img_no_data {
+       margin: 3.2rem;
+    }
+}
 .search-filter-title {
     margin-top: 16px;
     margin-left: 16px;

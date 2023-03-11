@@ -85,100 +85,107 @@ export const Devices = [
 export const DeviceType = [
     {
         type: 0,
-        avatar: images.battery,
+        icon: images.battery,
         typeName: 'Pin',
         status: 'on',
-        description:''
-    },
-    {
-        type: 4,
-        avatar: images.bulb,
-        typeName: 'Bóng đèn',
-        description: 'Điều khiển bật/tắt',
-    },
-    {
-        type: 2,
-        avatar: images.sensorFire,
-        typeName: 'Cảm biến cháy',
-        description: 'Điều khiển bật/tắt',
-    },
-    {
-        type: 5,
-        avatar: images.sensorEntry,
-        typeName: 'Cảm biến đột nhập',
-        description: 'Điều khiển bật/tắt',
-    },
-    {
-        type: 3,
-        avatar: images.sensorWater,
-        typeName: 'Cảm biến nhập nước',
-        description: 'Điều khiển bật/tắt',
-    },
-    {
-        type: 7,
-        avatar: images.sensorTemp,
-        typeName: 'Cảm biến nhiệt độ',
-        description: 'Điều khiển bật/tắt',
+        description: '',
     },
     {
         type: 1,
-        avatar: images.fans,
+        icon: images.fans,
         typeName: ' Quạt',
         description: 'Điều khiển bật/tắt',
     },
     {
+        type: 2,
+        icon: images.sensorFire,
+        typeName: 'Cảm biến cháy',
+        description: 'Điều khiển bật/tắt',
+    },
+    {
+        type: 3,
+        icon: images.sensorWater,
+        typeName: 'Cảm biến nhập nước',
+        description: 'Điều khiển bật/tắt',
+    },
+    {
+        type: 4,
+        icon: images.bulb,
+        typeName: 'Bóng đèn',
+        description: 'Điều khiển bật/tắt',
+    },
+
+    {
+        type: 5,
+        icon: images.sensorEntry,
+        typeName: 'Cảm biến đột nhập',
+        description: 'Điều khiển bật/tắt',
+    },
+    {
         type: 6,
-        avatar: images.airConditioner,
+        icon: images.airConditioner,
         typeName: ' Điều hoà',
+        description: 'Điều khiển bật/tắt',
+    },
+    {
+        type: 7,
+        icon: images.sensorTemp,
+        typeName: 'Cảm biến nhiệt độ IN',
+        description: 'Điều khiển bật/tắt',
+    },
+    {
+        type: 8,
+        icon: images.sensorTemp,
+        typeName: 'Cảm biến nhiệt độ OUT',
         description: 'Điều khiển bật/tắt',
     },
 ];
 
 export const Action = [
     {
-        status:'off',
+        status: 'off',
         name: 'Tắt quạt',
         des: 'Thực hiện bởi: Hoàng Mậu Trung',
         date: '15/02/2023',
         time: '21:00:00',
     },
     {
-        status:'on',
+        status: 'on',
         name: 'Bật quạt',
         des: 'Thực hiện bởi: Đậu Mạnh Tuấn',
         date: '15/02/2023',
         time: '21:00:00',
     },
     {
-        status:'connected',
+        status: 'connected',
         name: 'Đã kết nối',
         des: 'Thiết bị đã được kết nối với hệ thống. Thiết bị đang tắt',
         date: '15/02/2023',
         time: '21:00:00',
     },
     {
-        status:'disconnected',
+        status: 'disconnected',
         name: 'Mất kết nối',
         des: 'Thiết bị đã được kết nối với hệ thống. Thiết bị đang tắt',
         date: '15/02/2023',
         time: '21:00:00',
     },
     {
-        status:'on',
+        status: 'on',
         name: 'Bật quạt',
         des: 'Thực hiện bởi: Đậu Mạnh Tuấn',
         date: '15/02/2023',
         time: '21:00:00',
     },
     {
-        status:'off',
+        status: 'off',
         name: 'Tắt quạt',
         des: 'Thực hiện bởi: Hoàng Mậu Trung',
         date: '15/02/2023',
         time: '21:00:00',
     },
     {
-        status:'on',
+        status: 'on',
         name: 'Bật quạt',
         des: 'Thực hiện bởi: Đậu Mạnh Tuấn',
         date: '15/02/2023',
@@ -242,181 +249,244 @@ export const Action = [
     // },
 ];
 
-// export const Data_sensor = [
-//     {
-//         time:0,
-//         temp:10
-//     },
-//     {
-//         time:3,
-//         temp:20
-//     },
-//     {
-//         time:6,
-//         temp:30
-//     },
-//     {
-//         time:9,
-//         temp:25
-//     },
-//     {
-//         time:12,
-//         temp:21
-//     },
-//     {
-//         time:15,
-//         temp:33
-//     },
-//     {
-//         time:18,
-//         temp:44
-//     },
-//     {
-//         time:21,
-//         temp:24
-//     },
-//     {
-//         time:24,
-//         temp:20
-//     }
-// ]
-
-  // Data for pin
-  export const DataCellVolt = [
+export const DataCellVolt = [
     {
         id: 1,
-        label: 'MaxVolt',
-        value: 1234,
-    },
-    {
-        id: 2,
+        name:'vcel_1',
         label: 'Vcell 1',
         value: 1234,
     },
     {
-        id: 3,
+        id: 2,
+        name:'vcel_2',
         label: 'Vcell 2',
         value: 1234,
     },
     {
-        id: 4,
+        id: 3,
+        name:'vcel_3',
         label: 'Vcell 3',
         value: 1234,
     },
     {
-        id: 5,
+        id: 4,
+        name:'vcel_4',
         label: 'Vcell 4',
         value: 1234,
     },
     {
-        id: 6,
+        id: 5,
+        name:'vcel_5',
         label: 'Vcell 5',
         value: 1234,
     },
     {
-        id: 7,
+        id: 6,
+        name:'vcel_6',
         label: 'Vcell 6',
         value: 1234,
     },
     {
+        id: 7,
+        name:'vcel_7',
+        label: 'Vcell 7',
+        value: 1234,
+    },
+    {
         id: 8,
+        name:'vcel_8',
         label: 'Vcell 8',
+        value: 1234,
+    },
+    {
+        id: 9,
+        name:'vcel_9',
+        label: 'Vcell 9',
+        value: 1234,
+    },
+    {
+        id: 10,
+        name:'vcel_10',
+        label: 'Vcell 10',
+        value: 1234,
+    },
+    {
+        id: 11,
+        name:'vcel_11',
+        label: 'Vcell 11',
+        value: 1234,
+    },
+    {
+        id: 12,
+        name:'vcel_12',
+        label: 'Vcell 12',
+        value: 1234,
+    },
+    {
+        id: 13,
+        name:'vcel_13',
+        label: 'Vcell 13',
+        value: 1234,
+    },
+    {
+        id: 14,
+        name:'vcel_14',
+        label: 'Vcell 14',
+        value: 1234,
+    },
+    {
+        id: 15,
+        name:'vcel_15',
+        label: 'Vcell 15',
+        value: 1234,
+    },
+    {
+        id: 16,
+        name:'vcel_16',
+        label: 'Vcell 16',
         value: 1234,
     },
 ];
 export const DataPackInfo = [
     {
-        id: 1,
+        id: 9,
+        name:"voltage",
         label: 'Pack Voltage',
-        unit:'V',
+        unit: 'V',
         value: 1234,
     },
     {
-        id: 2,
+        id: 10,
+        name: "current",
         label: 'Pack Current',
-        unit:'A',
+        unit: 'A',
         value: 1234,
     },
     {
-        id: 3,
+        id: 11,
+        name:"soc",
         label: 'SOC',
-        unit:'%',
+        unit: '%',
         value: 1234,
     },
     {
-        id: 4,
+        id: 12,
+        name:"soh",
         label: 'SOH',
-        unit:'%',
+        unit: '%',
         value: 1234,
     },
     {
-        id: 5,
+        id: 12,
+        name:"remain_cap",
         label: 'Remain Capacity',
-        unit:'mAH',
+        unit: 'mAH',
         value: 1234,
     },
     {
-        id: 6,
+        id: 14,
+        name:"full_cap",
         label: 'Full Capacity',
-        unit:'mAH',
+        unit: 'mAH',
         value: 1234,
     },
     {
-        id: 7,
+        id: 15,
+        name:"bat_cycle",
         label: 'Battert cycle',
-        unit:null,
         value: 1234,
-    }
-    
+        // unit: null,
+    },
 ];
 
 export const DataTemperature = [
     {
-        id: 1,
+        id: 16,
+        name:"tcel_1",
         label: 'Tcell 1',
-        unit:'℃',
+        unit: '℃',
         value: 1234,
     },
     {
-        id: 2,
-        label: 'Tcell 1',
-        unit:'℃',
+        id: 17,
+        name:"tcel_2",
+        label: 'Tcell 2',
+        unit: '℃',
         value: 1234,
     },
     {
-        id: 3,
-        label: 'Tcell 1',
-        unit:'℃',
+        id: 18,
+        name: "tcel_3",
+        label: 'Tcell 3',
+        unit: '℃',
         value: 1234,
     },
     {
-        id: 4,
-        label: 'Tcell 1',
-        unit:'℃',
+        id: 19,
+        name:"tcel_4",
+        label: 'Tcell 4',
+        unit: '℃',
         value: 1234,
     },
     {
-        id: 5,
+        id: 20,
+        name:"env_t",
         label: 'ENV_T',
-        unit:'℃',
+        unit: '℃',
         value: 1234,
     },
     {
-        id: 6,
+        id: 21,
+        name:"mos_t",
         label: 'MOS_T',
-        unit:'℃',
+        unit: '℃',
         value: 1234,
     },
-    
-    
+    {
+        id:1,
+        name: "charging",
+        label:"charging",
+        value: 0,
+    },
+    {
+        id:2,
+        name: "discharging",
+        label:"discharging",
+        value: 0,
+    },
+    // {
+    //     id:3,
+    //     name: "limit_off",
+    //     label:"limit_off",
+    //     value: 0,
+    // },
+    // {
+    //     id:4,
+    //     name: "heater_off",
+    //     label:"heater_off",
+    //     value: 0,
+    // },
+    {
+        id:5,
+        name: "chg_mos_off",
+        label:"chg_mos_off",
+        value: "0",
+    },
+    {
+        id:6,
+        name: "dsg_mos_off",
+        label:"dsg_mos_off",
+        value: "0",
+    }
 ];
+
 export const DataBattery = {
     labels: ['00', '03', '06', '09', '12', '15', '18', '21', '24'],
     datasets: [
         {
             fill: true,
             tension: 0.3,
-            label: 'Dung Lượng(%)',
+            label: 'Giá trị',
             pointRadius: 0.5,
             pointHoverRadius: 5,
             pointStyle: 'circle',
@@ -437,14 +507,68 @@ export const DataBattery = {
     ],
 };
 
-//Data for sensor
+export const PinIndex = [
+     {
+    id: 1,
+    name:'vcel_1',
+    label: 'Vcell 1',
+},
+{
+    id: 2,
+    name:'vcel_2',
+    label: 'Vcell 2',
+},
+{
+    id: 3,
+    name:"voltage",
+    label: 'Pack Voltage',
+    unit: 'V',
+},
+{
+    id: 4,
+    name: "current",
+    label: 'Pack Current',
+    unit: 'A',
+},
+{
+    id: 5,
+    name:"soc",
+    label: 'SOC',
+    unit: '%',
+},
+{
+    id: 6,
+    name:"soh",
+    label: 'SOH',
+    unit: '%',
+},
+{
+    id: 7,
+    name:"remain_cap",
+    label: 'Remain Capacity',
+    unit: 'mAH',
+},
+{
+    id: 8,
+    name:"full_cap",
+    label: 'Full Capacity',
+    unit: 'mAH',
+},
+{
+    id: 9,
+    name:"bat_cycle",
+    label: 'Battert cycle',
+    // unit: ,
+},
+]
+//Data for sensor in chart
 export const DataSensor = {
     labels: ['00', '03', '06', '09', '12', '15', '18', '21', '24'],
     datasets: [
         {
             fill: true,
             tension: 0.3,
-            label: 'Nhiệt độ (℃)',
+            label: 'Giá trị',
             pointRadius: 0.5,
             pointHoverRadius: 5,
             pointStyle: 'circle',
@@ -464,3 +588,63 @@ export const DataSensor = {
         },
     ],
 };
+
+
+// Notify info
+export const NotifyType = [
+    {
+        id:0,
+        name:'normal',
+        label: 'Bình thường',
+        icon:images.noti_normal,
+    },
+    {
+        id:0,
+        name:'disconnect',
+        label: 'Mất kết nối',
+        icon:images.noti_no_signal,
+    },
+    {
+        id:0,
+        name:'warning',
+        label: 'Cảnh báo',
+        icon:images.noti_warning,
+    },
+    {
+        id:0,
+        name:'dangerous',
+        label: 'Nguy hiểm',
+        icon:images.noti_dangerous,
+    },
+]
+
+export const NotifyTypeInfos = [
+    {
+        level:1,
+        name:'normal',
+        label: 'Bình thường',
+        value:'2 thông báo',
+        icon:images.noti_normal,
+    },
+    {
+        level:2,
+        name:'warning',
+        label: 'Cảnh báo',
+        value:'2 thông báo',
+        icon:images.noti_warning,
+    },
+    {
+        level:3,
+        name:'disconnect',
+        label: 'Mất kết nối',
+        value:'2 thông báo',
+        icon:images.noti_no_signal,
+    },
+    {
+        level:4,
+        name:'dangerous',
+        label: 'Nguy hiểm',
+        value:'2 thông báo',
+        icon:images.noti_dangerous,
+    },
+]

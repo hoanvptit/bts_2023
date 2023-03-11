@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { DeviceType } from '~/assets/data';
-import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCard';
+import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCardInManage';
 import { Modal, Button, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import { faMapLocation } from '@fortawesome/free-solid-svg-icons';
 import styles from './PopupAddDevice.module.scss';
@@ -11,17 +11,11 @@ function PopupAddDevice(props) {
     const data = DeviceType;
     // console.log('device add: ', props.deviceInfo);
     const [device, setDevice] = useState(props.deviceInfo);
-
+    const [checked, setChecked] = useState()
+    // console.log("checked: ", checked)
     const handleSubmit = () => {
         props.action();
         props.onChangeShow();
-        // if (props.type === 'add') {
-        //     setDevice({
-        //         name: '',
-        //         mac: '',
-        //         location: '',
-        //     });
-        // }
     };
 
     const handleClose = () => {
@@ -36,16 +30,15 @@ function PopupAddDevice(props) {
         }));
         props.onChangeObject(tmp);
     };
-    const handleSelectDevice = (e) => {
-        let value = e.target.value;
-        let deviceType = DeviceType.filter((item) => {
-            return item.typeName === value;
-        });
-        let tmp = { ...device, avatar: deviceType[0].avatar, type: deviceType[0].type, typeName: value};
+    const handleSelectDevice = (value) => {
+        
+        setChecked(value)
+        let tmp = { ...device, avatar: DeviceType[value].icon, type: DeviceType[value].type, typeName: DeviceType[value].typeName};
+        console.log("tmp: ", tmp)
         setDevice((prev) => ({
             ...prev,
-            avatar: deviceType[0].avatar,
-            type: deviceType[0].type,
+            avatar: DeviceType[value].icon,
+            type: DeviceType[value].type,
             typeName: value,
         }));
         props.onChangeObject(tmp);
@@ -97,11 +90,13 @@ function PopupAddDevice(props) {
                                             <input
                                                 className={cx('input-radio')}
                                                 type="radio"
-                                                checked={item.typeName === device.typeName}
+                                                checked={item.type === checked}
                                                 id={item.type}
-                                                name="addDevice"
-                                                value={item.typeName}
-                                                onChange={handleSelectDevice}
+                                                value={item.type}
+                                                onChange={()=>{
+                                                    setChecked(item.type)
+                                                    handleSelectDevice(item.type)
+                                                }}
                                             />
                                         </div>
                                     );

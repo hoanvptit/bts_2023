@@ -2,23 +2,24 @@ import { Modal, Button } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 import { useState, useEffect, useRef } from 'react';
 import { updateDevice } from '~/services/deviceService';
-import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCard';
+import DeviceInfoCard from '~/components/DeviceItem/DeviceInfoCardInManage';
 import styles from './PopupDevices.module.scss';
 
 const cx = classNames.bind(styles);
 function PopupDevices(props) {
     const device = props.deviceInfo;
-    const deviceStatus = device.status;
+    let valueOnOff = 0;
+    device.curData.forEach((dt) => {
+        let tmp_name = dt.name;
+        if (tmp_name === 'value') {
+            valueOnOff = dt['value'];
+        }
+    });
     const btnRef = useRef();
-    const [status, setStatus] = useState(deviceStatus === 'on' ? true : false);
 
     const handleChangeStatus = (e) => {
         let newStatus = e.target.value;
-        // setDeviceStatus((prev) => ({
-        //     ...prev,
-        //     status: newStatus,
-        // }));
-        setStatus((prev) => !prev);
+        
         props.onChangeStatus(newStatus);
         props.action(newStatus);
         props.onChangeShow();
@@ -48,23 +49,23 @@ function PopupDevices(props) {
                 <Modal.Body>
                     <div className={cx('modal-body')}>
                         <div className={cx('first-line')}>
-                            <DeviceInfoCard data={props.deviceInfo} border />
+                            <DeviceInfoCard data={props.deviceInfo} border inPopupStatus/>
                         </div>
                         <div className={cx('second-line')}>
                             <button
-                                className={cx('btn_cancel', `${status ? 'off' : 'on'}`)}
-                                disabled={status}
+                                className={cx('btn_cancel', `${valueOnOff==1 ? 'off' : 'on'}`)}
+                                disabled={valueOnOff==1}
                                 onClick={handleChangeStatus}
-                                value="on"
+                                value="1"
                                 ref={btnRef}
                             >
                                 Bật
                             </button>
                             <button
-                                className={cx('btn_add', `${status ? 'on' : 'off'}`)}
-                                disabled={!status}
+                                className={cx('btn_add', `${valueOnOff==1 ? 'on' : 'off'}`)}
+                                disabled={valueOnOff==0}
                                 onClick={handleChangeStatus}
-                                value="off"
+                                value="0"
                                 ref={btnRef}
                             >
                                 Tắt

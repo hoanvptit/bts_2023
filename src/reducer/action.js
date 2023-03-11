@@ -2,18 +2,28 @@ import { type } from '@testing-library/user-event/dist/type';
 import {
     LOGIN,
     LOGOUT,
+    //BTS action
     SET_BTS,
     SET_LIST_BTS,
     ADD_BTS,
     DEL_BTS,
     EDIT_BTS,
+    //Device action
     SET_DEVICE,
+    UPDATE_STATUS_DEVICE,
     SET_LIST_DISPLAY_DEVICE,
     SET_LIST_ALL_DEVICE,
     SET_TYPE_DISPLAY_DEVICE,
     ADD_DEVICE,
     DEL_DEVICE,
     EDIT_DEVICE,
+    //notify action
+    SET_LIST_ALL_NOTI,
+    SET_LIST_DISPLAY_NOTI,
+    SET_CHECKED_LIST,
+    // fetch data action
+    FETCH_SUCCESS,
+    FETCH_ERROR
 } from './constant';
 //** Actions for authentication */
 export const logIn = (payload) => {
@@ -91,6 +101,12 @@ export const editDeviceAction = (payload) => {
         payload,
     };
 };
+export const updateStatusDeviceAction = (payload)=>{
+    return{
+        type: UPDATE_STATUS_DEVICE,
+        payload
+    }
+}
 export const setTypeDisplayDeviceAction = (payload) => {
     return {
         type: SET_TYPE_DISPLAY_DEVICE,
@@ -109,3 +125,42 @@ export const setListAllDeviceAction = (payload) => {
         payload,
     };
 };
+
+
+//** Actions for managing notifications */
+export const setListAllNotifyAction = (payload) => {
+    return {
+        type: SET_LIST_ALL_NOTI,
+        payload,
+    };
+};
+
+export const setListDisplayNotifyAction = (payload) => {
+    return {
+        type: SET_LIST_DISPLAY_NOTI,
+        payload,
+    };
+};
+
+export const setCheckedListAction = (payload) =>{
+    return {
+        type: SET_CHECKED_LIST,
+        payload
+    }
+}
+
+//**Action for fetching data */
+
+export const fetchSuccessAction = (payload) =>{
+    return {
+        type: FETCH_SUCCESS,
+        payload
+    }
+}
+
+export const fetchErrorAction = (payload) =>{
+    return {
+        type: FETCH_ERROR,
+        payload
+    }
+}

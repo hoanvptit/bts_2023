@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import Image from '~/components/images';
+import { DeviceType } from '~/assets/data';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -8,6 +9,8 @@ const cx = classNames.bind(style);
 
 export default function Table(props) {
     const data = props.data;
+
+    // console.log("data: ", data)
     const tableTitle = ['Tên thiết bị', 'Loại thiết bị', 'Trạng thái', 'Sửa/Xoá'];
 
     const handleClickEdit = (data) => {
@@ -17,22 +20,26 @@ export default function Table(props) {
         props.onClickDel(data);
     };
     const DevicesLine = (index, device) => {
+        // console.log('device: ', device)
+        let dvType = device.type;
+        let defaultIcon = DeviceType[dvType].icon;
+        let dvTypeName = DeviceType[dvType].typeName;
         let tmp = index % 2;
         return (
             <tr key={index} className={cx('tb-col')}>
                 <td className={cx('text-left')} style={{ width: '3%' }}>
                     <div className={cx('device_card')}>
-                        <Image className={cx('avatar')} src={device.avatar} alt="avatar" />
+                        <Image className={cx('avatar')} src={device.icon || defaultIcon} alt="avatar" />
                         <div className={cx('info')}>
                             <span>{device.name}</span>
                         </div>
                     </div>
                 </td>
                 <td className={cx('text-left')} style={{ width: '3%' }}>
-                    {device.type}
+                    {dvTypeName}
                 </td>
                 <td className={cx('text-left')} style={{ width: '3%' }}>
-                    {device.status ? 'on':'off'}
+                    {device.status ? 'ON':'OFF'}
                 </td>
                 <td className={cx('text-left')} style={{ width: '1%' }}>
                     <div className={cx('option')}>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const login_request = axios.create({
-    baseURL: 'http://203.162.10.118:3000/v1/',
+    baseURL: 'http://45.124.84.133:3000/v1/',
 });
 
 export const get = async (path, options = {}) => {

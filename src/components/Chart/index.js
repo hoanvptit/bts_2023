@@ -1,21 +1,72 @@
+import 'chart.js/auto';
 import classNames from 'classnames/bind';
+import images from '~/assets/images';
 import Button from '../Button';
-import { useState } from 'react';
-import { DataBattery, DataSensor } from '~/assets/data';
+import Loader from '../Loader';
+import ToastMessage from '../popup/toast/ToastMessage';
+import { useEffect, useState } from 'react';
+import { DataBattery, DataSensor, PinIndex } from '~/assets/data';
 // ** Third Party Components
 import { Line } from 'react-chartjs-2';
 import Flatpickr from 'react-flatpickr';
-import 'chart.js/auto';
 import style from './Chart.module.scss';
+import { getAverageValue } from '~/services/deviceService';
+import { covertDataChart, extractDateOnly } from '~/util/utils';
 
 const cx = classNames.bind(style);
-const ChartjsAreaChart = (props) => {
+const AreaChart = (props) => {
     const device = props.device;
-    const [date, setDate] = useState(new Date());
+    const [loading, setLoading] = useState(true);
+    const [showToast, setShowToast] = useState({
+        show: false,
+        title: '',
+        content: '',
+    });
+    const [data, setData] = useState(null);
+    const [date, setDate] = useState(extractDateOnly(new Date().toISOString()));
     const [selectedIndex, setSelectedIndex] = useState('');
+
+    useEffect(() => {
+        getAverageValue(device.id, date, device.type)
+            .then((res) => {
+                let tmp_data = res.data.body;
+                if (tmp_data.length > 0) setData(covertDataChart(tmp_data));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                let contentToast = err.response ? err.response.data.message : err.message;
+                setShowToast((prev) => {
+                    return {
+                        ...prev,
+                        show: true,
+                        content: `Có lỗi xảy ra: ${contentToast}`,
+                    };
+                });
+            });
+    }, [device.id, date]);
     const handleChangeSelectedIndex = (e) => {
-        let value = e.target.value;
-        setSelectedIndex(value);
+        let attr = e.target.value;
+        // console.log("pin index: ", attr)
+        setLoading(true);
+        getAverageValue(device.id, date, device.type, attr)
+            .then((res) => {
+                let tmp_data = res.data.body;
+                if (tmp_data.length > 0) setData(covertDataChart(tmp_data));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                let contentToast = err.response ? err.response.data.message : err.message;
+                setShowToast((prev) => {
+                    return {
+                        ...prev,
+                        show: true,
+                        content: `Có lỗi xảy ra: ${contentToast}`,
+                    };
+                });
+            });
+        setSelectedIndex(attr);
     };
     // ** Chart Options
     const options = {
@@ -34,7 +85,7 @@ const ChartjsAreaChart = (props) => {
             },
             y: {
                 min: 0,
-                max: 60,
+                max: 200,
                 grid: {
                     color: 'rgba(204, 204, 204, 0.4)',
                     borderColor: 'transparent',
@@ -60,78 +111,71 @@ const ChartjsAreaChart = (props) => {
         },
     };
 
-    // ** Chart data
-    const data1 = {
-        labels: ['00', '03', '06', '09', '12', '15', '18', '21', '24'],
-        datasets: [
-            {
-                fill: true,
-                tension: 0.3,
-                label: 'Nhiệt độ',
-                pointRadius: 0.5,
-                pointHoverRadius: 5,
-                pointStyle: 'circle',
-                backgroundColor: () => {
-                    const ctx = document.getElementById('chart').getContext('2d');
-                    const gradient = ctx.createLinearGradient(0, 0, 0, 550);
-                    gradient.addColorStop(0, 'rgba( 255, 213, 0, 1)');
-                    gradient.addColorStop(1, 'rgba( 255, 213, 0, 0)');
-                    return gradient;
-                },
-                pointHoverBorderWidth: 5,
-                borderColor: '#FFD500',
-                pointHoverBorderColor: '#2596be',
-                pointBorderColor: 'transparent',
-                pointHoverBackgroundColor: '#fff',
-                data: [10, 15, 25, 35, 25, 45, 30, 20, 30],
-            },
-        ],
-    };
-
-    const data = device.type == 'battery' ? DataBattery : DataSensor;
-
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('chart-header')}>
-                {device.type !== 'battery' && <span className={cx('title')}>{device.name}</span>}
-                {device.type === 'battery' && (
-                    <div className={cx('select-area')}>
-                        <select
-                            className={cx('select-unit')}
-                            value={selectedIndex}
-                            onChange={handleChangeSelectedIndex}
-                        >
-                            <option value="10">Chọn chỉ số</option>
-                            <option value="Tất cả">Dung lượng</option>
-                            <option value="Nhóm điều khiển">Vcell 1</option>
-                            <option value="Nhóm Quan sát">Vcell 2</option>
-                        </select>
-                    </div>
-                )}
-                <div className={cx('util')}>
-                    <div className={cx('calendar-area')}>
-                        <label forHtml="">Chọn ngày</label>
-                        {/* <input className={cx('calendar')} type="date" id="birthday" name="birthday" /> */}
-                        <Flatpickr
-                            className={cx('date-picker')}
-                            value={date}
-                            onChange={(e) => {
-                                console.log(e[0].toDateString());
-                            }}
-                        />
-                    </div>
-                    <div className={cx('btn')}>
-                        <Button primary small onClick={() => {}}>
-                            Xuất dữ liệu
-                        </Button>
+        <>
+            {loading && <Loader />}
+            {showToast && (
+                <ToastMessage
+                    show={showToast.show}
+                    title={showToast.title}
+                    content={showToast.content}
+                    onChange={() =>
+                        setShowToast((prev) => {
+                            return { ...prev, show: false };
+                        })
+                    }
+                />
+            )}
+            <div className={cx('wrapper')}>
+                <div className={cx('chart-header')}>
+                    {device.type !== 0 && <span className={cx('title')}>{device.name}</span>}
+                    {device.type === 0 && (
+                        <div className={cx('select-area')}>
+                            <select
+                                className={cx('select-unit')}
+                                value={selectedIndex}
+                                onChange={handleChangeSelectedIndex}
+                            >
+                                {PinIndex.map((item, index) => (
+                                    <option key={index} value={item.name}>
+                                        {item.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                    <div className={cx('util')}>
+                        <div className={cx('calendar-area')}>
+                            <label forHtml="">Chọn ngày</label>
+                            <Flatpickr
+                                className={cx('date-picker')}
+                                value={date}
+                                onChange={(e) => {
+                                    console.log(e[0].toISOString());
+                                    setDate(e[0].toISOString());
+                                }}
+                            />
+                        </div>
+                        <div className={cx('btn')}>
+                            <Button primary small onClick={() => {}}>
+                                Xuất dữ liệu
+                            </Button>
+                        </div>
                     </div>
                 </div>
+                <div className={cx('chart-content')}>
+                    {data != null ? (
+                        <Line id="chart" data={data} options={options} height={450} />
+                    ) : (
+                        <div className={cx('no_data')}>
+                            <img src={images.no_data} className={cx('img_no_data')} alt="no data" />
+                            <span>Không có thông tin dữ liệu</span>
+                        </div>
+                    )}
+                </div>
             </div>
-            <div className={cx('chart-content')}>
-                <Line id="chart" data={data} options={options} height={450} />
-            </div>
-        </div>
+        </>
     );
 };
 
-export default ChartjsAreaChart;
+export default AreaChart;

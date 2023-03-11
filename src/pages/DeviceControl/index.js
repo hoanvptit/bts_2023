@@ -4,136 +4,129 @@ import Sidebar from '~/layouts/components/Sidebar';
 import Header from '~/layouts/components/Header';
 import DeviceItem from '~/components/DeviceItem';
 import images from '~/assets/images';
-import styles from './DeviceControl.module.scss';
-
+import Loader from '~/components/Loader';
+import ToastMessage from '~/components/popup/toast/ToastMessage';
 import PopupDevices from '~/components/popup/popupStatusDevices';
 import { useParams } from 'react-router-dom';
 import { deviceReducer, initDevice } from '~/reducer/reducer';
-import { getDeviceList } from '~/services/deviceService';
-import { setListAllDeviceAction } from '~/reducer/action';
+import { getDeviceList, updateStatusDevice } from '~/services/deviceService';
+import styles from './DeviceControl.module.scss';
+import {
+    setListAllDeviceAction,
+    setDeviceAction,
+    setListDisplayDeviceAction,
+    setTypeDisplayDeviceAction,
+    editDeviceAction,
+} from '~/reducer/action';
 
 const cx = classNames.bind(styles);
 export default function DeviceControl() {
-    const btsId = useParams().btsId
-    console.log("device control btsid = ",btsId)
-    const devices = [
-        {
-            id: 1,
-            type: 'bulb',
-            avatar: images.bulb,
-            name: 'Bóng đèn 1',
-            status: 'on',
-        },
-        {
-            id: 2,
-            type: 'bulb',
-            avatar: images.bulb,
-            name: ' Bóng đèn 2',
-            status: 'on',
-        },
-        {
-            id: 3,
-            type: 'bulb',
-            avatar: images.bulb,
-            name: ' Bóng đèn 3',
-            status: 'off',
-        },
-        {
-            id: 4,
-            type: 'bulb',
-            avatar: images.bulb,
-            name: ' Bóng đèn 4',
-            status: 'off',
-        },
-        {
-            id: 5,
-            type: 'fan',
-            avatar: images.fans,
-            name: ' Quạt 1',
-            status: 'on',
-        },
-        {
-            id: 6,
-            type: 'fan',
-            avatar: images.fans,
-            name: ' Quạt 2',
-            status: 'on',
-        },
-        {
-            id: 7,
-            type: 'airConditioner',
-            avatar: images.airConditioner,
-            name: ' Điều hoà 1',
-            status: 'on',
-        },
-        {
-            id: 8,
-            type: 'airConditioner',
-            avatar: images.airConditioner,
-            name: ' Điều hoà 2',
-            status: 'on',
-        },
-        {
-            id: 9,
-            type: 'airConditioner',
-            avatar: images.airConditioner,
-            name: 'Điều hoà 3',
-            status: 'on',
-        },
-        {
-            id: 10,
-            type: 'airConditioner',
-            avatar: images.airConditioner,
-            name: ' Điều hoà 4',
-            status: 'on',
-        },
-    ];
-
-    const [listDevice, setListDevice] = useState(devices);
-    const [state, dispatch] = useReducer(deviceReducer, initDevice('all',[],[]))
-
+    const btsId = useParams().btsId;
+    const [state, dispatch] = useReducer(deviceReducer, initDevice('all', [], []));
+    const [loading, setLoading] = useState(true);
     const [popUpAttr, setPopUpAttr] = useState({
         show: false,
     });
-    // info of device need to update status
-    const [deviceInfo, setDeviceInfo] = useState(null);
-    const [deviceType, setDeviceType] = useState('');
+    const [showToast, setShowToast] = useState({
+        show: false,
+        title: 'Điều khiển thiết bị',
+        content: '',
+    });
 
-    //get list device of bts 
-    useEffect(()=>{
-        getDeviceList(btsId).then((res)=>{
-            console.log(res)
-            let result = res.data.body.results
-            dispatch(setListAllDeviceAction(result))
-        })
-    },[])
-
-    const handleChangeUnit = (e) => {
-        let value = e.target.value;
-        setDeviceType(value);
-        let displayList;
-        if (value !== 'all') {
-            displayList = devices.filter((device) => {
-                return device.type === value;
+    //get list device of bts
+    useEffect(() => {
+        getDeviceList(btsId)
+            .then((res) => {
+                let result = res.data.body.results;
+                ///filter thiet bi dieu khien
+                let resultDisplay = result.filter((item) => {
+                    return item.type === 1 || item.type === 4 || item.type === 6;
+                });
+                dispatch(setListAllDeviceAction(resultDisplay));
+                dispatch(setListDisplayDeviceAction(resultDisplay));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                let contentToast = err.response ? err.response.data.message : err.message;
+                setShowToast((prev) => {
+                    return {
+                        ...prev,
+                        show: true,
+                        content: `Có lỗi xảy ra: ${contentToast}`,
+                    };
+                });
             });
-            setListDevice(displayList);
+    }, []);
+
+    const handleTypeDeviceDisplay = (e) => {
+        let type = e.target.value;
+        let displayList;
+        if (type !== 'all') {
+            displayList = state.listAll.filter((device) => {
+                return device.type == type;
+            });
+            dispatch(setListDisplayDeviceAction(displayList));
         } else {
-            setListDevice(devices);
+            dispatch(setListDisplayDeviceAction(state.listAll));
         }
+
+        dispatch(setTypeDisplayDeviceAction(type));
     };
 
     //update status-> send to server new status
     const updateStatus = (info) => {
-        const newList = [...listDevice]
-        newList[deviceInfo.id-1].status = info
-        setListDevice(newList)
+        let tmpDate = new Date().toISOString();
+        let errObjInData = state.device.curData.filter((item) => {
+            return item.name === 'error';
+        });
+        let newCurData = [...errObjInData, { name: 'value', value: `${info}`, date: `${tmpDate}` }];
+        let newDevice = {
+            ...state.device,
+            curData: newCurData,
+        };
+        setLoading(true);
+        updateStatusDevice(state.device.id, `${info}`)
+            .then((res) => {
+                if (res.status == 200) {
+                    let contentToast = info == 1 ? 'Bật thiết bị thành công' : 'Tắt thiết bị thành công';
+                    setShowToast((prev) => {
+                        return {
+                            ...prev,
+                            show: true,
+                            content: contentToast,
+                        };
+                    });
+                }
+
+                dispatch(editDeviceAction(newDevice));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                let errMessage = err.response ? err.response.data.message : err.message;
+                let contentToast = info == 1 ? 'Bật thiết bị không thành công' : 'Tắt thiết bị không thành công';
+                setShowToast((prev) => {
+                    return {
+                        ...prev,
+                        show: true,
+                        content: `${contentToast}:${errMessage}`,
+                    };
+                });
+            });
     };
     // change status of device
     const changeStatus = (info) => {
-        setDeviceInfo((prev) => ({
-            ...prev,
-            status: info,
-        }));
+        let tmpDate = new Date().toISOString();
+        let errObjInData = state.device.curData.filter((item) => {
+            return item.name === 'error';
+        });
+        let newCurData = [...errObjInData, { name: 'value', value: `${info}`, date: `${tmpDate}` }];
+        let newDevice = {
+            ...state.device,
+            curData: newCurData,
+        };
+        dispatch(setDeviceAction(newDevice));
     };
 
     //** For show Device infomation in a line */
@@ -141,14 +134,14 @@ export default function DeviceControl() {
     const DevicesLine = () => {
         return (
             <div className={cx('row bts_line')}>
-                {state.listAll.map((item, index) => {
+                {state.listDisplay.map((item, index) => {
                     return (
                         <div key={index} className={cx('col l-2 m-6 c-12')}>
                             <DeviceItem
                                 data={item}
                                 border
                                 handleClick={() => {
-                                    setDeviceInfo(item);
+                                    dispatch(setDeviceAction(item));
                                     setPopUpAttr({
                                         show: true,
                                     });
@@ -161,12 +154,13 @@ export default function DeviceControl() {
         );
     };
     //** End Bts Line */
-    const body =  (
+    const body = (
         <>
+            {loading && <Loader />}
             {popUpAttr.show && (
                 <PopupDevices
                     show={popUpAttr.show}
-                    deviceInfo={deviceInfo}
+                    deviceInfo={state.device}
                     action={updateStatus}
                     onChangeShow={() =>
                         setPopUpAttr((prev) => ({
@@ -178,29 +172,54 @@ export default function DeviceControl() {
                 />
             )}
 
+            {showToast && (
+                <ToastMessage
+                    show={showToast.show}
+                    title={showToast.title}
+                    content={showToast.content}
+                    onChange={() =>
+                        setShowToast((prev) => {
+                            return { ...prev, show: false };
+                        })
+                    }
+                />
+            )}
+
             <div className={cx('body-wrapper')}>
                 <div className={cx('search-filter')}>
                     <div className={cx('select-area')}>
-                        <select className={cx('select-unit')} value={deviceType} onChange={handleChangeUnit}>
-                            <option value="all">Chọn loại thiết bị</option>
-                            <option value="bulb">Bóng đèn</option>
-                            <option value="airConditioner">Điều hoà</option>
-                            <option value="fan">Quạt</option>
+                        <select
+                            className={cx('select-unit')}
+                            value={state.typeDisplay}
+                            onChange={handleTypeDeviceDisplay}
+                        >
+                            <option value="all">Chọn loại thiết bị(tất cả)</option>
+                            <option value="1">Quạt</option>
+                            <option value="4">Bóng đèn</option>
+                            <option value="6">Điều hoà</option>
                         </select>
                     </div>
                 </div>
-                <div className={cx('main-content')}>
-                    <div className={cx('grid wide container')}>
-                        <DevicesLine />
+                {state.listDisplay.length > 0 && (
+                    <div className={cx('main-content')}>
+                        <div className={cx('grid wide container')}>
+                            <DevicesLine />
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
+            {state.listDisplay.length === 0 && (
+                <div className={cx('no_data')}>
+                    <img src={images.no_data} className={cx('img_no_data')} alt="no data" />
+                    <span>Không có thiết bị nhóm điều khiển nào trong trạm BTS</span>
+                </div>
+            )}
         </>
     );
     return (
         <div className={cx('wrapper')}>
             <div className={cx('sidebar')}>
-                <Sidebar btsId={btsId}/>
+                <Sidebar btsId={btsId} />
             </div>
             <div className={cx('container')}>
                 <div className={cx('header')}>
