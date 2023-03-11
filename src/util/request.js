@@ -26,6 +26,7 @@ const refreshToken = async (url) => {
 console.log(`Bearer ${getAccessToken().token}`);
 export const get = async (path, options = {}) => {
     // console.log('expire: ', isAccessTokenExpire());
+    // let response;
     if (isAccessTokenExpire()) {
         refreshToken('http://45.124.84.133:3000/v1/auth/refresh-tokens');
     }
@@ -34,7 +35,7 @@ export const get = async (path, options = {}) => {
 };
 
 export const post = async (path, options = {}) => {
-    console.log('expire: ', isAccessTokenExpire());
+    // console.log('expire: ', isAccessTokenExpire());
     if (isAccessTokenExpire()) {
         refreshToken('http://45.124.84.133:3000/v1/auth/refresh-tokens');
     }
@@ -43,7 +44,7 @@ export const post = async (path, options = {}) => {
 };
 
 export const del = async (path, options = {}) => {
-    console.log('expire: ', isAccessTokenExpire());
+    // console.log('expire: ', isAccessTokenExpire());
     if (isAccessTokenExpire()) {
         refreshToken('http://45.124.84.133:3000/v1/auth/refresh-tokens');
     }
@@ -51,7 +52,7 @@ export const del = async (path, options = {}) => {
     return response;
 };
 export const update = async (path, options = {}) => {
-    console.log('expire: ', isAccessTokenExpire());
+    // console.log('expire: ', isAccessTokenExpire());
     if (isAccessTokenExpire()) {
         refreshToken('http://45.124.84.133:3000/v1/auth/refresh-tokens');
     }

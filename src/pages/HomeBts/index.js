@@ -72,6 +72,7 @@ function HomeBts() {
     }, []);
 
     const asignStatus = (deviceInfo) => {
+        console.log("device show value: ", deviceInfo)
         let value = 0;
         let errorValue = 0;
         let dateValue = deviceInfo.updatedAt;

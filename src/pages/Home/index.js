@@ -25,6 +25,7 @@ let PageSize = 10;
 export default function Home() {
     // const result = BtsData;
     // const [result, setResult] = useState([])
+    const initialBts =  { id: '', index: null, name: '', mac: '', place: '', avatar: '' }
     const [state, dispatch] = useReducer(btsReducer, initBts([]));
     const [popUpAttr, setPopUpAttr] = useState({
         show: false,
@@ -96,6 +97,7 @@ export default function Home() {
                 });
             }
             dispatch(addBtsAction(tm_bts_add));
+            dispatch(setBtsAction(initialBts));
             setLoading(false)
         }).catch(err=>{
             setLoading(false)
@@ -110,6 +112,7 @@ export default function Home() {
                     content:`Thêm trạm BTS không thành công:${contentToast}`,
                 };
             });
+            dispatch(setBtsAction(initialBts));
         });
     };
     const handleEditBts = () => {
@@ -130,6 +133,7 @@ export default function Home() {
                 });
             }
             dispatch(editBtsAction(state.bts));
+            dispatch(setBtsAction(initialBts));
             setLoading(false)
         }).catch(err=>{
             setLoading(false)
@@ -142,6 +146,7 @@ export default function Home() {
                     content:`Sửa thông tin trạm BTS không thành công: ${contentToast}`,
                 };
             });
+            dispatch(setBtsAction(initialBts));
         });
     };
     const handleDelBts = () => {
@@ -156,6 +161,7 @@ export default function Home() {
                     };
                 });
             dispatch(delBtsAction(state.bts));
+            dispatch(setBtsAction(initialBts));
             setLoading(false)
         }).catch(err=>{
             setLoading(false)
@@ -168,6 +174,7 @@ export default function Home() {
                     content:`Xoá trạm BTS không thành công: ${contentToast}`,
                 };
             });
+            dispatch(setBtsAction(initialBts));
         });
     };
     const onAction = () => {

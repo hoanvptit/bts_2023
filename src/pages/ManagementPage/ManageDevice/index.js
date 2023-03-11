@@ -30,6 +30,7 @@ const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function ManageDevice() {
     const btsId = useParams().btsId;
+    const initialDevice = {name:""}
     const [state, dispatch] = useReducer(deviceReducer, initDevice('all', [], []));
 
     const [quantity, setQuantity] = useState(10);
@@ -88,6 +89,7 @@ export default function ManageDevice() {
     };
     //** For handle add bts */
     const handleAddDevice = () => {
+        console.log("add device: ", state.device)
         setLoading(true);
         //add device and send to server
         addDevice({
@@ -110,7 +112,8 @@ export default function ManageDevice() {
                     });
                 }
                 dispatch(addDeviceAction(tmp_add_dv));
-                dispatch(setDeviceAction(tmp_add_dv));
+                // dispatch(setDeviceAction(tmp_add_dv));
+                dispatch(setDeviceAction(initialDevice));
                 setLoading(false);
             })
             .catch((err) => {
@@ -123,6 +126,7 @@ export default function ManageDevice() {
                         content: `Thêm thiết bị không thành công: ${contentToast}`,
                     };
                 });
+                dispatch(setDeviceAction(initialDevice));
             });
     };
     const handleEditDevice = () => {

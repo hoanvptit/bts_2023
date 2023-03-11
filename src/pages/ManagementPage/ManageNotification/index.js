@@ -30,6 +30,7 @@ export default function ManageNotification() {
         getNotificationList()
             .then((res) => {
                 let tmp = res.data.body.results;
+                console.log("res: ",tmp)
                 if (tmp.length > 0) {
                     //find user act notify
                     getUserList()
