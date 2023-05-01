@@ -6,16 +6,12 @@ import GlobalStyles from './components/GlobalStyles';
 
 import './index.css'
 const root = ReactDOM.createRoot(document.getElementById('root'));
-// const arr = [{name:'aaa', age: 14}, {name:'bbb', age: 15}, {name:'ccc', age: 16}];
-// console.log(arr)
-// arr[2] = {name:"hoa", age :25}
-// console.log('arr after: ', arr)
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <GlobalStyles>
       <App />
     </GlobalStyles>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

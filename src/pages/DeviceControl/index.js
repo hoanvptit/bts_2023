@@ -4,7 +4,7 @@ import Sidebar from '~/layouts/components/Sidebar';
 import Header from '~/layouts/components/Header';
 import DeviceItem from '~/components/DeviceItem';
 import images from '~/assets/images';
-import Loader from '~/components/Loader';
+import Loader from '~/components/Loader/LoaderFull';
 import ToastMessage from '~/components/popup/toast/ToastMessage';
 import PopupDevices from '~/components/popup/popupStatusDevices';
 import { useParams } from 'react-router-dom';
@@ -37,6 +37,7 @@ export default function DeviceControl() {
     useEffect(() => {
         getDeviceList(btsId)
             .then((res) => {
+                console.log("res: ",res)
                 let result = res.data.body.results;
                 ///filter thiet bi dieu khien
                 let resultDisplay = result.filter((item) => {
@@ -104,6 +105,7 @@ export default function DeviceControl() {
             })
             .catch((err) => {
                 setLoading(false);
+                console.log("err: ", err)
                 let errMessage = err.response ? err.response.data.message : err.message;
                 let contentToast = info == 1 ? 'Bật thiết bị không thành công' : 'Tắt thiết bị không thành công';
                 setShowToast((prev) => {

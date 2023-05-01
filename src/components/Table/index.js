@@ -11,7 +11,7 @@ export default function Table(props) {
     const data = props.data;
 
     // console.log("data: ", data)
-    const tableTitle = ['Tên thiết bị', 'Loại thiết bị', 'Trạng thái', 'Sửa/Xoá'];
+    const tableTitle = ['Tên thiết bị', 'Loại thiết bị', 'Trạng thái', 'Xoá/Sửa'];
 
     const handleClickEdit = (data) => {
         props.onClickEdit(data);
@@ -20,7 +20,7 @@ export default function Table(props) {
         props.onClickDel(data);
     };
     const DevicesLine = (index, device) => {
-        // console.log('device: ', device)
+        // console.log('device: ', device);
         let dvType = device.type;
         let defaultIcon = DeviceType[dvType].icon;
         let dvTypeName = DeviceType[dvType].typeName;
@@ -39,20 +39,22 @@ export default function Table(props) {
                     {dvTypeName}
                 </td>
                 <td className={cx('text-left')} style={{ width: '3%' }}>
-                    {device.status ? 'ON':'OFF'}
+                    {device.status ? 'ON' : 'OFF'}
                 </td>
                 <td className={cx('text-left')} style={{ width: '1%' }}>
                     <div className={cx('option')}>
-                        <FontAwesomeIcon
-                            icon={faPenToSquare}
-                            className={cx('edit')}
-                            onClick={() => handleClickEdit(device)}
-                        />
                         <FontAwesomeIcon
                             icon={faTrashCan}
                             className={cx('delete')}
                             onClick={() => handleClickDel(device)}
                         />
+                        {device.type !== 0 && (
+                            <FontAwesomeIcon
+                                icon={faPenToSquare}
+                                className={cx('edit')}
+                                onClick={() => handleClickEdit(device)}
+                            />
+                        )}
                     </div>
                 </td>
             </tr>

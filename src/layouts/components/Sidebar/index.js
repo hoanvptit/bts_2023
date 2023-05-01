@@ -7,16 +7,29 @@ import Menu, { MenuItem } from './Menu';
 import { faBell, faSliders, faUserGroup, faCircleInfo, faBook, faHouse } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { getBts } from '~/services/btsService';
+import { getNotificationList } from '~/services/notificationService';
 const cx = classNames.bind(styles);
 function Sidebar(props) {
     const btsId = props.btsId;
     const [bts, setBts] = useState({});
+    const [countUnRead, setCountUnRead] = useState(-1)
     //*get bts from server with btsId*/
     useEffect(() => {
         getBts(btsId).then((res) => {
+            console.log("receive bts: ", res.data.body)
             setBts(res.data.body);
+            getNotificationList(50).then(res=>{
+                console.log("notify: ", res)
+                let tmpListNotis = res.data.body.results
+                let listUnRead = tmpListNotis.filter((item)=>{
+                    return !item.isRead
+                })
+                if(listUnRead.length > 0){
+                    setCountUnRead(listUnRead.length)
+                }
+            })
         });
-    }, []);
+    }, [btsId]);
 
     return (
         <aside className={cx('wrapper')}>
@@ -44,6 +57,11 @@ function Sidebar(props) {
                     <span className={cx('topic')}>QUẢN LÝ</span>
                     <Menu>
                         <MenuItem
+                            title="Trạm BTS"
+                            to={config.routes.manageBTS(btsId)}
+                            icon={<FontAwesomeIcon icon={faSliders} />}
+                        />
+                        <MenuItem
                             title="Thiết bị"
                             to={config.routes.manageDevices(btsId)}
                             icon={<FontAwesomeIcon icon={faSliders} />}
@@ -58,7 +76,7 @@ function Sidebar(props) {
                             title="Thông báo"
                             to={config.routes.manageNotifications(btsId)}
                             icon={<FontAwesomeIcon icon={faBell} />}
-                            informData="5"
+                            informData={countUnRead}
                         />
                     </Menu>
                 </div>

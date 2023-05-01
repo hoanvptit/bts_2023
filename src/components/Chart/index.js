@@ -4,6 +4,7 @@ import images from '~/assets/images';
 import Button from '../Button';
 import Loader from '../Loader';
 import ToastMessage from '../popup/toast/ToastMessage';
+import { socket} from '~/services/socket';
 import { useEffect, useState } from 'react';
 import { DataBattery, DataSensor, PinIndex } from '~/assets/data';
 // ** Third Party Components
@@ -25,7 +26,7 @@ const AreaChart = (props) => {
     const [data, setData] = useState(null);
     const [date, setDate] = useState(extractDateOnly(new Date().toISOString()));
     const [selectedIndex, setSelectedIndex] = useState('');
-
+    const [isFirstTime, setIsFirstTime] = useState(true); //for socket call
     useEffect(() => {
         getAverageValue(device.id, date, device.type)
             .then((res) => {
@@ -45,6 +46,22 @@ const AreaChart = (props) => {
                 });
             });
     }, [device.id, date]);
+
+    useEffect(() => {
+        if (!isFirstTime) {
+            // doSocketData();
+        }
+
+        return () => {
+            socket.off('data');
+        };
+    });
+    const doSocketData = () => {
+        console.log('connect socket data');
+        socket.on('data', (data) => {
+            console.log('data socket: ', data);
+        });
+    };
     const handleChangeSelectedIndex = (e) => {
         let attr = e.target.value;
         // console.log("pin index: ", attr)
@@ -85,7 +102,7 @@ const AreaChart = (props) => {
             },
             y: {
                 min: 0,
-                max: 200,
+                max: 255,
                 grid: {
                     color: 'rgba(204, 204, 204, 0.4)',
                     borderColor: 'transparent',
@@ -146,7 +163,7 @@ const AreaChart = (props) => {
                     )}
                     <div className={cx('util')}>
                         <div className={cx('calendar-area')}>
-                            <label forHtml="">Chọn ngày</label>
+                            <label forhtml="">Chọn ngày</label>
                             <Flatpickr
                                 className={cx('date-picker')}
                                 value={date}

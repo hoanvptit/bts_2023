@@ -7,17 +7,22 @@ import { useState } from 'react';
 const cx = classNames.bind(styles);
 function PopupAddObject(props) {
     const [bts, setBts] = useState(props.bts_object);
-
+    const [inputEmpty, setInputEmpty] = useState(false)
     const handleSubmit = () => {
-        props.action();
-        props.onChangeShow();
-        if (props.type === 'add') {
-            setBts({
-                // id:0,
-                name: '',
-                mac: '',
-                place: '',
-            });
+        console.log('add bts: ', bts);
+        if (bts.name === '' || bts.place === '' || bts.mac === '') {
+            setInputEmpty(true)
+        } else {
+            props.action();
+            props.onChangeShow();
+            if (props.type === 'add') {
+                setBts({
+                    // id:0,
+                    name: '',
+                    mac: '',
+                    place: '',
+                });
+            }
         }
     };
 
@@ -26,32 +31,32 @@ function PopupAddObject(props) {
     };
     const changeName = (e) => {
         let btsName = e.target.value;
-        let tmp = {...bts, name:btsName}
+        let tmp = { ...bts, name: btsName };
         // setBts((prev) => ({
         //     ...prev,
         //     name: btsName,
         // }));
-        setBts(tmp)
+        setBts(tmp);
         props.onChangeObject(tmp);
     };
     const changeMac = (e) => {
         let mac = e.target.value;
-        let tmp = {...bts, mac:mac}
+        let tmp = { ...bts, mac: mac };
         // setBts((prev) => ({
         //     ...prev,
         //     mac: mac,
         // }));
-        setBts(tmp)
+        setBts(tmp);
         props.onChangeObject(tmp);
     };
     const changePlace = (e) => {
         let place = e.target.value;
-        let tmp = {...bts, place: place }
+        let tmp = { ...bts, place: place };
         // setBts((prev) => ({
         //     ...prev,
         //     place: place,
         // }));
-        setBts(tmp)
+        setBts(tmp);
         props.onChangeObject(tmp);
     };
     return (
@@ -123,6 +128,7 @@ function PopupAddObject(props) {
                                     disabled={props.type === 'del'}
                                 />
                             </InputGroup>
+                           {inputEmpty && <p style={{ color: 'red' }}>Vui lòng điền đầy đủ thông tin</p>}
                         </div>
                     </div>
                 </Modal.Body>

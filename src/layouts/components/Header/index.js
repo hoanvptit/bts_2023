@@ -29,7 +29,7 @@ const userMenu = [
     {
         icon: <FontAwesomeIcon icon={faCoins} />,
         title: 'BTS của tôi',
-        to: '/myBts',
+        to: '/',
     },
     {
         icon: <FontAwesomeIcon icon={faCoins} />,

@@ -53,8 +53,8 @@ function PopupDevices(props) {
                         </div>
                         <div className={cx('second-line')}>
                             <button
-                                className={cx('btn_cancel', `${valueOnOff==1 ? 'off' : 'on'}`)}
-                                disabled={valueOnOff==1}
+                                className={cx('btn_cancel', `${valueOnOff>=1 ? 'off' : 'on'}`)}
+                                disabled={valueOnOff>=1}
                                 onClick={handleChangeStatus}
                                 value="1"
                                 ref={btnRef}
@@ -62,7 +62,7 @@ function PopupDevices(props) {
                                 Bật
                             </button>
                             <button
-                                className={cx('btn_add', `${valueOnOff==1 ? 'on' : 'off'}`)}
+                                className={cx('btn_add', `${valueOnOff>=1 ? 'on' : 'off'}`)}
                                 disabled={valueOnOff==0}
                                 onClick={handleChangeStatus}
                                 value="0"

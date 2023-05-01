@@ -1,4 +1,4 @@
-import * as request from '~/util/request';
+import * as request from '~/util/request_modify';
 //** get request - retrieve version code from server */
 export const retrieveVersions = async () => {
     try {

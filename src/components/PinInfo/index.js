@@ -4,7 +4,7 @@ import { Devices, Action, DataCellVolt, DataPackInfo, DataTemperature } from '~/
 import style from './PinInfo.module.scss';
 const cx = classNames.bind(style);
 function PinElement({ device }) {
-    // console.log(device);
+    console.log(device);
     const deviceData = device.curData;
     const [dataCellVolt1, setDataCellVolt1] = useState([]);
     const [dataCellVolt2, setDataCellVolt2] = useState([]);
@@ -32,7 +32,9 @@ function PinElement({ device }) {
                 if (item.name.includes('tcel') || item.name.includes('mos') || item.name === 'env_t' 
                 // || item.name.includes('charging') || item.name.includes('off')
                 ) {
+                    console.log("item: ", item)
                     let object = DataTemperature.find((obj)=>{
+                        console.log("obj: ", obj)
                         return obj.name === item.name;
                     })
                     let actual_item = {...item, label:`${object.label}`, unit:`${object.unit}`}

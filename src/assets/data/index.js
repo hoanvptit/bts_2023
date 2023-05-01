@@ -1,5 +1,106 @@
 import images from '~/assets/images';
 
+
+export const Notification = [
+    {
+        name: 'Tắt quạt',
+        des: 'Thực hiện bởi: Hoàng Mậu Trung',
+        date: '15/02/2023',
+        time: '21:00:00',
+    },
+    {
+        name: 'Bật quạt',
+        des: 'Thực hiện bởi: Đậu Mạnh Tuấn',
+        date: '15/02/2023',
+        time: '21:00:00',
+    },
+    {
+        name: 'Đã kết nối',
+        des: 'Thiết bị đã được kết nối với hệ thống. Thiết bị đang tắt',
+        date: '15/02/2023',
+        time: '21:00:00',
+    },
+    {
+        name: 'Mất kết nối',
+        des: 'Thiết bị đã được kết nối với hệ thống. Thiết bị đang tắt',
+        date: '15/02/2023',
+        time: '21:00:00',
+    },
+    {
+        name: 'Bật quạt',
+        des: 'Thực hiện bởi: Đậu Mạnh Tuấn',
+        date: '15/02/2023',
+        time: '21:00:00',
+    },
+];
+
+export const BTSLine = [
+    {
+        id: 107,
+        name: 'Đức Thọ',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+    {
+        id: 108,
+        name: 'Thạch Bàn',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+    {
+        id: 107,
+        name: 'Đức Thọ',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+    {
+        id: 108,
+        name: 'Thạch Bàn',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+    {
+        id: 107,
+        name: 'Đức Thọ',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+    {
+        id: 108,
+        name: 'Thạch Bàn',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+    {
+        id: 107,
+        name: 'Đức Thọ',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+    {
+        id: 108,
+        name: 'Thạch Bàn',
+        quantity: 5,
+        warning: 'Nhiệt độ cao, điều hòa điều khiển lỗi, phát hiện chuyển động',
+        status: '3G - 1d',
+        firmware: '4.5.0.16'
+    },
+];
+
 export const Devices = [
     {
         id: 1,
@@ -253,97 +354,97 @@ export const DataCellVolt = [
     {
         id: 1,
         name:'vcel_1',
-        label: 'Vcell 1',
+        label: 'Vcel 1',
         value: 1234,
     },
     {
         id: 2,
         name:'vcel_2',
-        label: 'Vcell 2',
+        label: 'Vcel 2',
         value: 1234,
     },
     {
         id: 3,
         name:'vcel_3',
-        label: 'Vcell 3',
+        label: 'Vcel 3',
         value: 1234,
     },
     {
         id: 4,
         name:'vcel_4',
-        label: 'Vcell 4',
+        label: 'Vcel 4',
         value: 1234,
     },
     {
         id: 5,
         name:'vcel_5',
-        label: 'Vcell 5',
+        label: 'Vcel 5',
         value: 1234,
     },
     {
         id: 6,
         name:'vcel_6',
-        label: 'Vcell 6',
+        label: 'Vcel 6',
         value: 1234,
     },
     {
         id: 7,
         name:'vcel_7',
-        label: 'Vcell 7',
+        label: 'Vcel 7',
         value: 1234,
     },
     {
         id: 8,
         name:'vcel_8',
-        label: 'Vcell 8',
+        label: 'Vcel 8',
         value: 1234,
     },
     {
         id: 9,
         name:'vcel_9',
-        label: 'Vcell 9',
+        label: 'Vcel 9',
         value: 1234,
     },
     {
         id: 10,
         name:'vcel_10',
-        label: 'Vcell 10',
+        label: 'Vcel 10',
         value: 1234,
     },
     {
         id: 11,
         name:'vcel_11',
-        label: 'Vcell 11',
+        label: 'Vcel 11',
         value: 1234,
     },
     {
         id: 12,
         name:'vcel_12',
-        label: 'Vcell 12',
+        label: 'Vcel 12',
         value: 1234,
     },
     {
         id: 13,
         name:'vcel_13',
-        label: 'Vcell 13',
+        label: 'Vcel 13',
         value: 1234,
     },
     {
         id: 14,
         name:'vcel_14',
-        label: 'Vcell 14',
+        label: 'Vcel 14',
         value: 1234,
     },
     {
         id: 15,
         name:'vcel_15',
-        label: 'Vcell 15',
+        label: 'Vcel 15',
         value: 1234,
     },
     {
         id: 16,
         name:'vcel_16',
-        label: 'Vcell 16',
+        label: 'Vcel 16',
         value: 1234,
     },
 ];
@@ -403,28 +504,28 @@ export const DataTemperature = [
     {
         id: 16,
         name:"tcel_1",
-        label: 'Tcell 1',
+        label: 'Tcel 1',
         unit: '℃',
         value: 1234,
     },
     {
         id: 17,
         name:"tcel_2",
-        label: 'Tcell 2',
+        label: 'Tcel 2',
         unit: '℃',
         value: 1234,
     },
     {
         id: 18,
         name: "tcel_3",
-        label: 'Tcell 3',
+        label: 'Tcel 3',
         unit: '℃',
         value: 1234,
     },
     {
         id: 19,
         name:"tcel_4",
-        label: 'Tcell 4',
+        label: 'Tcel 4',
         unit: '℃',
         value: 1234,
     },

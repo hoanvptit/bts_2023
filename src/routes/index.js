@@ -9,6 +9,7 @@ import ManageDevice from '~/pages/ManagementPage/ManageDevice';
 import ManageNotification from '~/pages/ManagementPage/ManageNotification';
 import Support from '~/pages/Support';
 import Document from '~/pages/Document';
+import ManageBTS from '~/pages/ManagementPage/ManageBTS';
 
 const publicRoutes = [
     { path: config.routes.login, component: Login, layout: null },
@@ -24,6 +25,7 @@ const privateRoutes = [
     { path: config.routes.manageAccounts(), component: ManageAccount },
     { path: config.routes.manageDevices(), component: ManageDevice },
     { path: config.routes.manageNotifications(), component: ManageNotification },
+    { path: config.routes.manageBTS(), component: ManageBTS },
 ];
 
 export { publicRoutes, privateRoutes };

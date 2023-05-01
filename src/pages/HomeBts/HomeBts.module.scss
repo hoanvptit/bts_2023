@@ -105,6 +105,7 @@
         margin-top: 16px;
         background-color: var(--white);
         border-radius: 5px;
+        max-height: 58rem;
         overflow-y: scroll;
         .timeline-item {
             margin: 5px 0;
@@ -158,6 +159,7 @@
                 }
             }
         }
+        
     }
     .title-status {
         font-size: 16px;
@@ -167,6 +169,13 @@
     .status {
         font-weight: 600;
         color: #000000;
+    }
+    .see-more{
+        float: right;
+        margin-top: 1.6rem;
+        font-weight: 600;
+        color: var(--primary);
+        cursor: pointer;
     }
 }
 .page {

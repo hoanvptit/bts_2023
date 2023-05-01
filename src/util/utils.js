@@ -2,9 +2,11 @@
 export function convertToDate(updatedTime){
     let tmp_date = new Date(updatedTime)
     let actualDate = new Date();
-    actualDate.setTime(tmp_date.getTime() - 7*60*60*1000);
+    // actualDate.setTime(tmp_date.getTime() - 7*60*60*1000);
+    actualDate.setTime(tmp_date.getTime());
+
     let year = actualDate.getFullYear();
-    let month = actualDate.getMonth();
+    let month = actualDate.getMonth()+1;
     let date = actualDate.getDate();
 
     let hour =  actualDate.getHours();

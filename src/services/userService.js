@@ -1,4 +1,4 @@
-import * as request from '~/util/request';
+import * as request from '~/util/request_modify';
 import { getAccessToken } from '~/util/auth'; 
 //** get request - retrieve users from server */
 export const getUserList = async () => {

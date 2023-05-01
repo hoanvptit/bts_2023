@@ -1,11 +1,13 @@
 import {
     LOGIN,
     LOGOUT,
+    ///
     SET_BTS,
     SET_LIST_BTS,
     ADD_BTS,
     DEL_BTS,
     EDIT_BTS,
+    //
     SET_DEVICE,
     ADD_DEVICE,
     DEL_DEVICE,
@@ -14,9 +16,19 @@ import {
     SET_TYPE_DISPLAY_DEVICE,
     SET_LIST_DISPLAY_DEVICE,
     SET_LIST_ALL_DEVICE,
+    //
     SET_LIST_ALL_NOTI,
     SET_LIST_DISPLAY_NOTI,
+    SET_LIST_NOTI_BY_BTS,
     SET_CHECKED_LIST,
+    SET_CLASSIFY_TYPE,
+    SET_LIST_ALL_NOTI_UNREAD,
+    SET_LIST_ALL_DISPLAY_TYPE_NOTI_UNREAD,
+    SET_LIST_DISPLAY_NOTI_UNREAD,
+    //
+    SET_LIST_ALL_ACTIONS,
+    SET_LIST_ALL_DISPLAY_TYPE_NOTI,
+    SET_LIST_DISPLAY_ACTIONS,
     FETCH_SUCCESS,
     FETCH_ERROR,
 } from './constant';
@@ -164,11 +176,17 @@ export const deviceReducer = (state, action) => {
                 listAll: lsAll,
             };
         case DEL_DEVICE:
-            // console.log('payload: ', action.payload);
+            console.log('payload: ', action.payload);
             //xoa trong list hien thi
             let lsDisplay1 = [...state.listDisplay];
             lsDisplay1.splice(action.payload.index, 1);
-
+            // dat lai thu tu
+            lsDisplay1 = lsDisplay1.map((item, index) => {
+                return {
+                    ...item,
+                    index: index,
+                };
+            });
             //xoa trong list all
             let lsAll1 = [...state.listAll];
             // tim object trong list all de thay doi
@@ -177,6 +195,42 @@ export const deviceReducer = (state, action) => {
             });
             // let dvDel = {...action.payload, index: tmp1.index}
             lsAll1.splice(tmp1[0].index, 1);
+            //dat lai thu tu
+            lsAll1 = lsAll1.map((item, index) => {
+                return {
+                    ...item,
+                    index: index,
+                };
+            });
+            // device pin -> reset order
+            if (action.payload.type === 0) {
+                lsDisplay1 = lsDisplay1.map((item) => {
+                    console.log('item: ', item);
+                    if (item.type === 0 && item.index > action.payload.index) {
+                        let order = item.name.split(' ');
+                        console.log('order: ', order);
+                        return {
+                            ...item,
+                            name: `Ac quy ${order[2] - 1}`,
+                        };
+                    }
+                    return {
+                        ...item,
+                    };
+                });
+                lsAll1 = lsAll1.map((item) => {
+                    if (item.type === 0 && item.index > action.payload.index) {
+                        let order = item.name.split(' ');
+                        return {
+                            ...item,
+                            name: `Ac quy ${order[2] - 1}`,
+                        };
+                    }
+                    return {
+                        ...item,
+                    };
+                });
+            }
             return {
                 ...state,
                 device: {},
@@ -218,43 +272,108 @@ export const deviceReducer = (state, action) => {
 };
 
 //**---------------------Reducer for Notification-------------------------------- */
-
-export const initNotify = (checkedList, listAll, listDisplay) => {
+/**
+ *
+ * @param {} checkedList
+ * @param {all notifycation} listAll
+ * @param {all notifycation for each type of notification} listAllDisplayType
+ * @param {display list of a type notification} listDisplay
+ * @returns
+ */
+export const initNotify = (
+    classifyType,
+    checkedList,
+    listAll,
+    listAllDisplayType,
+    listDisplay,
+    listAllUnread,
+    listAllDisplayTypeUnread,
+    listDisplayUnread,
+) => {
     return {
+        classifyType,
         checkedList,
         listAll,
+        listAllDisplayType,
         listDisplay,
+        listAllUnread,
+        listAllDisplayTypeUnread,
+        // listDisplayUnread,
     };
 };
 
 export const notifyReducer = (state, action) => {
     switch (action.type) {
+        case SET_CLASSIFY_TYPE:
+            return {
+                ...state,
+                classifyType: action.payload
+            }
         case SET_CHECKED_LIST:
             let newCheckedlist = action.payload;
             let newDisplayList = [];
-            if (newCheckedlist.length === 4) newDisplayList = state.listAll;
-            else {
-                state.listAll.forEach((noti) => {
-                    newCheckedlist.forEach((item) => {
-                        if (noti.level === item) newDisplayList.push(noti);
+            if(state.classifyType==='all'){
+                if (newCheckedlist.length === 4) newDisplayList = state.listAll;
+                else {
+                    state.listAll.forEach((noti) => {
+                        newCheckedlist.forEach((item) => {
+                            if (noti.level === item) newDisplayList.push(noti);
+                        });
                     });
-                });
+                }
+                return {
+                    ...state,
+                    checkedList: newCheckedlist,
+                    listAllDisplayType: newDisplayList,
+                    listDisplay: newDisplayList.slice(0, 10),
+                };
+            }else{
+                if (newCheckedlist.length === 4) newDisplayList = state.listAllUnread;
+                else {
+                    state.listAllUnread.forEach((noti) => {
+                        newCheckedlist.forEach((item) => {
+                            if (noti.level === item) newDisplayList.push(noti);
+                        });
+                    });
+                }
+                return {
+                    ...state,
+                    checkedList: newCheckedlist,
+                    listAllDisplayTypeUnread: newDisplayList,
+                    listDisplay: newDisplayList.slice(0, 10),
+                };
             }
-            return {
-                ...state,
-                checkedList: newCheckedlist,
-                listDisplay: newDisplayList,
-            };
+            
         case SET_LIST_ALL_NOTI:
             return {
                 ...state,
                 listAll: action.payload,
+            };
+        case SET_LIST_ALL_DISPLAY_TYPE_NOTI:
+            return {
+                ...state,
+                listAllDisplayType: action.payload,
             };
         case SET_LIST_DISPLAY_NOTI:
             return {
                 ...state,
                 listDisplay: action.payload,
             };
+            case SET_LIST_ALL_NOTI_UNREAD:
+            return {
+                ...state,
+                listAllUnread: action.payload,
+            };
+        case SET_LIST_ALL_DISPLAY_TYPE_NOTI_UNREAD:
+            return {
+                ...state,
+                listAllDisplayTypeUnread: action.payload,
+            };
+        // case SET_LIST_DISPLAY_NOTI_UNREAD:
+        //     return {
+        //         ...state,
+        //         listDisplayUnread: action.payload,
+        //     };
         default: {
             throw new Error('Invalid Action');
         }
@@ -282,5 +401,59 @@ export const fetchReducer = (state, action) => {
             };
         default:
             throw new Error('Invalid Action');
+    }
+};
+//**---------------------Reducer for Notification-------------------------------- */
+
+export const initNotifyByBTS = (checkedList, listAll) => {
+    return {
+        checkedList,
+        listAll,
+    };
+};
+
+export const notifyByBTSReducer = (state, action) => {
+    // console.log("payload: ", Array.isArray(action.payload))
+    console.log('payload: ', action.payload);
+    console.log('payload: ', action.payload[0]);
+    // console.log("payload: ", JSON.stringify(action.payload))
+    // console.log("payload: ", action.payload.length)
+    // console.log("payload: ", Object.getOwnPropertyNames(action.payload))
+    switch (action.type) {
+        case SET_LIST_NOTI_BY_BTS:
+            return {
+                ...state,
+                listAll: action.payload,
+            };
+        default: {
+            throw new Error('Invalid Action');
+        }
+    }
+};
+
+//**---------------------Reducer for Device Actions-------------------------------- */
+
+export const initActions = (listAll, listDisplay) => {
+    return {
+        listAll,
+        listDisplay,
+    };
+};
+
+export const actionsReducer = (state, action) => {
+    switch (action.type) {
+        case SET_LIST_ALL_ACTIONS:
+            return {
+                ...state,
+                listAll: action.payload,
+            };
+        case SET_LIST_DISPLAY_ACTIONS:
+            return {
+                ...state,
+                listDisplay: action.payload,
+            };
+        default: {
+            throw new Error('Invalid Action');
+        }
     }
 };

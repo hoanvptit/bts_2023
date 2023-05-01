@@ -1,0 +1,57 @@
+.table_device th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    border-bottom: 1px solid #DBDADE;
+    color: rgb(0, 0, 0);
+}
+.table_device tr {
+    height: 60px;
+    border-bottom: 1px solid #DBDADE;
+}
+.tb-col {
+    background-color: #ffffff;
+    .device_card {
+        display: flex;
+        align-items: center;
+        // padding: 0 16px;
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            margin-right: 16px;
+        }
+        .info {
+        }
+    }
+}
+
+.warning {
+  width: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 15sp;
+  background: #FDA706;
+  color: #fff;
+}
+
+.connect {
+  width: 10px;
+  line-height: 10px;
+  border-radius: 50%;
+  text-align: center;
+  background: #28C76F;
+  color: #28C76F;
+}
+
+.hl {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 11px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}

@@ -16,6 +16,10 @@ const routeConfig = {
     manageNotifications: function (btsId=":btsId") {
         return `/bts/${btsId}/manage_notifications`;
     },
+    manageBTS: function (btsId=":btsId") {
+        return `/${btsId}/manage_bts`;
+    },
+    // manageBTS:`${btsId}/manage_bts`,
     support: '/support',
     documents: '/documents',
 };

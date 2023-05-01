@@ -7,6 +7,7 @@ import styles from './DeviceItem.module.scss';
 
 const cx = classNames.bind(styles);
 function DeviceItem({ data, border, className, handleClick }) {
+    // console.log("data device item: ", data)
     let status = data.status;
     let status_classname = 'connected';
     if (!status) status_classname = 'disconnected';
@@ -32,7 +33,7 @@ function DeviceItem({ data, border, className, handleClick }) {
                 </h4>
                 {(status && valueOnOff == 0) && <span className={cx('status_off')}>Đang tắt</span>}
 
-                {(status && valueOnOff == 1) && <span className={cx('status_on')}>Đang bật</span>}
+                {(status && valueOnOff >= 1) && <span className={cx('status_on')}>Đang bật</span>}
 
                 {!status && <span className={cx('status_off')}>Mất kết nối</span>}
             </div>

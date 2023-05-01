@@ -6,7 +6,7 @@ import Header from '~/layouts/components/Header';
 import Button from '~/components/Button';
 import Table from '~/components/Table';
 import PopupAddDevice from '~/components/popup/popupAddDevice';
-import Loader from '~/components/Loader';
+import Loader from '~/components/Loader/LoaderFull';
 import ToastMessage from '~/components/popup/toast/ToastMessage';
 import images from '~/assets/images';
 import { addDevice, getDevice, getDeviceList, delDevice, updateDevice } from '~/services/deviceService';
@@ -95,7 +95,7 @@ export default function ManageDevice() {
         addDevice({
             name: state.device.name,
             type: state.device.type,
-            position: 100,
+            // position: 100,
             btsID: btsId,
         })
             .then((res) => {
@@ -195,6 +195,7 @@ export default function ManageDevice() {
     };
     //change object bts need to add/edit
     const changeObjectDevice = (device) => {
+        console.log("receive device: ", device)
         dispatch(setDeviceAction(device));
     };
 
@@ -212,6 +213,7 @@ export default function ManageDevice() {
                     title={popUpAttr.title}
                     type={popUpAttr.type}
                     deviceInfo={state.device}
+                    // deviceInfo={popUpAttr.types !=='add'? state.device: {name:''}}
                     action={onAction}
                     onChangeShow={() =>
                         setPopUpAttr((prev) => ({

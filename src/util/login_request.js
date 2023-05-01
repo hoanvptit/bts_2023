@@ -1,7 +1,7 @@
 import axios from 'axios';
-
+import { BASE_URL } from '~/config_env';
 const login_request = axios.create({
-    baseURL: 'http://45.124.84.133:3000/v1/',
+    baseURL:`${process.env.REACT_APP_BASE_URL}`
 });
 
 export const get = async (path, options = {}) => {

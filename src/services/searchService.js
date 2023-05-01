@@ -1,4 +1,4 @@
-import * as request from '~/util/request';
+import * as request from '~/util/request_modify';
 
 export const search = async (q, type = 'less') => {
   try {

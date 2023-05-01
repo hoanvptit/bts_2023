@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 import { useState, useMemo, useReducer, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Header from '~/layouts/components/Header';
@@ -12,7 +13,14 @@ import images from '~/assets/images';
 import { addBts, delBts, getBtsList, getBts, updateBts } from '~/services/btsService';
 //USE REDUCER
 import { initBts, btsReducer, initialStateFetch, fetchReducer } from '~/reducer/reducer';
-import { addBtsAction, delBtsAction, setBtsAction, setListBtsAction, editBtsAction, fetchSuccessAction } from '~/reducer/action';
+import {
+    addBtsAction,
+    delBtsAction,
+    setBtsAction,
+    setListBtsAction,
+    editBtsAction,
+    fetchSuccessAction,
+} from '~/reducer/action';
 import logger from '~/reducer/logger';
 import styles from './Home.module.scss';
 
@@ -23,9 +31,10 @@ import { set } from 'react-hook-form';
 const cx = classNames.bind(styles);
 let PageSize = 10;
 export default function Home() {
+    const navigate = useNavigate();
     // const result = BtsData;
     // const [result, setResult] = useState([])
-    const initialBts =  { id: '', index: null, name: '', mac: '', place: '', avatar: '' }
+    const initialBts = { id: '', index: null, name: '', mac: '', place: '', avatar: '' };
     const [state, dispatch] = useReducer(btsReducer, initBts([]));
     const [popUpAttr, setPopUpAttr] = useState({
         show: false,
@@ -38,7 +47,7 @@ export default function Home() {
         title: '',
         content: '',
     });
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
     const [btsUnit, setBtsUnit] = useState('');
     const [btsGroup, setBtsGroup] = useState('');
     //** For Pagination */
@@ -50,21 +59,29 @@ export default function Home() {
     }, [currentPage]);
     //** End Pagination */
     useEffect(() => {
-        getBtsList().then((res) => {
-            let result = res.data.body.results;
-            dispatch(setListBtsAction(result));
-            setLoading(false)
-        }).catch(err=>{
-            setLoading(false)
-                let contentToast = err.response?err.response.data.message : err.message;
-                setShowToast((prev) => {
-                    return {
-                        ...prev,
-                        show: true,
-                        content:`Có lỗi xảy ra: ${contentToast}`,
-                    };
-                });
-        });
+        getBtsList()
+            .then((res) => {
+                let result = res.data.body.results;
+                dispatch(setListBtsAction(result));
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log('err: ', err);
+                setLoading(false);
+                if (err.response !== undefined && err.response.status > 400) {
+                    console.log('redirect');
+                    navigate('/login');
+                } else {
+                    let contentToast = err.response ? err.response.data.message : err.message;
+                    setShowToast((prev) => {
+                        return {
+                            ...prev,
+                            show: true,
+                            content: `Có lỗi xảy ra: ${contentToast}`,
+                        };
+                    });
+                }
+            });
     }, []);
 
     const handleChangeUnit = (e) => {
@@ -77,105 +94,111 @@ export default function Home() {
     };
     //** For handle add bts */
     const handleAddBts = () => {
-        setLoading(true)
+        setLoading(true);
         //** */
         addBts({
             name: state.bts.name,
             mac: state.bts.mac,
             place: state.bts.place,
-        }).then((res) => {
-            console.log('add bts: ',res)
-            let tm_bts_add = res.data.body;
-            if (res.status == 201) {
-                let contentToast = 'Thêm trạm BTS thành công';
+        })
+            .then((res) => {
+                // console.log('add bts: ',res)
+                let tm_bts_add = res.data.body;
+                if (res.status == 201) {
+                    let contentToast = 'Thêm trạm BTS thành công';
+                    setShowToast((prev) => {
+                        return {
+                            ...prev,
+                            show: true,
+                            content: contentToast,
+                        };
+                    });
+                }
+                dispatch(addBtsAction(tm_bts_add));
+                dispatch(setBtsAction(initialBts));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.log('err: ', err);
+                let contentToast = err.response ? err.response.data.message : err.message;
+
+                // let contentToast = `Thêm trạm BTS không thành công`;
                 setShowToast((prev) => {
                     return {
                         ...prev,
                         show: true,
-                        content:contentToast,
+                        content: `Thêm trạm BTS không thành công:${contentToast}`,
                     };
                 });
-            }
-            dispatch(addBtsAction(tm_bts_add));
-            dispatch(setBtsAction(initialBts));
-            setLoading(false)
-        }).catch(err=>{
-            setLoading(false)
-            console.log("err: ", err)
-            let contentToast = err.response?err.response.data.message : err.message;
-
-            // let contentToast = `Thêm trạm BTS không thành công`;
-            setShowToast((prev) => {
-                return {
-                    ...prev,
-                    show: true,
-                    content:`Thêm trạm BTS không thành công:${contentToast}`,
-                };
+                dispatch(setBtsAction(initialBts));
             });
-            dispatch(setBtsAction(initialBts));
-        });
     };
     const handleEditBts = () => {
-        setLoading(true)
+        setLoading(true);
         updateBts(state.bts.id, {
             name: state.bts.name,
             mac: state.bts.mac,
             place: state.bts.place,
-        }).then((res) => {
-            if (res.status == 200) {
-                let contentToast = 'Sửa thông tin trạm BTS thành công';
+        })
+            .then((res) => {
+                if (res.status == 200) {
+                    let contentToast = 'Sửa thông tin trạm BTS thành công';
+                    setShowToast((prev) => {
+                        return {
+                            ...prev,
+                            show: true,
+                            content: contentToast,
+                        };
+                    });
+                }
+                dispatch(editBtsAction(state.bts));
+                dispatch(setBtsAction(initialBts));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                let contentToast = err.response ? err.response.data.message : err.message;
+                // let contentToast = 'Sửa thông tin trạm BTS không thành công';
                 setShowToast((prev) => {
                     return {
                         ...prev,
                         show: true,
-                        content:contentToast,
+                        content: `Sửa thông tin trạm BTS không thành công: ${contentToast}`,
                     };
                 });
-            }
-            dispatch(editBtsAction(state.bts));
-            dispatch(setBtsAction(initialBts));
-            setLoading(false)
-        }).catch(err=>{
-            setLoading(false)
-            let contentToast = err.response?err.response.data.message : err.message;
-            // let contentToast = 'Sửa thông tin trạm BTS không thành công';
-            setShowToast((prev) => {
-                return {
-                    ...prev,
-                    show: true,
-                    content:`Sửa thông tin trạm BTS không thành công: ${contentToast}`,
-                };
+                dispatch(setBtsAction(initialBts));
             });
-            dispatch(setBtsAction(initialBts));
-        });
     };
     const handleDelBts = () => {
-        setLoading(true)
-        delBts(state.bts.id).then((res) => {
-            let contentToast = 'Xoá trạm BTS thành công';
+        setLoading(true);
+        delBts(state.bts.id)
+            .then((res) => {
+                let contentToast = 'Xoá trạm BTS thành công';
                 setShowToast((prev) => {
                     return {
                         ...prev,
                         show: true,
-                        content:contentToast,
+                        content: contentToast,
                     };
                 });
-            dispatch(delBtsAction(state.bts));
-            dispatch(setBtsAction(initialBts));
-            setLoading(false)
-        }).catch(err=>{
-            setLoading(false)
-            // let contentToast = 'Xoá trạm BTS không thành công';
-            let contentToast = err.response?err.response.data.message : err.message;
-            setShowToast((prev) => {
-                return {
-                    ...prev,
-                    show: true,
-                    content:`Xoá trạm BTS không thành công: ${contentToast}`,
-                };
+                dispatch(delBtsAction(state.bts));
+                dispatch(setBtsAction(initialBts));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                // let contentToast = 'Xoá trạm BTS không thành công';
+                let contentToast = err.response ? err.response.data.message : err.message;
+                setShowToast((prev) => {
+                    return {
+                        ...prev,
+                        show: true,
+                        content: `Xoá trạm BTS không thành công: ${contentToast}`,
+                    };
+                });
+                dispatch(setBtsAction(initialBts));
             });
-            dispatch(setBtsAction(initialBts));
-        });
     };
     const onAction = () => {
         if (popUpAttr.type === 'add') return handleAddBts();
@@ -222,7 +245,7 @@ export default function Home() {
     //** End Bts Line */
     const body = (
         <>
-           {loading && <Loader />}
+            {loading && <Loader />}
 
             {popUpAttr.show && (
                 <PopupAddObject
@@ -240,7 +263,7 @@ export default function Home() {
                     onChangeObject={changeObjectAddBts}
                 />
             )}
-            
+
             {showToast && (
                 <ToastMessage
                     show={showToast.show}

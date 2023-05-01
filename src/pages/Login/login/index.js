@@ -10,7 +10,6 @@ import { useReducer, useState } from 'react';
 // import PopupConfirm from '../room_students/popup/popup_confirm';
 // import { Alert, Button } from 'react-bootstrap';
 import { PopupConfirm, PopupForgetPw } from '~/components/popup';
-import LoopCircleLoading from '~/components/loopCircle/LoopCircleLoading';
 
 //** Reactstrap import */
 import { Form, Input, Label, FormFeedback } from 'reactstrap';
@@ -18,7 +17,8 @@ import { Form, Input, Label, FormFeedback } from 'reactstrap';
 //** Login Service */
 import { isUserLoggedIn } from '~/util/auth';
 import { login, handleLogin } from '~/services/loginService';
-
+import Loader from '~/components/Loader/LoaderFull';
+import ToastMessage from '~/components/popup/toast/ToastMessage';
 //** Action constant */
 import { logIn } from '~/reducer/action';
 import { initUser, reducer } from '~/reducer/reducer';
@@ -27,7 +27,7 @@ import styles from './login.module.scss';
 
 import { useForm, Controller } from 'react-hook-form';
 const cx = classNames.bind(styles);
-
+console.log(process.env.REACT_APP_BASE_URL)
 export default function Login2(props) {
     const navigate = useNavigate();
     // const [user, dispatch] = useReducer(logger(reducer), initUser());
@@ -43,6 +43,12 @@ export default function Login2(props) {
         handleSubmit,
         formState: { errors },
     } = useForm({ defaultValues });
+    const [loading, setLoading] = useState(false);
+    const [showToast, setShowToast] = useState({
+        show: false,
+        title: '',
+        content: '',
+    });
     const [message, setMessage] = useState('');
     const [fg_email, setFg_email] = useState('');
     const [show, setShow] = useState(false);
@@ -54,14 +60,27 @@ export default function Login2(props) {
     const onSubmit = (data) => {
         // console.log("data: ", data)
         if (Object.values(data).every((field) => field.length > 0)) {
-            
+            setLoading(true)
             login({email:data.loginEmail, password: data.password})
             .then(res=>{
+                setLoading(false)
                 console.log("res login: ", res)
                 handleLogin(res.data)
                 navigate('/');
 
             })
+            .catch((err) => {
+                console.log(err)
+                setLoading(false);
+                let contentToast = err.response ? err.response.data.message : err.message;
+                setShowToast((prev) => {
+                    return {
+                        ...prev,
+                        show: true,
+                        content: `${contentToast}`,
+                    };
+                });
+            });
             // dispatch(logIn(data));
 
         } else {
@@ -142,8 +161,21 @@ export default function Login2(props) {
     };
     return (
         <>
-            {processing && <LoopCircleLoading />}
+            {loading && <Loader />}
+            {showToast && (
+                <ToastMessage
+                    show={showToast.show}
+                    title={showToast.title}
+                    content={showToast.content}
+                    onChange={() =>
+                        setShowToast((prev) => {
+                            return { ...prev, show: false };
+                        })
+                    }
+                />
+            )}
 
+{/* 
             {!processing && show && (
                 <PopupConfirm
                     title={popup_title}
@@ -167,7 +199,7 @@ export default function Login2(props) {
                     }}
                     onChangeObject={changeForgetUser}
                 />
-            )}
+            )} */}
 
             <div className={cx('form-app')}>
                 {/* <div className={cx('intro')}></div> */}

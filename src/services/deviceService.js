@@ -1,4 +1,4 @@
-import * as request from '~/util/request';
+import * as request from '~/util/request_modify';
 //** get request - retrieve devices from server */
 export const getDeviceList = async (btsID,limit=30, type, name, status) => {
     // try {
@@ -77,12 +77,12 @@ export const updateStatusDevice = async (deviceId, value) =>{
 }
 
 export const getAverageValue = async (deviceId, date, deviceType, attr="value") =>{
-    console.log("deviceType: ", deviceType)
+    // console.log("deviceType: ", deviceType)
     let attribute = attr;
     if(deviceType===0 && attr==="value"){
         attribute='vcel_1'
     }
-    console.log("attribute: ", attribute)
+    // console.log("attribute: ", attribute)
     // try {
         const res = await request.get(`devices/${deviceId}/avg`,{
         params: {
@@ -94,3 +94,14 @@ export const getAverageValue = async (deviceId, date, deviceType, attr="value") 
     //     console.log(error);
     // }
 }
+
+//** get request - get specific device item from server */
+
+export const getDevicePin =  () => {
+    // try {
+        const res =  request.get(`devices?type=0`);
+        return res;
+    // } catch (error) {
+    //     console.log(error);
+    // }
+};

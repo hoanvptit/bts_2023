@@ -19,11 +19,20 @@ import {
     EDIT_DEVICE,
     //notify action
     SET_LIST_ALL_NOTI,
+    SET_LIST_ALL_DISPLAY_TYPE_NOTI,
     SET_LIST_DISPLAY_NOTI,
     SET_CHECKED_LIST,
+    SET_CLASSIFY_TYPE,
+    SET_LIST_ALL_NOTI_UNREAD,
+    SET_LIST_ALL_DISPLAY_TYPE_NOTI_UNREAD,
+    SET_LIST_DISPLAY_NOTI_UNREAD,
+    //device action
+    SET_LIST_ALL_ACTIONS,
+    SET_LIST_DISPLAY_ACTIONS,
     // fetch data action
     FETCH_SUCCESS,
-    FETCH_ERROR
+    FETCH_ERROR,
+    SET_LIST_NOTI_BY_BTS,
 } from './constant';
 //** Actions for authentication */
 export const logIn = (payload) => {
@@ -101,12 +110,12 @@ export const editDeviceAction = (payload) => {
         payload,
     };
 };
-export const updateStatusDeviceAction = (payload)=>{
-    return{
+export const updateStatusDeviceAction = (payload) => {
+    return {
         type: UPDATE_STATUS_DEVICE,
-        payload
-    }
-}
+        payload,
+    };
+};
 export const setTypeDisplayDeviceAction = (payload) => {
     return {
         type: SET_TYPE_DISPLAY_DEVICE,
@@ -126,11 +135,24 @@ export const setListAllDeviceAction = (payload) => {
     };
 };
 
-
 //** Actions for managing notifications */
 export const setListAllNotifyAction = (payload) => {
     return {
         type: SET_LIST_ALL_NOTI,
+        payload,
+    };
+};
+
+export const setListNotifyByBtsIdAction = (payload) => {
+    return {
+        type: SET_LIST_NOTI_BY_BTS,
+        payload,
+    };
+};
+
+export const setListAllDisplayTypeNotifyAction = (payload) => {
+    return {
+        type: SET_LIST_ALL_DISPLAY_TYPE_NOTI,
         payload,
     };
 };
@@ -142,25 +164,66 @@ export const setListDisplayNotifyAction = (payload) => {
     };
 };
 
-export const setCheckedListAction = (payload) =>{
+export const setCheckedListAction = (payload) => {
     return {
         type: SET_CHECKED_LIST,
+        payload,
+    };
+};
+export const setClassifyTypeAction = (payload) =>{
+    return {
+        type: SET_CLASSIFY_TYPE,
         payload
     }
 }
+export const setListAllNotifyUnreadAction = (payload) => {
+    return {
+        type: SET_LIST_ALL_NOTI_UNREAD,
+        payload,
+    };
+};
 
+export const setListAllDisplayTypeNotifyUnreadAction = (payload) => {
+    return {
+        type: SET_LIST_ALL_DISPLAY_TYPE_NOTI_UNREAD,
+        payload,
+    };
+};
+
+// export const setListDisplayNotifyUnreadAction = (payload) => {
+//     return {
+//         type: SET_LIST_DISPLAY_NOTI_UNREAD,
+//         payload,
+//     };
+// };
+//**Actions for managing actions on/off of a devices */
+
+//** Actions for managing notifications */
+export const setListAllDeivceActions_Action = (payload) => {
+    return {
+        type: SET_LIST_ALL_ACTIONS,
+        payload,
+    };
+};
+
+export const setListDisplayDeivceActions_Action = (payload) => {
+    return {
+        type: SET_LIST_DISPLAY_ACTIONS,
+        payload,
+    };
+};
 //**Action for fetching data */
 
-export const fetchSuccessAction = (payload) =>{
+export const fetchSuccessAction = (payload) => {
     return {
         type: FETCH_SUCCESS,
-        payload
-    }
-}
+        payload,
+    };
+};
 
-export const fetchErrorAction = (payload) =>{
+export const fetchErrorAction = (payload) => {
     return {
         type: FETCH_ERROR,
-        payload
-    }
-}
+        payload,
+    };
+};

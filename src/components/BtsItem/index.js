@@ -26,6 +26,8 @@ function BtsItem({ data, border, option, className, isAccount, onEditBts, onDelB
                     actionRef.current &&
                     !actionRef.current.contains(event.target)
                 ) {
+                    localStorage.removeItem('btsid')
+                    localStorage.setItem('btsid', data.id)
                     navigate(`/bts_home/${data.id}`);
                 }
             }

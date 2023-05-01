@@ -1,42 +1,67 @@
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { socket } from '~/services/socket';
 import Header from '~/layouts/components/Header';
 import Sidebar from '~/layouts/components/Sidebar';
-import {NotifyTypeInfos } from '~/assets/data';
-import { convertToDate } from '~/util/utils';
 import images from '~/assets/images';
 import Image from '~/components/images';
 import Loader from '~/components/Loader';
 import ToastMessage from '~/components/popup/toast/ToastMessage';
+import { NotifyTypeInfos } from '~/assets/data';
+import { convertToDate } from '~/util/utils';
 import { useEffect, useReducer, useState } from 'react';
-import { getNotificationList } from '~/services/notificationService';
+import { getNotificationList, putMarkRead, getNotificationUnreadList } from '~/services/notificationService';
 import { getUserList } from '~/services/userService';
 import { initNotify, notifyReducer } from '~/reducer/reducer';
-import { setListAllNotifyAction, setCheckedListAction, setListDisplayNotifyAction } from '~/reducer/action';
+import {
+    setListAllNotifyAction,
+    setCheckedListAction,
+    setListAllDisplayTypeNotifyAction,
+    setListDisplayNotifyAction,
+    setClassifyTypeAction,
+    setListAllNotifyUnreadAction,
+    setListAllDisplayTypeNotifyUnreadAction,
+    setListDisplayNotifyUnreadAction,
+} from '~/reducer/action';
 import style from './ManageNotification.module.scss';
 const cx = classNames.bind(style);
 export default function ManageNotification() {
     const btsId = useParams().btsId;
+    const [isFirstTime, setIsFirstTime] = useState(true); //for socket call
     const [loading, setLoading] = useState(true);
     const [showToast, setShowToast] = useState({
         show: false,
         title: '',
         content: '',
     });
-    const [state, dispatch] = useReducer(notifyReducer, initNotify([1, 2, 3, 4], [], []));
+    // {classifyType,checkedList,listAll,listAllDisplayType,listDisplay,listAllUnread,listAllDisplayTypeUnread}
+    const [state, dispatch] = useReducer(notifyReducer, initNotify('all', [1, 2, 3, 4], [], [], [], [], []));
     const [checkedNotis, setCheckedNotis] = useState([1, 2, 3, 4]);
-
+    // const [classifyType, setClassifyType] = useState('all')
+    const [numberNotiByLevel, setNumberNotiByLevel] = useState([0, 0, 0, 0]);
+    const limit = 50;
+    const [countPage, setCountPage] = useState(1);
     useEffect(() => {
-        getNotificationList()
+        fetchDataNotisAll();
+    }, []);
+    useEffect(() => {
+        if (!isFirstTime) {
+            doSocket();
+        }
+        return () => socket.off('notifications');
+    });
+    const fetchDataNotisAll = () => {
+        getNotificationList(limit)
             .then((res) => {
                 let tmp = res.data.body.results;
-                console.log("res: ",tmp)
+                console.log('bts notification: ', tmp);
                 if (tmp.length > 0) {
                     //find user act notify
+                    const tmp_numberNotiByLv = [0, 0, 0, 0];
+
                     getUserList()
                         .then((res) => {
                             let tmpUsers = res.data.body.results;
-
                             let newList = [];
                             newList = tmp.map((item) => {
                                 let icon = null;
@@ -44,17 +69,26 @@ export default function ManageNotification() {
                                     return u.id === item.userID;
                                 });
                                 switch (item.level) {
+                                    case 1:
+                                        icon = images.noti_normal;
+                                        tmp_numberNotiByLv[0] += 1;
+                                        break;
                                     case 2:
                                         icon = images.noti_warning;
+                                        tmp_numberNotiByLv[1] += 1;
                                         break;
                                     case 3:
                                         icon = images.noti_no_signal;
+                                        tmp_numberNotiByLv[2] += 1;
                                         break;
                                     case 4:
                                         icon = images.noti_dangerous;
+                                        tmp_numberNotiByLv[3] += 1;
+
                                         break;
                                     default:
                                         icon = images.noti_normal;
+                                        tmp_numberNotiByLv[0] += 1;
                                 }
                                 return {
                                     ...item,
@@ -63,8 +97,14 @@ export default function ManageNotification() {
                                 };
                             });
                             if (newList.length > 0) {
-                                dispatch(setListDisplayNotifyAction(newList));
-                                dispatch(setListAllNotifyAction(newList));
+                                dispatch(setListAllNotifyAction(newList)); //all noti of bts
+                                dispatch(setListAllDisplayTypeNotifyAction(newList)); //all noti of bts according to type
+                                if (newList.length <= 10) {
+                                    dispatch(setListDisplayNotifyAction(newList)); // list noti to display first - max = 10
+                                } else {
+                                    dispatch(setListDisplayNotifyAction(newList.slice(0, 10)));
+                                }
+                                setNumberNotiByLevel(tmp_numberNotiByLv);
                             }
                         })
                         .catch((err) => {
@@ -80,6 +120,7 @@ export default function ManageNotification() {
                         });
                 }
                 setLoading(false);
+                setIsFirstTime(false);
             })
             .catch((err) => {
                 setLoading(false);
@@ -92,8 +133,150 @@ export default function ManageNotification() {
                     };
                 });
             });
-    }, []);
+    };
+    const fetchDataNotisUnread = () => {
+        getNotificationUnreadList(limit)
+            .then((res) => {
+                let tmp = res.data.body.results;
+                console.log('bts notification: ', tmp);
+                if (tmp.length > 0) {
+                    //find user act notify
+                    const tmp_numberNotiByLv = [0, 0, 0, 0];
+
+                    getUserList()
+                        .then((res) => {
+                            let tmpUsers = res.data.body.results;
+                            let newList = [];
+                            newList = tmp.map((item) => {
+                                let icon = null;
+                                let user = tmpUsers.find((u) => {
+                                    return u.id === item.userID;
+                                });
+                                switch (item.level) {
+                                    case 1:
+                                        icon = images.noti_normal;
+                                        tmp_numberNotiByLv[0] += 1;
+                                        break;
+                                    case 2:
+                                        icon = images.noti_warning;
+                                        tmp_numberNotiByLv[1] += 1;
+                                        break;
+                                    case 3:
+                                        icon = images.noti_no_signal;
+                                        tmp_numberNotiByLv[2] += 1;
+                                        break;
+                                    case 4:
+                                        icon = images.noti_dangerous;
+                                        tmp_numberNotiByLv[3] += 1;
+
+                                        break;
+                                    default:
+                                        icon = images.noti_normal;
+                                        tmp_numberNotiByLv[0] += 1;
+                                }
+                                return {
+                                    ...item,
+                                    user,
+                                    icon,
+                                };
+                            });
+                            if (newList.length > 0) {
+                                dispatch(setListAllNotifyUnreadAction(newList)); //all unread noti of bts
+                                dispatch(setListAllDisplayTypeNotifyAction(newList)); //all unread noti of bts according to type
+                                if (newList.length <= 10) {
+                                    dispatch(setListDisplayNotifyAction(newList)); // list noti to display first - max = 10
+                                } else {
+                                    dispatch(setListDisplayNotifyAction(newList.slice(0, 10)));
+                                }
+                                setNumberNotiByLevel(tmp_numberNotiByLv);
+                            }
+                        })
+                        .catch((err) => {
+                            setLoading(false);
+                            let contentToast = err.response ? err.response.data.message : err.message;
+                            setShowToast((prev) => {
+                                return {
+                                    ...prev,
+                                    show: true,
+                                    content: `Có lỗi xảy ra: ${contentToast}`,
+                                };
+                            });
+                        });
+                }
+                setLoading(false);
+                setIsFirstTime(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                let contentToast = err.response ? err.response.data.message : err.message;
+                setShowToast((prev) => {
+                    return {
+                        ...prev,
+                        show: true,
+                        content: `Có lỗi xảy ra: ${contentToast}`,
+                    };
+                });
+            });
+    };
+    const doSocket = () => {
+        socket.on('notifications', (data) => {
+            let noti_data = JSON.parse(data);
+            // console.log('notify data: ', data);
+            // console.log(state.listAll);
+            let icon = null;
+            let tmp_numberNotiByLv = [...numberNotiByLevel];
+            switch (noti_data.level) {
+                case 1:
+                    icon = images.noti_normal;
+                    tmp_numberNotiByLv[0] += 1;
+                    break;
+                case 2:
+                    icon = images.noti_warning;
+                    tmp_numberNotiByLv[1] += 1;
+                    break;
+                case 3:
+                    icon = images.noti_no_signal;
+                    tmp_numberNotiByLv[2] += 1;
+                    break;
+                case 4:
+                    icon = images.noti_dangerous;
+                    tmp_numberNotiByLv[3] += 1;
+
+                    break;
+                default:
+                    icon = images.noti_normal;
+                    tmp_numberNotiByLv[0] += 1;
+            }
+            let newNotify = {
+                ...noti_data,
+                updatedAt: noti_data.date,
+                icon,
+            };
+            // console.log("new notify: ", newNotify)
+            let newListAll = [newNotify, ...state.listAll];
+            let newListDisplayType = [];
+            if (checkedNotis.includes(noti_data.level)) {
+                // console.log('level: ', noti_data.level);
+                newListDisplayType = [newNotify, ...state.listAllDisplayType];
+            }
+            if (newListAll.length > 0) {
+                // console.log('list all notify: ', newListAll);
+                dispatch(setListAllNotifyAction(newListAll)); //all noti of bts
+            }
+            if (newListDisplayType.length > 0) {
+                // console.log('list display notify: ', newListDisplayType);
+                dispatch(setListAllDisplayTypeNotifyAction(newListDisplayType)); //all noti of bts according to type
+                if (newListDisplayType.length <= 10) {
+                    dispatch(setListDisplayNotifyAction(newListDisplayType)); // list noti to display first - max = 10
+                } else {
+                    dispatch(setListDisplayNotifyAction(newListDisplayType.slice(0, 10)));
+                }
+                setNumberNotiByLevel(tmp_numberNotiByLv);
+            }
+        });
+    };
     const handleSelectNotiType = (notiLevel) => {
+        setCountPage(1);
         setCheckedNotis((prev) => {
             const isChecked = checkedNotis.includes(notiLevel);
             let listChecked = [];
@@ -107,6 +290,37 @@ export default function ManageNotification() {
                 return listChecked;
             }
         });
+    };
+
+    const handleClickSeeMore = () => {
+        let tmp_countPage = countPage + 1;
+        let addedList = state.listAllDisplayType.slice(countPage * 10, tmp_countPage * 10);
+        // console.log("addedList: ",addedList)
+        let newList = [...state.listDisplay, ...addedList];
+        console.log('new list: ', newList.length);
+        setCountPage(tmp_countPage);
+        // dispatch(setListDisplayNotifyAction(state.listAllDisplayType));
+        dispatch(setListDisplayNotifyAction(newList));
+    };
+    const handleClickHideAway = () => {
+        setCountPage(1);
+        dispatch(setListDisplayNotifyAction(state.listAllDisplayType.slice(0, 10)));
+    };
+    const handleClickNoti = (e) => {
+        console.log(e.id);
+        putMarkRead(e.id)
+            .then((res) => {
+                console.log('res mark read: ', res);
+                //update list
+            })
+            .catch((err) => {
+                console.log('err: ', err);
+            });
+    };
+    const handleClickClassify = (type) => {
+        // setClassifyType(type)
+        dispatch(setClassifyTypeAction(type));
+        fetchDataNotisUnread();
     };
     const body = (
         <>
@@ -129,11 +343,10 @@ export default function ManageNotification() {
                         <div className={cx('notify_info')}>
                             {NotifyTypeInfos.map((item, index) => (
                                 <div key={index} className={cx('properties')}>
-                                    {/* <NotifyInfoCard data={item} checked={checkedNotis} onChangeSelect={handleSelectNotiType} /> */}
                                     <div className={cx('noti-wrapper')}>
                                         <Image className={cx('avatar')} src={item.icon} alt="avatar" />
                                         <div className={cx('info')}>
-                                            {item.value && <span>{item.value}</span>}
+                                            <span>{numberNotiByLevel[index]} thông báo</span>
                                             <h4 className={cx('name')}>{item.name && <span>{item.label}</span>}</h4>
                                         </div>
                                         <input
@@ -145,37 +358,80 @@ export default function ManageNotification() {
                                 </div>
                             ))}
                         </div>
-                        {state.listDisplay.length > 0 ? (
-                            <div className={cx('timeline')}>
-                                {state.listDisplay.map((item, index) => {
-                                    //**need get status-type of noti from server */
-                                    let status = 'on';
+                        <div className={cx('notify_classify')}>
+                            <div className={cx('classify')}>
+                                <span
+                                    className={cx('item', `${state.classifyType === 'all' ? 'active' : 'unactive'}`)}
+                                    onClick={() => {
+                                        handleClickClassify('all');
+                                    }}
+                                >
+                                    Tất cả
+                                </span>
 
-                                    let tmp = `${'bullet-'}${status}`;
-                                    return (
-                                        <div key={index} className={cx('timeline-item')}>
-                                            <div className={cx('status-item')}>
-                                                <div className={cx('status-dot')}>
-                                                    <span className={cx('bullet', tmp)}></span>
-                                                    {/* <span className={cx('strokes')}></span> */}
-                                                </div>
-                                                <div className={cx('text')}>
-                                                    <h3 className={cx('status')}>{item.message}</h3>
-                                                    <h3
-                                                        className={cx('title-status')}
-                                                    >{`Thực hiện bởi: ${item.user.name}`}</h3>
-                                                </div>
-                                            </div>
-                                            <div className={cx('date-time')}>
-                                                <p className={cx('date')}>{convertToDate(item.updatedAt)}</p>
-                                                {item.icon && (
-                                                    <img className={cx('icon-noti')} src={images.noti_normal} />
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                <span
+                                    className={cx('item', `${state.classifyType !== 'all' ? 'active' : 'unactive'}`)}
+                                    onClick={() => {
+                                        handleClickClassify('unread');
+                                    }}
+                                >
+                                    Chưa đọc
+                                </span>
                             </div>
+                            <div className={cx('markallread')}>
+                                <span className={cx('name')}>Đánh dấu tất cả là đã đọc</span>
+                            </div>
+                        </div>
+                        {state.listDisplay.length > 0 ? (
+                            <>
+                                <div className={cx('timeline')}>
+                                    {state.listDisplay.map((item, index) => {
+                                        //**need get status-type of noti from server */
+                                        let status = 'on';
+
+                                        let tmp = `${'bullet-'}${item.level}`;
+                                        let isRead = item.isRead ? 'read' : 'unread';
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={cx('timeline-item', isRead)}
+                                                onClick={() => handleClickNoti(item)}
+                                            >
+                                                <div className={cx('status-item')}>
+                                                    <div className={cx('status-dot')}>
+                                                        <span className={cx('bullet', tmp)}></span>
+                                                        {/* <span className={cx('strokes')}></span> */}
+                                                    </div>
+                                                    <div className={cx('text')}>
+                                                        <h3 className={cx('status')}>{item.message}</h3>
+                                                        {/* <h3
+                                                        className={cx('title-status')}
+                                                    >{`Thực hiện bởi: ${item.user.name}`}</h3> */}
+                                                    </div>
+                                                </div>
+                                                <div className={cx('date-time')}>
+                                                    <p className={cx('date')}>{convertToDate(item.updatedAt)}</p>
+                                                    {item.icon && <img className={cx('icon-noti')} src={item.icon} />}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                {state.listAllDisplayType.length > 10 && (
+                                    <div>
+                                        {state.listAllDisplayType.length !== state.listDisplay.length && (
+                                            <p className={cx('see-more')} onClick={handleClickSeeMore}>
+                                                Xem thêm
+                                            </p>
+                                        )}
+                                        {state.listAllDisplayType.length === state.listDisplay.length && (
+                                            <p className={cx('see-more')} onClick={handleClickHideAway}>
+                                                Ẩn bớt
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                            </>
                         ) : (
                             <div className={cx('no_data')}>
                                 <img src={images.no_data} className={cx('img_no_data')} alt="no data" />
