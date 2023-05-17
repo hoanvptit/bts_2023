@@ -37,7 +37,7 @@ export default function DeviceControl() {
     useEffect(() => {
         getDeviceList(btsId)
             .then((res) => {
-                console.log("res: ",res)
+                // console.log("res: ",res)
                 let result = res.data.body.results;
                 ///filter thiet bi dieu khien
                 let resultDisplay = result.filter((item) => {

@@ -27,7 +27,6 @@ import styles from './login.module.scss';
 
 import { useForm, Controller } from 'react-hook-form';
 const cx = classNames.bind(styles);
-console.log(process.env.REACT_APP_BASE_URL)
 export default function Login2(props) {
     const navigate = useNavigate();
     // const [user, dispatch] = useReducer(logger(reducer), initUser());

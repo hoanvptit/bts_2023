@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { socket } from '~/services/socket';
+import { socket, mockSocket } from '~/services/socket';
 import { useState, useMemo, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '~/layouts/components/Sidebar';
@@ -94,6 +94,7 @@ function HomeBts() {
         }
 
         return () => {
+            // socket.off('connect');
             socket.off('actions');
             socket.off('data');
         };
@@ -104,7 +105,7 @@ function HomeBts() {
         getDevice(deviceID)
             .then((res) => {
                 let dv = res.data.body;
-                // console.log("receive device: ", dv)
+                console.log("receive device: ", dv)
                 //update device
                 dispatch(setDeviceAction(dv));
                 setDvTypeName(DeviceType[dv.type].typeName);
@@ -220,6 +221,14 @@ function HomeBts() {
     };
 
     const doSocketAction = (ls) => {
+        // socket.on('connect', () => {
+        //     console.log('Success');
+        //     socket.on('actions', (data) => {
+        //         console.log('in get data');
+        //         console.log(data);
+        //     });
+        // });
+        // console.log('socket: ',socket)
         socket.on('actions', (data) => {
             let action_data = JSON.parse(data);
             console.log('actions data: ', action_data);
@@ -241,7 +250,8 @@ function HomeBts() {
                         if (newList.length <= 10) {
                             dispatch_for_action(setListDisplayDeivceActions_Action(newList));
                         } else {
-                            dispatch_for_action(setListDisplayDeivceActions_Action(newList.slice(0, 10)));
+                            let addedList = newList.slice(0, (curPage) * 10);
+                            dispatch_for_action(setListDisplayDeivceActions_Action(addedList));
                         }
                     }
                 });
@@ -265,28 +275,29 @@ function HomeBts() {
         });
     };
     const doSocketData = () => {
-        // console.log('current device: ', state.device);
-        socket.on('data', (data) => {
-            let dataSensor = JSON.parse(data);
-            console.log(dataSensor);
-            console.log('curr device: ', state.device);
-            if (dataSensor.deviceID === state.device.id) {
-                let tmp_dv = {
-                    ...state.device,
-                    curData: [
-                        {
-                            name: `${dataSensor.name}`,
-                            value: `${dataSensor.value}`,
-                            date: `${dataSensor.date}`,
-                        },
-                    ],
-                    updatedAt: `${dataSensor.date}`,
-                };
-                console.log('tmp_dv: ', tmp_dv);
-                dispatch(setDeviceAction(tmp_dv));
-                asignStatus(tmp_dv);
-            }
-        });
+            socket.on('data', (data) => {
+                let dataSensor = JSON.parse(data);
+                console.log("dataSensor: ", dataSensor);
+                // console.log('curr device: ', state.device);
+                if (dataSensor.deviceID === state.device.id) {
+                    let tmp_dv = {
+                        ...state.device,
+                        curData: [
+                            {
+                                name: `${dataSensor.name}`,
+                                value: `${dataSensor.value}`,
+                                date: `${dataSensor.date}`,
+                            },
+                        ],
+                        updatedAt: `${dataSensor.date}`,
+                    };
+                    console.log('tmp_dv: ', tmp_dv);
+                    dispatch(setDeviceAction(tmp_dv));
+                    asignStatus(tmp_dv);
+                }
+            });
+        // }
+        
     };
     const asignStatus = (deviceInfo) => {
         let value = 0;

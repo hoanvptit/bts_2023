@@ -25,6 +25,7 @@ import {
     SET_LIST_ALL_NOTI_UNREAD,
     SET_LIST_ALL_DISPLAY_TYPE_NOTI_UNREAD,
     SET_LIST_DISPLAY_NOTI_UNREAD,
+    SET_NOTIFY_AS_READ,
     //
     SET_LIST_ALL_ACTIONS,
     SET_LIST_ALL_DISPLAY_TYPE_NOTI,
@@ -374,6 +375,29 @@ export const notifyReducer = (state, action) => {
         //         ...state,
         //         listDisplayUnread: action.payload,
         //     };
+        case SET_NOTIFY_AS_READ:
+            let notify_id = action.payload
+            let ls1 =  [...state.listAll]
+            let ls2 = [...state.listAllDisplayType]
+            let ls3 = [...state.listDisplay]
+            let markFunction = (item, index, array) =>{
+                if(item.id === notify_id){
+                    array[index] = {
+                        ...item,
+                        isRead:true
+                    }
+                }
+            }
+            ls1.forEach(markFunction)
+            ls2.forEach(markFunction)
+            ls3.forEach(markFunction)
+            return {
+                ...state,
+                listAll:ls1,
+                listAllDisplayType:ls2,
+                listDisplay:ls3
+            }
+            
         default: {
             throw new Error('Invalid Action');
         }

@@ -7,7 +7,8 @@ import Menu, { MenuItem } from './Menu';
 import { faBell, faSliders, faUserGroup, faCircleInfo, faBook, faHouse } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { getBts } from '~/services/btsService';
-import { getNotificationList } from '~/services/notificationService';
+import { countNoUnRead } from '~/services/notificationService';
+import { socket } from '~/services/socket';
 const cx = classNames.bind(styles);
 function Sidebar(props) {
     const btsId = props.btsId;
@@ -16,21 +17,36 @@ function Sidebar(props) {
     //*get bts from server with btsId*/
     useEffect(() => {
         getBts(btsId).then((res) => {
-            console.log("receive bts: ", res.data.body)
             setBts(res.data.body);
-            getNotificationList(50).then(res=>{
-                console.log("notify: ", res)
-                let tmpListNotis = res.data.body.results
-                let listUnRead = tmpListNotis.filter((item)=>{
-                    return !item.isRead
-                })
-                if(listUnRead.length > 0){
-                    setCountUnRead(listUnRead.length)
+            countNoUnRead().then(res=>{
+                let amount = res.data.body
+                if(amount > 0){
+                    setCountUnRead(amount)
                 }
+            }).catch(err=>{
+                console.log('err: ', err)
             })
         });
-    }, [btsId]);
+    },[btsId]);
+    useEffect(()=>{
+        // doSocket()
+        return(()=>{
+            socket.off('notifications');
+        })   
+    })
 
+    const doSocket = ()=>{
+        socket.on('notifications',(data)=>{
+            countNoUnRead().then(res=>{
+                let amount = res.data.body
+                if(amount > 0){
+                    setCountUnRead(amount)
+                }
+            }).catch(err=>{
+                console.log('err: ', err)
+            })
+        })
+    }
     return (
         <aside className={cx('wrapper')}>
             <div className={cx('header')}>

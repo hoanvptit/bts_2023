@@ -89,7 +89,7 @@ export default function ManageDevice() {
     };
     //** For handle add bts */
     const handleAddDevice = () => {
-        console.log("add device: ", state.device)
+        // console.log("add device: ", state.device)
         setLoading(true);
         //add device and send to server
         addDevice({
@@ -195,7 +195,7 @@ export default function ManageDevice() {
     };
     //change object bts need to add/edit
     const changeObjectDevice = (device) => {
-        console.log("receive device: ", device)
+        // console.log("receive device: ", device)
         dispatch(setDeviceAction(device));
     };
 

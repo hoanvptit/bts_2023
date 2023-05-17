@@ -1,4 +1,6 @@
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
+import { socket } from '~/services/socket';
 import { getUserData } from '~/util/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -22,6 +24,7 @@ import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { handleLogout } from '~/services/loginService';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
+import { countNoUnRead } from '~/services/notificationService';
 
 const cx = classNames.bind(styles);
 
@@ -64,8 +67,38 @@ const handleMenuChange = (item) => {
 };
 function Header({ className }) {
     const currentUser = getUserData();
-    const informData = 5;
+    const [countUnRead, setCountUnRead] = useState(-1);
     const classes = cx({ [className]: className }, 'wrapper');
+
+    useEffect(() => {
+            countNoUnRead().then(res=>{
+                let amount = res.data.body
+                if(amount > 0){
+                    setCountUnRead(amount)
+                }
+            }).catch(err=>{
+                console.log('err: ', err)
+            })
+        },[]);
+    useEffect(()=>{
+        // doSocket()
+        return(()=>{
+            socket.off('notifications');
+        })   
+    })
+
+    const doSocket = ()=>{
+        socket.on('notifications',(data)=>{
+            countNoUnRead().then(res=>{
+                let amount = res.data.body
+                if(amount > 0){
+                    setCountUnRead(amount)
+                }
+            }).catch(err=>{
+                console.log('err: ', err)
+            })
+        })
+    }
     return (
         <header className={classes}>
             <div className={cx('inner')}>
@@ -77,8 +110,8 @@ function Header({ className }) {
                             <Tippy delay={[0, 200]} content="Thông báo" placement="bottom">
                                 <button className={cx('action-btn')}>
                                     <FontAwesomeIcon icon={faBell} />
-                                    {informData && informData > 0 && (
-                                        <span className={cx('informData')}>{informData}</span>
+                                    {countUnRead && countUnRead > 0 && (
+                                        <span className={cx('informData')}>{countUnRead}</span>
                                     )}
                                 </button>
                             </Tippy>

@@ -26,6 +26,7 @@ import {
     SET_LIST_ALL_NOTI_UNREAD,
     SET_LIST_ALL_DISPLAY_TYPE_NOTI_UNREAD,
     SET_LIST_DISPLAY_NOTI_UNREAD,
+    SET_NOTIFY_AS_READ,
     //device action
     SET_LIST_ALL_ACTIONS,
     SET_LIST_DISPLAY_ACTIONS,
@@ -190,6 +191,12 @@ export const setListAllDisplayTypeNotifyUnreadAction = (payload) => {
     };
 };
 
+export const setNotifyAsReadAction = (payload) =>{
+    return {
+        type: SET_NOTIFY_AS_READ,
+        payload
+    }
+}
 // export const setListDisplayNotifyUnreadAction = (payload) => {
 //     return {
 //         type: SET_LIST_DISPLAY_NOTI_UNREAD,

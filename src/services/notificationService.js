@@ -29,11 +29,16 @@ export const getNotification = async (notificationId) => {
     // }
 };
 export const getNotificationUnreadList = async(limit) =>{
-    const res = await request.get(`notifications?sortBy=date:desc&limit=${limit}&unread=true`);
+    const res = await request.get(`notifications?sortBy=date:desc&limit=${limit}&isRead=false`);
     return res;
 }
 //** put notification as read to server */
 export const putMarkRead = async (notificationId) =>{
     const res = await request.put(`notifications/${notificationId}/markRead`)
+    return res
+}
+
+export const countNoUnRead = async () =>{
+    const res = await request.get(`notifications/countNoUnread`)
     return res
 }

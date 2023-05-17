@@ -9,7 +9,7 @@ import { Fragment } from 'react';
 import ProtectedRoute from './routes/protectedRoute';
 function App() {
     const isLoggedIn = isUserLoggedIn();
-    console.log('isUserLoggedIn: ', isLoggedIn);
+    // console.log('isUserLoggedIn: ', isLoggedIn);
     return (
         <Router>
             <div className="App" style={{ height: '100%' }}>

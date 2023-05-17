@@ -27,6 +27,7 @@ export const SET_CHECKED_LIST = 'set_checked_list'
 export const SET_CLASSIFY_TYPE = 'set_classify_type'
 export const SET_LIST_ALL_NOTI_UNREAD = 'set_list_all_noti_unread'
 export const SET_LIST_ALL_DISPLAY_TYPE_NOTI_UNREAD = 'set_list_all_display_type_noti_unread'
+export const SET_NOTIFY_AS_READ='set_notify_as_read'
 // export const SET_LIST_NOTI_BY_BTS_UNREAD = 'set_list_noti_by_bts'
 // export const SET_LIST_DISPLAY_NOTI_UNREAD = 'set_list_display_noti_unread'
 

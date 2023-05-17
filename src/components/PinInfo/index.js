@@ -32,9 +32,9 @@ function PinElement({ device }) {
                 if (item.name.includes('tcel') || item.name.includes('mos') || item.name === 'env_t' 
                 // || item.name.includes('charging') || item.name.includes('off')
                 ) {
-                    console.log("item: ", item)
+                    // console.log("item: ", item)
                     let object = DataTemperature.find((obj)=>{
-                        console.log("obj: ", obj)
+                        // console.log("obj: ", obj)
                         return obj.name === item.name;
                     })
                     let actual_item = {...item, label:`${object.label}`, unit:`${object.unit}`}

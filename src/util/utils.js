@@ -37,7 +37,9 @@ export function extractDateOnly(time){
 export function extractHourFromTime(updatedTime){
     let tmp_date = new Date(updatedTime)
     let actualDate = new Date();
-    actualDate.setTime(tmp_date.getTime() - 7*60*60*1000);
+    // actualDate.setTime(tmp_date.getTime() - 7*60*60*1000);
+    actualDate.setTime(tmp_date.getTime());
+
     let hour =  actualDate.getHours();
 
     return `${hour > 9? hour: `0${hour}`}`

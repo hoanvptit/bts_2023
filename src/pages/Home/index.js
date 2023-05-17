@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import Header from '~/layouts/components/Header';
 import Button from '~/components/Button';
 import BtsItem from '~/components/BtsItem';
-import Loader from '~/components/Loader';
+import Loader from '~/components/Loader/LoaderFull';
 import ToastMessage from '~/components/popup/toast/ToastMessage';
 import Pagination from '~/components/pagination';
 import PopupAddObject from '~/components/popup/popupAddBts';

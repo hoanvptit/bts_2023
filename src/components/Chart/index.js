@@ -4,7 +4,7 @@ import images from '~/assets/images';
 import Button from '../Button';
 import Loader from '../Loader';
 import ToastMessage from '../popup/toast/ToastMessage';
-import { socket} from '~/services/socket';
+import { socket, mockSocket} from '~/services/socket';
 import { useEffect, useState } from 'react';
 import { DataBattery, DataSensor, PinIndex } from '~/assets/data';
 // ** Third Party Components
@@ -31,6 +31,7 @@ const AreaChart = (props) => {
         getAverageValue(device.id, date, device.type)
             .then((res) => {
                 let tmp_data = res.data.body;
+                // console.log("chart data: ", tmp_data)
                 if (tmp_data.length > 0) setData(covertDataChart(tmp_data));
                 setLoading(false);
             })
@@ -48,18 +49,20 @@ const AreaChart = (props) => {
     }, [device.id, date]);
 
     useEffect(() => {
-        if (!isFirstTime) {
-            // doSocketData();
-        }
+        // if (!isFirstTime) {
+            doSocketData();
+        // }
 
         return () => {
             socket.off('data');
         };
     });
     const doSocketData = () => {
-        console.log('connect socket data');
-        socket.on('data', (data) => {
-            console.log('data socket: ', data);
+        // console.log('connect socket data');
+        mockSocket.on('data-chart', (data) => {
+            let dataSensor = JSON.parse(data);
+            // console.log('data socket: ', dataSensor);
+            setData(covertDataChart(dataSensor));
         });
     };
     const handleChangeSelectedIndex = (e) => {

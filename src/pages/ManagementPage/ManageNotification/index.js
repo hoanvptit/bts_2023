@@ -22,6 +22,7 @@ import {
     setListAllNotifyUnreadAction,
     setListAllDisplayTypeNotifyUnreadAction,
     setListDisplayNotifyUnreadAction,
+    setNotifyAsReadAction
 } from '~/reducer/action';
 import style from './ManageNotification.module.scss';
 const cx = classNames.bind(style);
@@ -45,16 +46,18 @@ export default function ManageNotification() {
         fetchDataNotisAll();
     }, []);
     useEffect(() => {
-        if (!isFirstTime) {
+        // if (!isFirstTime) {
             doSocket();
-        }
+        // }
         return () => socket.off('notifications');
     });
     const fetchDataNotisAll = () => {
+        setLoading(true)
         getNotificationList(limit)
             .then((res) => {
                 let tmp = res.data.body.results;
-                console.log('bts notification: ', tmp);
+                // console.log('bts notification: ', tmp);
+                setCountPage(1);
                 if (tmp.length > 0) {
                     //find user act notify
                     const tmp_numberNotiByLv = [0, 0, 0, 0];
@@ -135,10 +138,12 @@ export default function ManageNotification() {
             });
     };
     const fetchDataNotisUnread = () => {
+        setLoading(true)
         getNotificationUnreadList(limit)
             .then((res) => {
                 let tmp = res.data.body.results;
-                console.log('bts notification: ', tmp);
+                // console.log('bts notification: ', tmp);
+                setCountPage(1);
                 if (tmp.length > 0) {
                     //find user act notify
                     const tmp_numberNotiByLv = [0, 0, 0, 0];
@@ -202,6 +207,10 @@ export default function ManageNotification() {
                                 };
                             });
                         });
+                }else{
+                    dispatch(setListAllNotifyUnreadAction([]));
+                    dispatch(setListAllDisplayTypeNotifyAction([]));
+                    dispatch(setListDisplayNotifyAction([]));
                 }
                 setLoading(false);
                 setIsFirstTime(false);
@@ -221,7 +230,7 @@ export default function ManageNotification() {
     const doSocket = () => {
         socket.on('notifications', (data) => {
             let noti_data = JSON.parse(data);
-            // console.log('notify data: ', data);
+            console.log('notify data: ', noti_data);
             // console.log(state.listAll);
             let icon = null;
             let tmp_numberNotiByLv = [...numberNotiByLevel];
@@ -312,15 +321,50 @@ export default function ManageNotification() {
             .then((res) => {
                 console.log('res mark read: ', res);
                 //update list
+                // dispatch(setNotifyAsReadAction(e.id))
+                if(state.classifyType === 'all'){
+                    fetchDataNotisAll();
+                }else{
+
+                    fetchDataNotisUnread();
+                } 
             })
             .catch((err) => {
                 console.log('err: ', err);
             });
     };
     const handleClickClassify = (type) => {
+        console.log('classify type: ', type);
         // setClassifyType(type)
         dispatch(setClassifyTypeAction(type));
-        fetchDataNotisUnread();
+        if (type === 'unread') {
+            fetchDataNotisUnread();
+        } else {
+            fetchDataNotisAll();
+        }
+    };
+   
+    const handleMarkReadAll = () => {
+        console.log('Marked as read all');
+        state.listAll.forEach((item, index, array) =>{
+            if(!item.isRead){
+                putMarkRead(item.id)
+                .then((res) => {
+                    console.log('res mark read: ', res);
+                    //update list
+                    // dispatch(setNotifyAsReadAction(item.id))
+                    if(state.classifyType === 'all'){
+                        fetchDataNotisAll();
+                    }else{
+    
+                        fetchDataNotisUnread();
+                    }
+                })
+                .catch((err) => {
+                    console.log('err: ', err);
+                });
+            }
+        })
     };
     const body = (
         <>
@@ -379,7 +423,9 @@ export default function ManageNotification() {
                                 </span>
                             </div>
                             <div className={cx('markallread')}>
-                                <span className={cx('name')}>Đánh dấu tất cả là đã đọc</span>
+                                <span className={cx('name')} onClick={handleMarkReadAll}>
+                                    Đánh dấu tất cả là đã đọc
+                                </span>
                             </div>
                         </div>
                         {state.listDisplay.length > 0 ? (

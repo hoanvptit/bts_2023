@@ -3,12 +3,12 @@ import { getAccessToken } from '~/util/auth';
 import {SOCKET_URL} from '~/config_env'
 const btsid = localStorage.getItem('btsid');
 const token = getAccessToken();
-export const socket = io(`${SOCKET_URL}${btsid}`, {
+export const socket = io(`${process.env.REACT_APP_SOCKET_URL}${btsid}`, {
     auth: {
         token: `${token.token}`,
     },
 });
-// export const mockSocket = io.connect("http://localhost:5000")
+export const mockSocket = io.connect("http://localhost:5000")
 
 export const onSocketConnect = () => {
     console.log('socket: ', socket);
